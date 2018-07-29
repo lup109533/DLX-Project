@@ -25,8 +25,6 @@ Generic designs should be put in the __vhd\generics__ folder and named __DD-Comp
 
 # vhd
 * 000-globals.vhd - Contains all the common constants and processes of the design.
-* 0\* - Generic designs
-  * 1 - Generic cache design, should support generic associativity and *write-back* write policy.
 * a - Full DLX Design
   * a.a - Processor L1 cache
   * a.b - Control Unit (CU), microprogrammed
@@ -36,3 +34,6 @@ Generic designs should be put in the __vhd\generics__ folder and named __DD-Comp
     * a.c.c - Execute stage
     * a.c.d - Memory stage
     * a.c.e - Write back stage
+* generics - Generic designs
+  * 01 - Generic cache design, should support generic associativity and *write-back* write policy.
+* testbench - Testbenches
