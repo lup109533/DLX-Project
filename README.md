@@ -17,6 +17,8 @@ For example:
 
 Generic designs should be put in the __vhd\generics__ folder and named __DD-ComponentName.vhd__, where __DD__ is a two-digit decimal number, starting from 01.
 
+Testbenches should be put in the __vhd\testbench__ folder and named __TB-ComponentName.vhd__.
+
 # sim
 ### TODO
 
