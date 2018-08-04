@@ -9,14 +9,32 @@ package globals is
 	function min	(a,b : integer)	return integer;
 	
 	-- CONSTANTS
-	constant DLX_INSTRUCTION_SIZE : natural := 32;
-	constant OPCODE_SIZE          : natural := 6;
-	constant ALU_FUNCTION_SIZE    : natural := 11;
+	constant DLX_INSTRUCTION_SIZE	: natural := 32;
+	constant OPCODE_SIZE		: natural := 6;
+	constant REGISTER_ADDR_SIZE	: natural := 5;
+	constant IMMEDIATE_ARG_SIZE	: natural := 16;
+	constant ALU_FUNCTION_SIZE	: natural := 11;
+	constant FP_FUNCTION_SIZE	: natural := 9;
+	constant JUMP_PC_OFFSET_SIZE	: natural := 26;
+
+	-- RANGES
+	subtype OPCODE_RANGE		is natural range (DLX_INSTRUCTION_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE);
+	subtype REG_SOURCE1_RANGE	is natural range (DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE);
+	subtype REG_SOURCE2_RANGE	is natural range (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE*2);
+	subtype REG_DEST_RANGE		is natural range (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE*2)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE*3);
+	subtype ALU_FUNC_RANGE		is natural range (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE*3)-1 downto 0;
+	subtype IMMEDIATE_ARG_RANGE	is natural range (DLX_INSTRUCTION_SIZE - OPCODE_SIZE - REG_ADDR_SIZE*2)-1 downto 0;
+	subtype PC_OFFSET_RANGE		is natural range (DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto 0;
+	subtype FP_FUNC_RANGE		is natural range (FP_FUNCTION_SIZE)-1 downto 0;
 
 	-- TYPES AND ENUMS
 	subtype DLX_instr_t	is std_logic_vector(DLX_INSTRUCTION_SIZE-1 downto 0);
 	subtype opcode_t	is std_logic_vector(OPCODE_SIZE-1 downto 0);
+	subtype reg_addr_t	is std_logic_vector(REGISTER_ADDR_SIZE-1 downto 0);
+	subtype immediate_t	is std_logic_vector(IMMEDIATE_ARG_SIZE-1 downto 0);
 	subtype func_t		is std_logic_vector(ALU_FUNCTION_SIZE-1 downto 0);
+	subtype fp_func_t	is std_logic_vector(FP_FUNCTION_SIZE-1 downto 0);
+	subtype pc_offset_t	is std_logic_vector(JUMP_PC_OFFSET_SIZE-1 downto 0);
 	type DLX_instr_type_t is (R_TYPE, I_TYPE, J_TYPE, FI_TYPE, FR_TYPE);
 
 	-- DLX INSTRUCTIONS
@@ -64,6 +82,48 @@ package globals is
 
 	-- DLX ALU FUNCTIONS
 	constant SLLI		: func_t	:= std_logic(to_unsigned(16#00#, ALU_FUNCTION_SIZE));
+	constant SLAI		: func_t	:= std_logic(to_unsigned(16#01#, ALU_FUNCTION_SIZE));
+	constant SRLI		: func_t	:= std_logic(to_unsigned(16#02#, ALU_FUNCTION_SIZE));
+	constant SRAI		: func_t	:= std_logic(to_unsigned(16#03#, ALU_FUNCTION_SIZE));
+	constant SLL		: func_t	:= std_logic(to_unsigned(16#04#, ALU_FUNCTION_SIZE));
+	constant SLA		: func_t	:= std_logic(to_unsigned(16#05#, ALU_FUNCTION_SIZE));
+	constant SRL		: func_t	:= std_logic(to_unsigned(16#06#, ALU_FUNCTION_SIZE));
+	constant SRA		: func_t	:= std_logic(to_unsigned(16#07#, ALU_FUNCTION_SIZE));
+	constant MOVS2I		: func_t	:= std_logic(to_unsigned(16#10#, ALU_FUNCTION_SIZE));
+	constant MOVI2S		: func_t	:= std_logic(to_unsigned(16#11#, ALU_FUNCTION_SIZE));
+	constant ADD		: func_t	:= std_logic(to_unsigned(16#20#, ALU_FUNCTION_SIZE));
+	constant ADDU		: func_t	:= std_logic(to_unsigned(16#21#, ALU_FUNCTION_SIZE));
+	constant SUB		: func_t	:= std_logic(to_unsigned(16#22#, ALU_FUNCTION_SIZE));
+	constant SUBU		: func_t	:= std_logic(to_unsigned(16#23#, ALU_FUNCTION_SIZE));
+	constant AND		: func_t	:= std_logic(to_unsigned(16#24#, ALU_FUNCTION_SIZE));
+	constant OR		: func_t	:= std_logic(to_unsigned(16#25#, ALU_FUNCTION_SIZE));
+	constant XOR		: func_t	:= std_logic(to_unsigned(16#26#, ALU_FUNCTION_SIZE));
+	constant LHG		: func_t	:= std_logic(to_unsigned(16#27#, ALU_FUNCTION_SIZE));
+	constant CLR		: func_t	:= std_logic(to_unsigned(16#28#, ALU_FUNCTION_SIZE));
+	constant SGR		: func_t	:= std_logic(to_unsigned(16#29#, ALU_FUNCTION_SIZE));
+	constant SEQ		: func_t	:= std_logic(to_unsigned(16#2A#, ALU_FUNCTION_SIZE));
+	constant SGE		: func_t	:= std_logic(to_unsigned(16#2B#, ALU_FUNCTION_SIZE));
+	constant SLS		: func_t	:= std_logic(to_unsigned(16#2C#, ALU_FUNCTION_SIZE));
+	constant SNE		: func_t	:= std_logic(to_unsigned(16#2D#, ALU_FUNCTION_SIZE));
+	constant SLE		: func_t	:= std_logic(to_unsigned(16#2E#, ALU_FUNCTION_SIZE));
+	constant SET		: func_t	:= std_logic(to_unsigned(16#2F#, ALU_FUNCTION_SIZE));
+
+	-- DLX FP FUNCTIONS
+	constant FADD		: fp_func_t	:= std_logic(to_unsigned(16#00#, FP_FUNCTION_SIZE));
+	constant FSUB		: fp_func_t	:= std_logic(to_unsigned(16#01#, FP_FUNCTION_SIZE));
+	constant FMUL		: fp_func_t	:= std_logic(to_unsigned(16#02#, FP_FUNCTION_SIZE));
+	constant FDIV		: fp_func_t	:= std_logic(to_unsigned(16#03#, FP_FUNCTION_SIZE));
+	constant FNEG		: fp_func_t	:= std_logic(to_unsigned(16#04#, FP_FUNCTION_SIZE));
+	constant FABS		: fp_func_t	:= std_logic(to_unsigned(16#05#, FP_FUNCTION_SIZE));
+	constant FSQT		: fp_func_t	:= std_logic(to_unsigned(16#06#, FP_FUNCTION_SIZE));
+	constant FREM		: fp_func_t	:= std_logic(to_unsigned(16#07#, FP_FUNCTION_SIZE));
+	constant FC_COND	: fp_func_t	:= std_logic(to_unsigned(2#110000#, FP_FUNCTION_SIZE)); -- 4 LSBs to be masked
+	constant FP_TRANSF	: fp_func_t	:= std_logic(to_unsigned(16#08#, FP_FUNCTION_SIZE));    -- Bits 8-6 of the instruction set mode (.s or .d)
+	constant MF2I		: fp_func_t	:= std_logic(to_unsigned(16#09#, FP_FUNCTION_SIZE));
+	constant MI2F		: fp_func_t	:= std_logic(to_unsigned(16#0A#, FP_FUNCTION_SIZE));
+	constant FP_CONV_S	: fp_func_t	:= std_logic(to_unsigned(16#20#, FP_FUNCTION_SIZE));    -- Bits 8-6 of the instruction set mode (.d or .i)
+	constant FP_CONV_D	: fp_func_t	:= std_logic(to_unsigned(16#21#, FP_FUNCTION_SIZE));    -- Bits 8-6 of the instruction set mode (.s or .i)
+	constant FP_CONV_I	: fp_func_t	:= std_logic(to_unsigned(16#24#, FP_FUNCTION_SIZE));    -- Bits 8-6 of the instruction set mode (.s or .d)
 
 	-- DLX MANAGEMENT FUNCTIONS AND PROCEDURES
 	procedure get_op_type (
