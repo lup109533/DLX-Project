@@ -30,23 +30,31 @@ begin
 	pc_offset	<= instr_s(PC_OFFSET_RANGE);
 	fp_func		<= instr_s(FP_FUNC_RANGE);
 
-	-- PREVIOUS INSTRUCTION REGISTER
+	-- PREVIOUS INSTRUCTIONS PIPELINE
 	-- Used to check for hazards.
-	prev_instr_reg: process (CLK, RST, instr_s) is begin
+	prev_instr_pipe: process (CLK, RST, instr_s) is begin
 		if rising_edge(CLK) then
 			if (RST = '0') then
-				prev_instr_s <= (OPCODE_RANGE => NOP, others => '0');
+				prev_instr(PREV_DECODE)		<= (OPCODE_RANGE => NOP, others => '0');
+				prev_instr(PREV_EXECUTE)	<= (OPCODE_RANGE => NOP, others => '0');
+				prev_instr(PREV_MEMORY)		<= (OPCODE_RANGE => NOP, others => '0');
+				prev_instr(PREV_WRITE_BACK)	<= (OPCODE_RANGE => NOP, others => '0');
 			else
-				prev_instr_s <= instr_s;
+				prev_instr(PREV_DECODE)		<= instr_s;
+				prev_instr(PREV_EXECUTE)	<= prev_instr(PREV_DECODE);
+				prev_instr(PREV_MEMORY)		<= prev_instr(PREV_EXECUTE);
+				prev_instr(PREV_WRITE_BACK)	<= prev_instr(PREV_MEMORY);
 			end if;
 		end if;
 	end process;
 
 	-- Unpack necessary portions of previous instruction.
-	prev_opcode 	<= prev_instr_s(OPCODE_RANGE);
-	prev_source1	<= prev_instr_s(REG_SOURCE1_RANGE);
-	prev_source2	<= prev_instr_s(REG_SOURCE2_RANGE);
-	prev_dest	<= prev_instr_s(REG_DEST_RANGE);
+	unpack_prev_instr: for stage in PREV_DECODE to PREV_WRITE_BACK generate
+		prev_opcode(stage) 	<= prev_instr(stage)(OPCODE_RANGE);
+		prev_source1(stage)	<= prev_instr(stage)(REG_SOURCE1_RANGE);
+		prev_source2(stage)	<= prev_instr(stage)(REG_SOURCE2_RANGE);
+		prev_dest(stage)	<= prev_instr(stage)(REG_DEST_RANGE);
+	end generate;
 
 	-- OPCODE RELOCATOR
 	relocated_opcode <= opcode; -- !!!TODO!!! TO BE CHANGED AFTER FINALIZATION !!!TODO!!!
@@ -89,7 +97,7 @@ begin
 	F_FP	<= fp_func;
 
 	-- PIPELINE HAZARD MANAGEMENT LOGIC
-	raw_detect	<= ((op_class(HAS_SOURCE) = '1') and (prev_op_class(HAS_DEST) = '1')) and ((source1 = prev_dest) or (source2 = prev_dest));
+	raw_hazard	<= ((op_class(HAS_SOURCE) = '1') and (prev_op_class(HAS_DEST) = '1')) and ((source1 = prev_dest) or (source2 = prev_dest));
 	STALL		<= stall_s;
 
 end architecture;
