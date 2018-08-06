@@ -25,12 +25,12 @@ begin
 	S3 <= (others => CTRL(0));
 
 	-- MAKE L* SIGNALS
-	L0 <= S0 nand not(R1) nand not(R2);
-	L1 <= S1 nand not(R1) nand    (R2);
-	L2 <= S2 nand    (R1) nand not(R2);
-	L3 <= S3 nand    (R1) nand    (R2);
+	L0 <= not(S0 and not(R1) and not(R2));
+	L1 <= not(S1 and not(R1) and    (R2));
+	L2 <= not(S2 and    (R1) and not(R2));
+	L3 <= not(S3 and    (R1) and    (R2));
 
 	-- OUTPUT SIGNAL
-	O <= L0 nand L1 nand L2 nand L3;
+	O <= not(L0 and L1 and L2 and L3);
 
 end architecture;

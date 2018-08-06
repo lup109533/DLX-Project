@@ -24,6 +24,9 @@ architecture test of TB_LOGIC_UNIT is
 
 begin
 
+	-- UUT
+	UUT: LOGIC_UNIT generic map(OPERAND_SIZE) port map(CTRL_s, R1_s, R2_s, O_s);
+
 	-- STIMULUS
 	stimulus: process is begin
 		R1_s	<= "0101";
