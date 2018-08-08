@@ -9,7 +9,14 @@ entity FA is
 	);
 end entity;
 
-architecture structural of HA is
+architecture structural of FA is
+
+	component HA
+		port (
+			A, B	: in	std_logic;
+			S, C	: out	std_logic	
+		);
+	end component;
 
 	signal inter_s, inter_c1, inter_c2 : std_logic;
 

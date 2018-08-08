@@ -36,7 +36,16 @@ architecture structural of SPARSE_TREE_CARRY_GENERATOR is
 		);
 	end component;
 
-	signal op_g, op_p : std_logic_vector(OPERAND_SIZE downto 0);
+	--constant T : natural := log2(32)-6;
+	constant TREE_REMAINDER_DEPTH : natural := log2(OPERAND_SIZE) - RADIX;
+	constant TREE_REMAINDER_WIDTH : natural := OPERAND_SIZE/(2**RADIX);
+	
+	type first_row_array is array (natural range <>) of std_logic_vector(OPERAND_SIZE downto 0);
+	type tree_row_array  is array (natural range <>) of std_logic_vector((OPERAND_SIZE/(2**RADIX))-1 downto 0);
+	
+	signal op_g, op_p		: std_logic_vector(OPERAND_SIZE downto 0);
+	signal first_g, first_p : first_row_array(RADIX downto 0);
+	signal tree_g, tree_p	: tree_row_array(TREE_REMAINDER_DEPTH downto 0);
 
 begin
 
@@ -51,6 +60,7 @@ begin
 	-- FIRST RADIX ROWS
 	first_g(0) <= op_g;
 	first_p(0) <= op_p;
+	
 	first_rows_gen: for row in 1 to RADIX generate
 		first_columns_gen_i: for column in 0 to OPERAND_SIZE/(2**row)-1 generate
 
@@ -63,13 +73,14 @@ begin
 							);
 			end generate;
 
-			first_rows_pg_block_gen: if (column != 0) generate
+			first_rows_pg_block_gen: if not(column = 0) generate
 				first_rows_pg_block_ij: PG_BLOCK port map(
 								G_ik	=> first_g(row-1)(2*column+1),
 								P_ik	=> first_p(row-1)(2*column+1),
 								G_km1j	=> first_g(row-1)(2*column),
-								P_km1j	=> first_g(row-1)(2*column),
-								G_ij	=> first_g(row)(column)
+								P_km1j	=> first_p(row-1)(2*column),
+								G_ij	=> first_g(row)(column),
+								P_ij	=> first_p(row)(column)
 							);
 
 			end generate;
@@ -78,12 +89,13 @@ begin
 	end generate;
 
 	-- REMAINDER OF THE TREE
-	tree_g(0) <= first_g(RADIX)((OPERAND_SIZE/(2**RADIX))-1 downto 0);
-	tree_p(0) <= first_p(RADIX)((OPERAND_SIZE/(2**RADIX))-1 downto 0);
-	tree_gen: for row in 1 to (log2(OPERAND_SIZE) - RADIX) generate
-		tree_column_gen: for column in 0 to (OPERAND_SIZE/(2**RADIX))-1 generate
+	tree_g(0) <= first_g(RADIX)(TREE_REMAINDER_WIDTH-1 downto 0);
+	tree_p(0) <= first_p(RADIX)(TREE_REMAINDER_WIDTH-1 downto 0);
+	
+	tree_gen: for row in 1 to TREE_REMAINDER_DEPTH generate
+		tree_column_gen: for column in 0 to (TREE_REMAINDER_WIDTH-1) generate
 			
-			tree_g_block: if (column < 2**row) and ((column % (2**row))+1 > 2**(row-1)) generate
+			tree_g_block: if (column < 2**row) and ((column mod (2**row))+1 > 2**(row-1)) generate
 				tree_g_block_ij: G_BLOCK port map(
 							G_ik	=> tree_g(row-1)(column),	-- Same column
 							P_ik	=> tree_p(row-1)(column),
@@ -92,17 +104,18 @@ begin
 						);
 			end generate;
 
-			tree_pg_block: if (column >= 2**row) and ((column % (2**row))+1 > 2**(row-1)) generate
-				tree_g_block_ij: G_BLOCK port map(
+			tree_pg_block: if (column >= 2**row) and ((column mod (2**row))+1 > 2**(row-1)) generate
+				tree_pg_block_ij: PG_BLOCK port map(
 							G_ik	=> tree_g(row-1)(column),					-- Same column
 							P_ik	=> tree_p(row-1)(column),
-							G_km1j	=> tree_g(row-1)(column - ((column % 2**row) - 2**row-1)),	-- First PG block on the rightside columns
-							P_km1j	=> tree_p(row-1)(column - ((column % 2**row) - 2**row-1));
-							G_ij	=> tree_g(row)(column)
+							G_km1j	=> tree_g(row-1)(column - ((column mod 2**row) - (2**row-1))),	-- First PG block on the rightside columns
+							P_km1j	=> tree_p(row-1)(column - ((column mod 2**row) - (2**row-1))),
+							G_ij	=> tree_g(row)(column),
+							P_ij	=> tree_P(row)(column)
 						);
 			end generate;
 
-			tree_propagate: if ((column % (2**row))+1 <= 2**(row-1)) generate
+			tree_propagate: if ((column mod (2**row))+1 <= 2**(row-1)) generate
 				tree_g(row)(column) <= tree_g(row-1)(column);
 				tree_p(row)(column) <= tree_p(row-1)(column);
 			end generate;
@@ -110,6 +123,6 @@ begin
 		end generate;
 	end generate;
 
-	CARRY <= tree_g(log2(OPERAND_SIZE) - RADIX);
+	CARRY <= tree_g(TREE_REMAINDER_DEPTH);
 
 end architecture;

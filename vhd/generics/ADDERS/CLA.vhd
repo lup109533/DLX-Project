@@ -5,7 +5,7 @@ entity CLA is
 	generic (
 		OPERAND_SIZE	: natural;
 		RADIX		: natural := 2
-	)
+	);
 	port (
 		A, B	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
 		CIN	: in	std_logic;
@@ -32,6 +32,7 @@ architecture structural of CLA is
 		generic (OPERAND_SIZE : natural);
 		port (
 			A, B	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
+			CIN		: in	std_logic;
 	   		S	: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
 			C	: out	std_logic
 		);
@@ -47,7 +48,7 @@ begin
 	sparse_tree: SPARSE_TREE_CARRY_GENERATOR generic map(OPERAND_SIZE, RADIX) port map(A, B, CIN, carry);
 
 	add_stage_gen: for i in 0 to (NUM_OF_ADDERS)-1 generate
-		rca_i: RCA generic map () port map (
+		rca_i: RCA generic map (ADDER_SIZE) port map (
 							A(ADDER_SIZE*(i+1)-1 downto ADDER_SIZE*i),
 							B(ADDER_SIZE*(i+1)-1 downto ADDER_SIZE*i),
 							carry(i),

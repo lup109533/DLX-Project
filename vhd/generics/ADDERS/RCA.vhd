@@ -5,6 +5,7 @@ entity RCA is
 	generic (OPERAND_SIZE : natural);
 	port (
 		A, B	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
+		CIN		: in	std_logic;
    		S	: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
 		C	: out	std_logic
 	);
