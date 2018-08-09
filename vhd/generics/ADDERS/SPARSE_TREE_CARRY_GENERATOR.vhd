@@ -98,7 +98,7 @@ begin
 				tree_g_block_ij: G_BLOCK port map(
 							G_ik	=> tree_g(row-1)(column),	-- Same column
 							P_ik	=> tree_p(row-1)(column),
-							G_km1j	=> tree_g(row-1)(2**row-1),	-- G block of last row
+							G_km1j	=> tree_g(row-1)(2**(row-1)),	-- G block of last row
 							G_ij	=> tree_g(row)(column)
 						);
 			end generate;
