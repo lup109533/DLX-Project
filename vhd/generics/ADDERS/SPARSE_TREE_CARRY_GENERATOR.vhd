@@ -40,25 +40,24 @@ architecture structural of SPARSE_TREE_CARRY_GENERATOR is
 	constant TREE_REMAINDER_DEPTH : natural := log2(OPERAND_SIZE) - RADIX;
 	constant TREE_REMAINDER_WIDTH : natural := OPERAND_SIZE/(2**RADIX);
 	
-	type first_row_array is array (natural range <>) of std_logic_vector(OPERAND_SIZE downto 0);
+	type first_row_array is array (natural range <>) of std_logic_vector(OPERAND_SIZE-1 downto 0);
 	type tree_row_array  is array (natural range <>) of std_logic_vector((OPERAND_SIZE/(2**RADIX))-1 downto 0);
 	
-	signal op_g, op_p		: std_logic_vector(OPERAND_SIZE downto 0);
+	signal op_g, op_p		: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal first_g, first_p : first_row_array(RADIX downto 0);
 	signal tree_g, tree_p	: tree_row_array(TREE_REMAINDER_DEPTH downto 0);
 
 begin
 
 	-- GENERATE SIGNALS FROM OPERANDS
-	op_g(OPERAND_SIZE downto 1)	<= A and B;
-	op_g(0)				<= CIN;
+	op_g	<= A and B;
 
 	-- PROPAGATE SIGNALS FROM OPERANDS
-	op_p(OPERAND_SIZE downto 1)	<= A or B;
-	op_p(0)				<= '0';
+	op_p	<= A or B;
 
 	-- FIRST RADIX ROWS
-	first_g(0) <= op_g;
+	first_g(0)(OPERAND_SIZE-1 downto 1) <= op_g(OPERAND_SIZE-1 downto 1);
+	first_g(0)(0)						<= op_g(0) or (op_p(0) and CIN);
 	first_p(0) <= op_p;
 	
 	first_rows_gen: for row in 1 to RADIX generate
