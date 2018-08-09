@@ -41,11 +41,13 @@ architecture structural of CLA is
 	constant ADDER_SIZE	: natural := 2**RADIX;
 	constant NUM_OF_ADDERS	: natural := OPERAND_SIZE/ADDER_SIZE;
 
-	signal carry, carry_out	: std_logic_vector(NUM_OF_ADDERS-1 downto 0);
+	signal carry	: std_logic_vector(NUM_OF_ADDERS downto 0);
 
 begin
 
-	sparse_tree: SPARSE_TREE_CARRY_GENERATOR generic map(OPERAND_SIZE, RADIX) port map(A, B, CIN, carry);
+	sparse_tree: SPARSE_TREE_CARRY_GENERATOR generic map(OPERAND_SIZE, RADIX) port map(A, B, CIN, carry(NUM_OF_ADDERS downto 1));
+	
+	carry(0) <= CIN;
 
 	add_stage_gen: for i in 0 to (NUM_OF_ADDERS)-1 generate
 		rca_i: RCA generic map (ADDER_SIZE) port map (
@@ -53,9 +55,9 @@ begin
 							B(ADDER_SIZE*(i+1)-1 downto ADDER_SIZE*i),
 							carry(i),
 							O(ADDER_SIZE*(i+1)-1 downto ADDER_SIZE*i),
-							carry_out(i));
+							open);
 	end generate;
 
-	C <= carry_out(NUM_OF_ADDERS-1);
+	C <= carry(NUM_OF_ADDERS);
 
 end architecture;

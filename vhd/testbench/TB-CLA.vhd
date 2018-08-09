@@ -23,8 +23,8 @@ architecture test of TB_CLA is
 	constant OPERAND_SIZE	: natural := 8;
 	constant RADIX			: natural := 2;
 	
-	constant MAX_A	: natural := 100;
-	constant MAX_B	: natural := 100;
+	constant MAX_A	: natural := 2**OPERAND_SIZE-1;
+	constant MAX_B	: natural := 2**OPERAND_SIZE-1;
 	
 	signal A_s, B_s	: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal CIN_s	: std_logic;
@@ -37,16 +37,19 @@ begin
 	UUT: CLA generic map(OPERAND_SIZE, RADIX) port map(A_s, B_s, CIN_s, O_s, C_s);
 
 	-- STIMULUS
-	CIN_s <= '0';
 	stimulus: process is
 		variable A_v, B_v : natural;
+		variable C_v : std_logic;
 	begin
 	
-		for A_v in 0 to MAX_A loop
-			for B_v in 0 to MAX_B loop
-				A_s <= std_logic_vector(to_unsigned(A_v, A_s'length));
-				B_s <= std_logic_vector(to_unsigned(B_v, B_s'length));
-				wait for 1 ns;
+		for  C_v in std_logic range '0' to '1' loop
+			for A_v in 0 to MAX_A loop
+				for B_v in 0 to MAX_B loop
+					A_s		<= std_logic_vector(to_unsigned(A_v, A_s'length));
+					B_s		<= std_logic_vector(to_unsigned(B_v, B_s'length));
+					CIN_s	<= C_v;
+					wait for 1 ns;
+				end loop;
 			end loop;
 		end loop;
 		

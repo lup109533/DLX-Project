@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use work.globals.log2;
+use work.globals.max;
 
 entity SPARSE_TREE_CARRY_GENERATOR is
 	generic (
@@ -107,8 +108,8 @@ begin
 				tree_pg_block_ij: PG_BLOCK port map(
 							G_ik	=> tree_g(row-1)(column),					-- Same column
 							P_ik	=> tree_p(row-1)(column),
-							G_km1j	=> tree_g(row-1)(column - ((column mod 2**row) - (2**row-1))),	-- First PG block on the rightside columns
-							P_km1j	=> tree_p(row-1)(column - ((column mod 2**row) - (2**row-1))),
+							G_km1j	=> tree_g(row-1)(column - max(1, ((column mod (2**row)) - 2**(row-1) - 1))),	-- First PG block on the rightside columns
+							P_km1j	=> tree_p(row-1)(column - max(1, ((column mod (2**row)) - 2**(row-1) - 1))),
 							G_ij	=> tree_g(row)(column),
 							P_ij	=> tree_P(row)(column)
 						);
