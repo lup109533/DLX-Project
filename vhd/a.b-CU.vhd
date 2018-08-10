@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.DLX_pack.all;
+use work.DLX_utils.all;
 
 entity CU is
 	port (

@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use work.globals.log2;
-use work.globals.max;
+use work.utils.log2;
+use work.utils.max;
 
 entity SPARSE_TREE_CARRY_GENERATOR is
 	generic (

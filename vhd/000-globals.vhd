@@ -3,12 +3,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package globals is
+package utils is
 	-- MATH FUNCTIONS
 	function log2	(n   : integer)	return integer;
 	function max	(a,b : integer)	return integer;
 	function min	(a,b : integer)	return integer;
-end globals;
+end utils;
 	
 
 -- DLX_PACK PACKAGE	
@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package DLX_pack is
+package DLX_utils is
 	-- CONSTANTS
 	constant DLX_INSTRUCTION_SIZE	: natural := 32;
 	constant OPCODE_SIZE		: natural := 6;
@@ -160,7 +160,7 @@ package DLX_pack is
 	-- DLX MANAGEMENT FUNCTIONS AND PROCEDURES
 end package;
 
-package body globals is
+package body utils is
 	-- LOG2
 	function log2(n : integer) return integer is
 		variable ret : integer := 0;
@@ -193,8 +193,8 @@ package body globals is
 	end function;
 end package body;
 
-package body DLX_pack is
+package body DLX_utils is
 	-- DLX
 	
 
-end DLX_pack;
+end DLX_utils;

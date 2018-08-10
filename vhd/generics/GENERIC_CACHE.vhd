@@ -1,8 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use work.globals.log2;
-use work.globals.max;
-use work.globals.CLK_FREQ;
+use work.utils.log2;
+use work.utils.max;
+use work.utils.CLK_FREQ;
 
 entity GENERIC_CACHE is
 	generic (word_size, virtual_addr_bits, addr_bits, set_size, rtc_size : natural);
