@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package DLX_utils is
+package DLX_globals is
 	-- CONSTANTS
 	constant DLX_INSTRUCTION_SIZE	: natural := 32;
 	constant OPCODE_SIZE		: natural := 6;
@@ -193,8 +193,8 @@ package body utils is
 	end function;
 end package body;
 
-package body DLX_utils is
+package body DLX_globals is
 	-- DLX
 	
 
-end DLX_utils;
+end DLX_globals;
