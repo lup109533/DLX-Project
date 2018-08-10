@@ -16,9 +16,9 @@ For example:
 > a.c-DATAPATH.vhd
 
 Generic designs should be put in the __vhd\generics__ folder and named __ComponentName.vhd__. If the generic component is to be implemented in several files, they should all be put in a significantly named folder and named __DD-ComponentName.vhd__, where __DD__ is a two-digit decimal number, such that the names are representative of the required order of compilation, e.g.
-> In folder generics/ADDERS/RCA/ we have:
-> __00__-HA.vhd  (Half-adder)
-> __01__-FA.vhd  (Full-adder, requires HA.vhd)
+> In folder __generics/ADDERS/RCA/__ we have:\
+> __00__-HA.vhd  (Half-adder)\
+> __01__-FA.vhd  (Full-adder, requires HA.vhd)\
 > __02__-RCA.vhd (Ripple Carry Adder, requires FA.vhd)
 
 Testbenches should be put in the __vhd\testbench__ folder and named __TB-ComponentName.vhd__.
