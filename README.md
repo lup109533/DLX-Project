@@ -26,7 +26,7 @@ Testbenches should be put in the __vhd\testbench__ folder and named __TB-Compone
 ### TODO
 
 # vhd
-* 000-globals.vhd - Contains all the common constants and processes of the design.
+* 000-globals.vhd - Contains all the common constants and procedures of the design, as well as useful functions such as __log2__.
 * a - Full DLX Design
   * a.a - Processor L1 cache
   * a.b - Control Unit (CU), microprogrammed
@@ -34,8 +34,16 @@ Testbenches should be put in the __vhd\testbench__ folder and named __TB-Compone
     * a.c.a - Fetch stage
     * a.c.b - Decode stage
     * a.c.c - Execute stage
+      * a.c.c.a - ALU, Arithmetic and Logic Unit, performs additions/subtractions, shifts and logic operations.
+        * a.c.c.a.a - LU_CTRL, a package containing helper constants for the LU.
+        * a.c.c.a.b - LU, Logic Unit, implements all logic functions on two operands.
+        * a.c.c.a.c - Adder/Subtractor, implemented using a radix-2 Sparse Tree Carry Lookahead Adder. 
+      * a.c.c.b - FPU, Floating Point Unit, for now only performs multiplication.
     * a.c.d - Memory stage
     * a.c.e - Write back stage
 * generics - Generic designs
-  * 01 - Generic cache design, should support generic associativity and *write-back* write policy.
+  * GENERIC_CACHE - Generic cache design, should support generic associativity and *write-back* write policy.
+  * ADDERS - Folder containing generic adder implementations.
+    * RCA - Folder containing all files required to implement a generic N-bit Ripple Carry Adder.
+    * CLA - Folder containing all files required to implement a generic N-bit Sparse Tree Carry Lookahead Adder with arbitrary radix.
 * testbench - Testbenches
