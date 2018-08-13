@@ -9,21 +9,56 @@ package utils is
 	function max	(a,b : integer)	return integer;
 	function min	(a,b : integer)	return integer;
 end utils;
+
+package body utils is
+	-- LOG2
+	function log2(n : integer) return integer is
+		variable ret : integer := 0;
+		variable tmp : integer;
+	begin
+		tmp := n;
+		while (tmp > 1) loop
+			tmp := tmp / 2;
+			ret := ret + 1;
+		end loop;
+		return ret;
+	end function;
+	-- MAX
+	function max(a,b : integer) return integer is
+	begin
+		if (a > b) then
+			return a;
+		else
+			return b;
+		end if;
+	end function;
+	-- MIN
+	function min(a,b : integer) return integer is
+	begin
+		if (a < b) then
+			return a;
+		else
+			return b;
+		end if;
+	end function;
+end package body;
 	
 
--- DLX_PACK PACKAGE	
+-- DLX_GLOBALS PACKAGE	
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 package DLX_globals is
 	-- CONSTANTS
+	constant DLX_OPERAND_SIZE		: natural := 32;
+	constant DLX_ADDR_SIZE			: natural := 32;
 	constant DLX_INSTRUCTION_SIZE	: natural := 32;
 	constant OPCODE_SIZE		: natural := 6;
 	constant REGISTER_ADDR_SIZE	: natural := 5;
 	constant IMMEDIATE_ARG_SIZE	: natural := 16;
 	constant ALU_FUNCTION_SIZE	: natural := 11;
-	constant FP_FUNCTION_SIZE	: natural := 11;
+	constant FPU_FUNCTION_SIZE	: natural := 11;
 	constant JUMP_PC_OFFSET_SIZE	: natural := 26;
 
 	-- RANGES
@@ -34,21 +69,23 @@ package DLX_globals is
 	subtype ALU_FUNC_RANGE		is natural range (ALU_FUNCTION_SIZE)-1 downto 0;
 	subtype IMMEDIATE_ARG_RANGE	is natural range (IMMEDIATE_ARG_SIZE)-1 downto 0;
 	subtype PC_OFFSET_RANGE		is natural range (JUMP_PC_OFFSET_SIZE)-1 downto 0;
-	subtype FP_FUNC_RANGE		is natural range (FP_FUNCTION_SIZE)-1 downto 0;
+	subtype FP_FUNC_RANGE		is natural range (FPU_FUNCTION_SIZE)-1 downto 0;
 
 	-- TYPES AND ENUMS
+	subtype DLX_oper_t	is std_logic_vector(DLX_OPERAND_SIZE-1 downto 0);
+	subtype DLX_addr_t	is std_logic_vector(DLX_ADDR_SIZE-1 downto 0);
 	subtype DLX_instr_t	is std_logic_vector(DLX_INSTRUCTION_SIZE-1 downto 0);
 	subtype opcode_t	is std_logic_vector(OPCODE_SIZE-1 downto 0);
 	subtype reg_addr_t	is std_logic_vector(REGISTER_ADDR_SIZE-1 downto 0);
 	subtype immediate_t	is std_logic_vector(IMMEDIATE_ARG_SIZE-1 downto 0);
 	subtype func_t		is std_logic_vector(ALU_FUNCTION_SIZE-1 downto 0);
-	subtype fp_func_t	is std_logic_vector(FP_FUNCTION_SIZE-1 downto 0);
+	subtype fp_func_t	is std_logic_vector(FPU_FUNCTION_SIZE-1 downto 0);
 	subtype pc_offset_t	is std_logic_vector(JUMP_PC_OFFSET_SIZE-1 downto 0);
 	type DLX_instr_type_t is (R_TYPE, I_TYPE, J_TYPE, F_TYPE);
 
 	-- DLX INSTRUCTIONS
-	constant ALU		: opcode_t	:= std_logic_vector(to_unsigned(16#00#, OPCODE_SIZE)); -- R-type
-	constant FP		: opcode_t	:= std_logic_vector(to_unsigned(16#01#, OPCODE_SIZE)); -- F-type
+	constant ALU_I		: opcode_t	:= std_logic_vector(to_unsigned(16#00#, OPCODE_SIZE)); -- R-type
+	constant FPU_I		: opcode_t	:= std_logic_vector(to_unsigned(16#01#, OPCODE_SIZE)); -- F-type
 	constant J		: opcode_t	:= std_logic_vector(to_unsigned(16#02#, OPCODE_SIZE));
 	constant JAL		: opcode_t	:= std_logic_vector(to_unsigned(16#03#, OPCODE_SIZE));
 	constant BEQZ		: opcode_t	:= std_logic_vector(to_unsigned(16#04#, OPCODE_SIZE));
@@ -126,75 +163,36 @@ package DLX_globals is
 	constant SGEU		: func_t	:= std_logic_vector(to_unsigned(16#3D#, ALU_FUNCTION_SIZE));
 
 	-- DLX FP FUNCTIONS
-	constant ADDF		: fp_func_t	:= std_logic_vector(to_unsigned(16#00#, FP_FUNCTION_SIZE));
-	constant SUBF		: fp_func_t	:= std_logic_vector(to_unsigned(16#01#, FP_FUNCTION_SIZE));
-	constant MULF		: fp_func_t	:= std_logic_vector(to_unsigned(16#02#, FP_FUNCTION_SIZE));
-	constant DIVF		: fp_func_t	:= std_logic_vector(to_unsigned(16#03#, FP_FUNCTION_SIZE));
-	constant ADDD		: fp_func_t	:= std_logic_vector(to_unsigned(16#04#, FP_FUNCTION_SIZE));
-	constant SUBD		: fp_func_t	:= std_logic_vector(to_unsigned(16#05#, FP_FUNCTION_SIZE));
-	constant MULD		: fp_func_t	:= std_logic_vector(to_unsigned(16#06#, FP_FUNCTION_SIZE));
-	constant DIVD		: fp_func_t	:= std_logic_vector(to_unsigned(16#07#, FP_FUNCTION_SIZE));
-	constant CVTF2D		: fp_func_t	:= std_logic_vector(to_unsigned(16#08#, FP_FUNCTION_SIZE));
-	constant CVTF2I		: fp_func_t	:= std_logic_vector(to_unsigned(16#09#, FP_FUNCTION_SIZE));
-	constant CVTD2F		: fp_func_t	:= std_logic_vector(to_unsigned(16#0A#, FP_FUNCTION_SIZE));
-	constant CVTD2I		: fp_func_t	:= std_logic_vector(to_unsigned(16#0B#, FP_FUNCTION_SIZE));
-	constant CVTI2F		: fp_func_t	:= std_logic_vector(to_unsigned(16#0C#, FP_FUNCTION_SIZE));
-	constant CVTI2D		: fp_func_t	:= std_logic_vector(to_unsigned(16#0D#, FP_FUNCTION_SIZE));
-	constant MUL		: fp_func_t	:= std_logic_vector(to_unsigned(16#0E#, FP_FUNCTION_SIZE));
-	constant DIV		: fp_func_t	:= std_logic_vector(to_unsigned(16#0F#, FP_FUNCTION_SIZE));
-	constant EQF		: fp_func_t	:= std_logic_vector(to_unsigned(16#10#, FP_FUNCTION_SIZE));
-	constant NEF		: fp_func_t	:= std_logic_vector(to_unsigned(16#11#, FP_FUNCTION_SIZE));
-	constant LTF		: fp_func_t	:= std_logic_vector(to_unsigned(16#12#, FP_FUNCTION_SIZE));
-	constant GTF		: fp_func_t	:= std_logic_vector(to_unsigned(16#13#, FP_FUNCTION_SIZE));
-	constant LEF		: fp_func_t	:= std_logic_vector(to_unsigned(16#14#, FP_FUNCTION_SIZE));
-	constant GEF		: fp_func_t	:= std_logic_vector(to_unsigned(16#15#, FP_FUNCTION_SIZE));
-	constant MULU		: fp_func_t	:= std_logic_vector(to_unsigned(16#16#, FP_FUNCTION_SIZE));
-	constant DIVU		: fp_func_t	:= std_logic_vector(to_unsigned(16#17#, FP_FUNCTION_SIZE));
-	constant EQD		: fp_func_t	:= std_logic_vector(to_unsigned(16#18#, FP_FUNCTION_SIZE));
-	constant NED		: fp_func_t	:= std_logic_vector(to_unsigned(16#19#, FP_FUNCTION_SIZE));
-	constant LTD		: fp_func_t	:= std_logic_vector(to_unsigned(16#1A#, FP_FUNCTION_SIZE));
-	constant GTD		: fp_func_t	:= std_logic_vector(to_unsigned(16#1B#, FP_FUNCTION_SIZE));
-	constant LED		: fp_func_t	:= std_logic_vector(to_unsigned(16#1C#, FP_FUNCTION_SIZE));
-	constant GED		: fp_func_t	:= std_logic_vector(to_unsigned(16#1D#, FP_FUNCTION_SIZE));
+	constant ADDF		: fp_func_t	:= std_logic_vector(to_unsigned(16#00#, FPU_FUNCTION_SIZE));
+	constant SUBF		: fp_func_t	:= std_logic_vector(to_unsigned(16#01#, FPU_FUNCTION_SIZE));
+	constant MULF		: fp_func_t	:= std_logic_vector(to_unsigned(16#02#, FPU_FUNCTION_SIZE));
+	constant DIVF		: fp_func_t	:= std_logic_vector(to_unsigned(16#03#, FPU_FUNCTION_SIZE));
+	constant ADDD		: fp_func_t	:= std_logic_vector(to_unsigned(16#04#, FPU_FUNCTION_SIZE));
+	constant SUBD		: fp_func_t	:= std_logic_vector(to_unsigned(16#05#, FPU_FUNCTION_SIZE));
+	constant MULD		: fp_func_t	:= std_logic_vector(to_unsigned(16#06#, FPU_FUNCTION_SIZE));
+	constant DIVD		: fp_func_t	:= std_logic_vector(to_unsigned(16#07#, FPU_FUNCTION_SIZE));
+	constant CVTF2D		: fp_func_t	:= std_logic_vector(to_unsigned(16#08#, FPU_FUNCTION_SIZE));
+	constant CVTF2I		: fp_func_t	:= std_logic_vector(to_unsigned(16#09#, FPU_FUNCTION_SIZE));
+	constant CVTD2F		: fp_func_t	:= std_logic_vector(to_unsigned(16#0A#, FPU_FUNCTION_SIZE));
+	constant CVTD2I		: fp_func_t	:= std_logic_vector(to_unsigned(16#0B#, FPU_FUNCTION_SIZE));
+	constant CVTI2F		: fp_func_t	:= std_logic_vector(to_unsigned(16#0C#, FPU_FUNCTION_SIZE));
+	constant CVTI2D		: fp_func_t	:= std_logic_vector(to_unsigned(16#0D#, FPU_FUNCTION_SIZE));
+	constant MUL		: fp_func_t	:= std_logic_vector(to_unsigned(16#0E#, FPU_FUNCTION_SIZE));
+	constant DIV		: fp_func_t	:= std_logic_vector(to_unsigned(16#0F#, FPU_FUNCTION_SIZE));
+	constant EQF		: fp_func_t	:= std_logic_vector(to_unsigned(16#10#, FPU_FUNCTION_SIZE));
+	constant NEF		: fp_func_t	:= std_logic_vector(to_unsigned(16#11#, FPU_FUNCTION_SIZE));
+	constant LTF		: fp_func_t	:= std_logic_vector(to_unsigned(16#12#, FPU_FUNCTION_SIZE));
+	constant GTF		: fp_func_t	:= std_logic_vector(to_unsigned(16#13#, FPU_FUNCTION_SIZE));
+	constant LEF		: fp_func_t	:= std_logic_vector(to_unsigned(16#14#, FPU_FUNCTION_SIZE));
+	constant GEF		: fp_func_t	:= std_logic_vector(to_unsigned(16#15#, FPU_FUNCTION_SIZE));
+	constant MULU		: fp_func_t	:= std_logic_vector(to_unsigned(16#16#, FPU_FUNCTION_SIZE));
+	constant DIVU		: fp_func_t	:= std_logic_vector(to_unsigned(16#17#, FPU_FUNCTION_SIZE));
+	constant EQD		: fp_func_t	:= std_logic_vector(to_unsigned(16#18#, FPU_FUNCTION_SIZE));
+	constant NED		: fp_func_t	:= std_logic_vector(to_unsigned(16#19#, FPU_FUNCTION_SIZE));
+	constant LTD		: fp_func_t	:= std_logic_vector(to_unsigned(16#1A#, FPU_FUNCTION_SIZE));
+	constant GTD		: fp_func_t	:= std_logic_vector(to_unsigned(16#1B#, FPU_FUNCTION_SIZE));
+	constant LED		: fp_func_t	:= std_logic_vector(to_unsigned(16#1C#, FPU_FUNCTION_SIZE));
+	constant GED		: fp_func_t	:= std_logic_vector(to_unsigned(16#1D#, FPU_FUNCTION_SIZE));
 
 	-- DLX MANAGEMENT FUNCTIONS AND PROCEDURES
 end package;
-
-package body utils is
-	-- LOG2
-	function log2(n : integer) return integer is
-		variable ret : integer := 0;
-		variable tmp : integer;
-	begin
-		tmp := n;
-		while (tmp > 1) loop
-			tmp := tmp / 2;
-			ret := ret + 1;
-		end loop;
-		return ret;
-	end function;
-	-- MAX
-	function max(a,b : integer) return integer is
-	begin
-		if (a > b) then
-			return a;
-		else
-			return b;
-		end if;
-	end function;
-	-- MIN
-	function min(a,b : integer) return integer is
-	begin
-		if (a < b) then
-			return a;
-		else
-			return b;
-		end if;
-	end function;
-end package body;
-
-package body DLX_globals is
-	-- DLX
-	
-
-end DLX_globals;
