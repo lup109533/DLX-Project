@@ -48,6 +48,7 @@ architecture structural of REG_N is
 		port (
 			CLK		: in	std_logic;
 			RST		: in	std_logic;
+			ENB		: in	std_logic;
 			DIN		: in	std_logic;
 			DOUT	: out	std_logic
 		);
@@ -57,7 +58,7 @@ begin
 
 	reg_gen: for i in 0 to N-1 generate
 		FF_i: FF port map (CLK, RST, ENB, DIN(i), DOUT(i));
-	end generate
+	end generate;
 
 end architecture;
 
@@ -78,7 +79,7 @@ entity PIPELINE is
 		DIN		: in	std_logic_vector(WORD_NUM*WORD_SIZE-1 downto 0);
 		DOUT	: out	std_logic_vector(WORD_NUM*WORD_SIZE-1 downto 0);
 		FFIN	: in	std_logic_vector(FF_NUM-1 downto 0);				-- For 1-bit signals, leave open if unused.
-		FFOUT	: in	std_logic_vector(FF_NUM-1 downto 0)					-- See above.
+		FFOUT	: out	std_logic_vector(FF_NUM-1 downto 0)					-- See above.
 	);
 end entity;
 
@@ -88,6 +89,7 @@ architecture structural of PIPELINE is
 		port (
 			CLK		: in	std_logic;
 			RST		: in	std_logic;
+			ENB		: in	std_logic;
 			DIN		: in	std_logic;
 			DOUT	: out	std_logic
 		);
@@ -98,6 +100,7 @@ architecture structural of PIPELINE is
 		port (
 			CLK		: in	std_logic;
 			RST		: in	std_logic;
+			ENB		: in	std_logic;
 			DIN		: in	std_logic_vector(N-1 downto 0);
 			DOUT	: out	std_logic_vector(N-1 downto 0)
 		);
@@ -116,7 +119,7 @@ begin
 	end generate;
 	
 	ffs_gen: for i in 0 to max(FF_NUM-1, 0) generate
-			if not(FF_NUM = 0) generate
+			check_ffs_not_0: if not(FF_NUM = 0) generate
 				FF_i: FF port map(CLK, RST, ENB, FFIN(i), FFOUT(i));
 			end generate;
 	end generate;
