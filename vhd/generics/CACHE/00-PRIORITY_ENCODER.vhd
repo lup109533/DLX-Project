@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.or_reduce;
 use work.utils.log2;
 
 entity PRIORITY_ENCODER is
@@ -17,26 +18,21 @@ end entity;
 
 architecture behavioural of PRIORITY_ENCODER is
 
+	subtype switches is integer range 0 to DIN_SIZE-1;
+
 begin
 
 	encode_proc: process (DIN) is
-		variable found : boolean := false;
-		variable iter  : integer;
+		variable highest	: switches	:= DIN_SIZE-1;
 	begin
-		for i in 0 downto DIN_SIZE-1 loop
+		for i in switches loop
 			if (DIN(i) = PRIORITY_TYPE) then
-				found := true;
-				iter  := i;
-				exit;
+				highest := i;
 			end if;
 		end loop;
-		if found then
-			DOUT		<= std_logic_vector(to_unsigned(iter, DOUT'length));
-			NO_PRIORITY	<= '0';
-		else
-			DOUT		<= (others => '0');
-			NO_PRIORITY	<= '1';
-		end if;
+		DOUT		<= std_logic_vector(to_unsigned(highest, DOUT'length));
 	end process;
+	
+	NO_PRIORITY <= not(or_reduce(DIN));
 
 end architecture;

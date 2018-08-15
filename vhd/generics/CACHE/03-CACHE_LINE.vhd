@@ -12,6 +12,7 @@ entity CACHE_LINE is
 		CLK			: in	std_logic;
 		RST			: in	std_logic;
 		ENB			: in	std_logic;
+		WRT			: in	std_logic;
 		TAG			: in	std_logic_vector(TAG_SIZE-1 downto 0);
 		DIN			: in	std_logic_vector(WORD_SIZE-1 downto 0);
 		DOUT		: out	std_logic_vector(WORD_SIZE-1 downto 0);
@@ -40,6 +41,7 @@ architecture structural of CACHE_LINE is
 			CLK		: in	std_logic;
 			RST		: in	std_logic;
 			ENB		: in	std_logic;
+			WRT		: in	std_logic;
 			TAG		: in	std_logic;
 			DIN		: in	std_logic;
 			DOUT	: out	std_logic;
@@ -52,7 +54,7 @@ architecture structural of CACHE_LINE is
 begin
 
 	tag_gen: for i in 0 to TAG_SIZE-1 generate
-		tag_cell_i: CACHE_MEMCELL port map (CLK, RST, ENB, TAG(i), TAG(i), open, hit_s(i));
+		tag_cell_i: CACHE_MEMCELL port map (CLK, RST, ENB, WRT, TAG(i), TAG(i), open, hit_s(i));
 	end generate;
 	HIT <= and_reduce(hit_s);
 	

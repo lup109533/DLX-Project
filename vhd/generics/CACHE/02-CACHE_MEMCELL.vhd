@@ -6,6 +6,7 @@ entity CACHE_MEMCELL is
 		CLK		: in	std_logic;
 		RST		: in	std_logic;
 		ENB		: in	std_logic;
+		WRT		: in	std_logic;
 		TAG		: in	std_logic;
 		DIN		: in	std_logic;
 		DOUT	: out	std_logic;
@@ -27,7 +28,11 @@ begin
 			if (RST = '0') then
 				data <= '0';
 			elsif (ENB = '1') then
-				data <= DIN;
+				if (WRT = '1') then
+					data <= DIN;
+				else
+					data <= data;
+				end if;
 			end if;
 		end if;
 	end process;

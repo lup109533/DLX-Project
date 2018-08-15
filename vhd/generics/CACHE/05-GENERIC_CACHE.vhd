@@ -17,6 +17,7 @@ entity GENERIC_CACHE is
 		CLK		: in	std_logic;
 		RST		: in	std_logic;
 		ENB		: in	std_logic;
+		WRT		: in	std_logic;
 		DOUT	: out	std_logic_vector(WORD_SIZE-1 downto 0);
 		ADDR	: in	std_logic_vector(ADDR_SIZE-1 downto 0);
 		MBUS	: inout	std_logic_vector(WORD_SIZE-1 downto 0);
@@ -40,6 +41,7 @@ architecture behavioral of GENERIC_CACHE is
 			CLK				: in	std_logic;
 			RST				: in	std_logic;
 			ENB				: in	std_logic;
+			WRT				: in	std_logic;
 			TAG				: in	std_logic_vector(TAG_SIZE-1 downto 0);
 			DIN				: in	std_logic_vector(WORD_SIZE-1 downto 0);
 			DOUT			: out	std_logic_vector(WORD_SIZE-1 downto 0);
@@ -63,6 +65,7 @@ architecture behavioral of GENERIC_CACHE is
 	signal din_s			: std_logic_vector(WORD_SIZE-1 downto 0);
 	signal word_s			: std_logic_vector(WORD_SIZE-1 downto 0);
 	signal dout_s			: dout_array;
+	signal wrt_s			: std_logic_vector(SET_NUM-1 downto 0);
 	signal hit_s			: std_logic;
 	signal replace_s		: std_logic;
 	signal hit_vector_s		: std_logic_vector(SET_NUM-1 downto 0);
@@ -92,6 +95,7 @@ begin
 								CLK,
 								RST,
 								ENB,
+								wrt_s(i),
 								tag,
 								din_s,
 								dout_s(i),
@@ -105,6 +109,17 @@ begin
 	word_s		<= dout_s(index_a);
 	hit_s		<= hit_vector_s(index_a);
 	replace_s	<= replace_vector_s(index_a);
+	
+	write_proc: process (WRT) is
+	begin
+		for i in 0 to SET_NUM-1 loop
+			if (i = index_a) then
+				wrt_s(i) <= WRT;
+			else
+				wrt_s(i) <= '0';
+			end if;
+		end loop;
+	end process;
 
 	-- FSM
 	fsm_proc: process (CLK, RST, ENB) is
