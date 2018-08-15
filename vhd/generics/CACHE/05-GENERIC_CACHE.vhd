@@ -94,7 +94,7 @@ begin
 	index_s <= to_integer(unsigned(index));
 	
 	-- CACHE MANAGER
-	read_proc: process (ENB, index_s) is
+	read_proc: process (ENB, index_s, tag) is
 		variable found : boolean := false;
 	begin
 		if (ENB = '1') then
@@ -117,7 +117,7 @@ begin
 	end process;
 	HIT	<= hit_s;
 	
-	write_proc: process (CLK, RST, ENB, state, write_line) is
+	write_proc: process (CLK, RST, ENB, state, write_line, write_line_s, tag, index_s) is
 		variable found : boolean := false;
 	begin
 		if rising_edge(CLK) then
