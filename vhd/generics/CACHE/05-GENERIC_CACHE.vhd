@@ -110,6 +110,9 @@ begin
 	hit_s		<= hit_vector_s(index_a);
 	replace_s	<= replace_vector_s(index_a);
 	
+	DOUT		<= word_s;
+	HIT			<= hit_s;
+	
 	write_proc: process (WRT) is
 	begin
 		for i in 0 to SET_NUM-1 loop

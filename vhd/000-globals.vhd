@@ -69,7 +69,7 @@ package DLX_globals is
 	subtype ALU_FUNC_RANGE		is natural range (ALU_FUNCTION_SIZE)-1 downto 0;
 	subtype IMMEDIATE_ARG_RANGE	is natural range (IMMEDIATE_ARG_SIZE)-1 downto 0;
 	subtype PC_OFFSET_RANGE		is natural range (JUMP_PC_OFFSET_SIZE)-1 downto 0;
-	subtype FP_FUNC_RANGE		is natural range (FPU_FUNCTION_SIZE)-1 downto 0;
+	subtype FPU_FUNC_RANGE		is natural range (FPU_FUNCTION_SIZE)-1 downto 0;
 
 	-- TYPES AND ENUMS
 	subtype DLX_oper_t	is std_logic_vector(DLX_OPERAND_SIZE-1 downto 0);
@@ -81,12 +81,15 @@ package DLX_globals is
 	subtype func_t		is std_logic_vector(ALU_FUNCTION_SIZE-1 downto 0);
 	subtype fp_func_t	is std_logic_vector(FPU_FUNCTION_SIZE-1 downto 0);
 	subtype pc_offset_t	is std_logic_vector(JUMP_PC_OFFSET_SIZE-1 downto 0);
-	type DLX_instr_type_t is (R_TYPE, I_TYPE, J_TYPE, F_TYPE);
+	
+	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, JR_TYPE, F_TYPE, S_TYPE, L_TYPE);
+	type ALU_opcode_t		is (SHIFT, ADD_SUB, LOGIC, COMPARISON, MOV);
+	type FPU_opcode_t		is (FP_ADD_SUB, FP_MULTIPLY, FP_DIVIDE, INT_MULTIPLY, INT_DIVIDE, FP_COMPARISON, CONVERSION);
 
 	-- DLX INSTRUCTIONS
 	constant ALU_I		: opcode_t	:= std_logic_vector(to_unsigned(16#00#, OPCODE_SIZE)); -- R-type
 	constant FPU_I		: opcode_t	:= std_logic_vector(to_unsigned(16#01#, OPCODE_SIZE)); -- F-type
-	constant J		: opcode_t	:= std_logic_vector(to_unsigned(16#02#, OPCODE_SIZE));
+	constant J			: opcode_t	:= std_logic_vector(to_unsigned(16#02#, OPCODE_SIZE));
 	constant JAL		: opcode_t	:= std_logic_vector(to_unsigned(16#03#, OPCODE_SIZE));
 	constant BEQZ		: opcode_t	:= std_logic_vector(to_unsigned(16#04#, OPCODE_SIZE));
 	constant BNEZ		: opcode_t	:= std_logic_vector(to_unsigned(16#05#, OPCODE_SIZE));
@@ -102,7 +105,7 @@ package DLX_globals is
 	constant LHI		: opcode_t	:= std_logic_vector(to_unsigned(16#0F#, OPCODE_SIZE));
 	constant RFE		: opcode_t	:= std_logic_vector(to_unsigned(16#10#, OPCODE_SIZE));
 	constant TRAP		: opcode_t	:= std_logic_vector(to_unsigned(16#11#, OPCODE_SIZE));
-	constant JR		: opcode_t	:= std_logic_vector(to_unsigned(16#12#, OPCODE_SIZE));
+	constant JR			: opcode_t	:= std_logic_vector(to_unsigned(16#12#, OPCODE_SIZE));
 	constant JALR		: opcode_t	:= std_logic_vector(to_unsigned(16#13#, OPCODE_SIZE));
 	constant SLLI		: opcode_t	:= std_logic_vector(to_unsigned(16#14#, OPCODE_SIZE));
 	constant NOP		: opcode_t	:= std_logic_vector(to_unsigned(16#15#, OPCODE_SIZE));
@@ -114,18 +117,18 @@ package DLX_globals is
 	constant SGTI		: opcode_t	:= std_logic_vector(to_unsigned(16#1B#, OPCODE_SIZE));
 	constant SLEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1C#, OPCODE_SIZE));
 	constant SGEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1D#, OPCODE_SIZE));
-	constant LB		: opcode_t	:= std_logic_vector(to_unsigned(16#20#, OPCODE_SIZE));
-	constant LH		: opcode_t	:= std_logic_vector(to_unsigned(16#21#, OPCODE_SIZE));
-	constant LW		: opcode_t	:= std_logic_vector(to_unsigned(16#23#, OPCODE_SIZE));
+	constant LB			: opcode_t	:= std_logic_vector(to_unsigned(16#20#, OPCODE_SIZE));
+	constant LH			: opcode_t	:= std_logic_vector(to_unsigned(16#21#, OPCODE_SIZE));
+	constant LW			: opcode_t	:= std_logic_vector(to_unsigned(16#23#, OPCODE_SIZE));
 	constant LBU		: opcode_t	:= std_logic_vector(to_unsigned(16#24#, OPCODE_SIZE));
 	constant LHU		: opcode_t	:= std_logic_vector(to_unsigned(16#25#, OPCODE_SIZE));
-	constant LF		: opcode_t	:= std_logic_vector(to_unsigned(16#26#, OPCODE_SIZE));
-	constant LD		: opcode_t	:= std_logic_vector(to_unsigned(16#27#, OPCODE_SIZE));
-	constant SB		: opcode_t	:= std_logic_vector(to_unsigned(16#28#, OPCODE_SIZE));
-	constant SH		: opcode_t	:= std_logic_vector(to_unsigned(16#29#, OPCODE_SIZE));
-	constant SW		: opcode_t	:= std_logic_vector(to_unsigned(16#2B#, OPCODE_SIZE));
-	constant SF		: opcode_t	:= std_logic_vector(to_unsigned(16#2E#, OPCODE_SIZE));
-	constant SD		: opcode_t	:= std_logic_vector(to_unsigned(16#2F#, OPCODE_SIZE));
+	constant LF			: opcode_t	:= std_logic_vector(to_unsigned(16#26#, OPCODE_SIZE));
+	constant LD			: opcode_t	:= std_logic_vector(to_unsigned(16#27#, OPCODE_SIZE));
+	constant SB			: opcode_t	:= std_logic_vector(to_unsigned(16#28#, OPCODE_SIZE));
+	constant SH			: opcode_t	:= std_logic_vector(to_unsigned(16#29#, OPCODE_SIZE));
+	constant SW			: opcode_t	:= std_logic_vector(to_unsigned(16#2B#, OPCODE_SIZE));
+	constant SF			: opcode_t	:= std_logic_vector(to_unsigned(16#2E#, OPCODE_SIZE));
+	constant SD			: opcode_t	:= std_logic_vector(to_unsigned(16#2F#, OPCODE_SIZE));
 	constant ITLB		: opcode_t	:= std_logic_vector(to_unsigned(16#38#, OPCODE_SIZE));
 	constant SLTUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3A#, OPCODE_SIZE));
 	constant SGTUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3B#, OPCODE_SIZE));
@@ -193,6 +196,5 @@ package DLX_globals is
 	constant GTD		: fp_func_t	:= std_logic_vector(to_unsigned(16#1B#, FPU_FUNCTION_SIZE));
 	constant LED		: fp_func_t	:= std_logic_vector(to_unsigned(16#1C#, FPU_FUNCTION_SIZE));
 	constant GED		: fp_func_t	:= std_logic_vector(to_unsigned(16#1D#, FPU_FUNCTION_SIZE));
-
-	-- DLX MANAGEMENT FUNCTIONS AND PROCEDURES
+	
 end package;

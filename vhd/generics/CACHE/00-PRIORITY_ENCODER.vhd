@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.or_reduce;
+use ieee.std_logic_misc.and_reduce;
 use work.utils.log2;
 
 entity PRIORITY_ENCODER is
@@ -33,6 +34,12 @@ begin
 		DOUT		<= std_logic_vector(to_unsigned(highest, DOUT'length));
 	end process;
 	
-	NO_PRIORITY <= not(or_reduce(DIN));
+	priority_1_gen: if (PRIORITY_TYPE = '1') generate
+		NO_PRIORITY <= not(or_reduce(DIN));
+	end generate;
+	
+	priority_1_gen: if (PRIORITY_TYPE = '0') generate
+		NO_PRIORITY <= and_reduce(DIN);
+	end generate;
 
 end architecture;
