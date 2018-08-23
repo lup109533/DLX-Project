@@ -20,7 +20,7 @@ architecture test of TB_CLA is
 		);
 	end component;
 
-	constant OPERAND_SIZE	: natural := 8;
+	constant OPERAND_SIZE	: natural := 16;
 	constant RADIX			: natural := 2;
 	
 	constant MAX_A	: natural := 2**OPERAND_SIZE-1;

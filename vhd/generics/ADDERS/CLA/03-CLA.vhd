@@ -4,13 +4,13 @@ use ieee.std_logic_1164.all;
 entity CLA is
 	generic (
 		OPERAND_SIZE	: natural;
-		RADIX		: natural := 2
+		RADIX			: natural := 2
 	);
 	port (
 		A, B	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-		CIN	: in	std_logic;
-		O	: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
-		C	: out	std_logic
+		CIN		: in	std_logic;
+		O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
+		C		: out	std_logic
 	);
 end entity;
 
@@ -19,11 +19,11 @@ architecture structural of CLA is
 	component SPARSE_TREE_CARRY_GENERATOR
 		generic (
 			OPERAND_SIZE	: natural;
-			RADIX		: natural := 2
+			RADIX			: natural := 2
 		);
 		port (
 			A, B	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-			CIN	: in	std_logic;
+			CIN		: in	std_logic;
 			CARRY	: out	std_logic_vector((OPERAND_SIZE/4)-1 downto 0)
 		);
 	end component;
@@ -33,12 +33,12 @@ architecture structural of CLA is
 		port (
 			A, B	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
 			CIN		: in	std_logic;
-	   		S	: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
-			C	: out	std_logic
+	   		S		: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
+			C		: out	std_logic
 		);
 	end component;
 
-	constant ADDER_SIZE	: natural := 2**RADIX;
+	constant ADDER_SIZE		: natural := 2**RADIX;
 	constant NUM_OF_ADDERS	: natural := OPERAND_SIZE/ADDER_SIZE;
 
 	signal carry	: std_logic_vector(NUM_OF_ADDERS downto 0);

@@ -53,9 +53,9 @@ architecture structural of ALU is
 
 begin
 	-- CHECK OPERATION TYPE
-	alu_function <=	SHIFT		when (OPCODE = SHIFT)				else
-					SUM_OR_SUB	when (OPCODE = ADD or OPCODE = SUB)	else
-					LOGIC		when (OPCODE = LOGIC_AND or OPCODE = LOGIC_OR or OPCODE = LOGIC_XOR) else
+	alu_function <=	SHIFT		when (OPCODE = SHIFT)													else
+					SUM_OR_SUB	when (OPCODE = IADD or OPCODE = ISUB)									else
+					LOGIC		when (OPCODE = LOGIC_AND or OPCODE = LOGIC_OR or OPCODE = LOGIC_XOR)	else
 					COMPARE;
 
 					

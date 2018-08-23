@@ -83,7 +83,7 @@ package DLX_globals is
 	subtype pc_offset_t	is std_logic_vector(JUMP_PC_OFFSET_SIZE-1 downto 0);
 	
 	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, JR_TYPE, F_TYPE, S_TYPE, L_TYPE);
-	type ALU_opcode_t		is (SHIFT, ADD, SUB, LOGIC_AND, LOGIC_OR, LOGIC_XOR,
+	type ALU_opcode_t		is (SHIFT, IADD, ISUB, LOGIC_AND, LOGIC_OR, LOGIC_XOR,
 							    COMPARE_EQ, COMPARE_NE, COMPARE_LT, COMPARE_GT, COMPARE_LE, COMPARE_GE,
 								MOV);
 	type FPU_opcode_t		is (FP_ADD_SUB,  FP_MULTIPLY,  FP_DIVIDE,
