@@ -83,8 +83,15 @@ package DLX_globals is
 	subtype pc_offset_t	is std_logic_vector(JUMP_PC_OFFSET_SIZE-1 downto 0);
 	
 	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, JR_TYPE, F_TYPE, S_TYPE, L_TYPE);
-	type ALU_opcode_t		is (SHIFT, ADD_SUB, LOGIC, COMPARISON, MOV);
-	type FPU_opcode_t		is (FP_ADD_SUB, FP_MULTIPLY, FP_DIVIDE, INT_MULTIPLY, INT_DIVIDE, FP_COMPARISON, CONVERSION);
+	type ALU_opcode_t		is (SHIFT, ADD, SUB, LOGIC_AND, LOGIC_OR, LOGIC_XOR,
+							    COMPARE_EQ, COMPARE_NE, COMPARE_LT, COMPARE_GT, COMPARE_LE, COMPARE_GE,
+								MOV);
+	type FPU_opcode_t		is (FP_ADD_SUB,  FP_MULTIPLY,  FP_DIVIDE,
+							    DEC_ADD_SUB, DEC_MULTIPLY, DEC_DIVIDE,
+							    INT_MULTIPLY, INT_DIVIDE,
+							    FP_COMPARE_EQ,  FP_COMPARE_NE,  FP_COMPARE_LT,  FP_COMPARE_GT,  FP_COMPARE_LE,  FP_COMPARE_GE,
+								DEC_COMPARE_EQ, DEC_COMPARE_NE, DEC_COMPARE_LT, DEC_COMPARE_GT, DEC_COMPARE_LE, DEC_COMPARE_GE,
+								CONVERSION);
 
 	-- DLX INSTRUCTIONS
 	constant ALU_I		: opcode_t	:= std_logic_vector(to_unsigned(16#00#, OPCODE_SIZE)); -- R-type

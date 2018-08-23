@@ -59,19 +59,43 @@ begin
 	-- ALU OPCODE GENERATOR
 	alu_opcode_manager: process (opcode_s, func_s) is
 	begin
-		if (opcode_s = ALUI_I) then
+		if (opcode_s = ALU_I) then
 			case (func_s) is
 				when SHLL | SHRL | SHRA =>
 					alu_opcode_s <= SHIFT;
 				
-				when ADD | ADDU | SUB | SUBU =>
-					alu_opcode_s <= ADD_SUB;
+				when ADD | ADDU =>
+					alu_opcode_s <= ADD;
 					
-				when LAND | LOR | LXOR =>
-					alu_opcode_s <= LOGIC;
+				when SUB | SUBU =>
+					alu_opcode_s <= SUB;
 					
-				when SEQ | SNE | SLT | SGT | SLE | SGE | SLTU | SGTU | SLEU | SGEU =>
-					alu_opcode_s <= COMPARISON;
+				when LAND =>
+					alu_opcode_s <= LOGIC_AND;
+					
+				when LOR =>
+					alu_opcode_s <= LOGIC_OR;
+					
+				when LXOR =>
+					alu_opcode_s <= LOGIC_AND;
+					
+				when SEQ =>
+					alu_opcode_s <= COMPARE_EQ;
+					
+				when SNE =>
+					alu_opcode_s <= COMPARE_NE;
+				
+				when SLT | SLTU =>
+					alu_opcode_s <= COMPARE_LT;
+					
+				when SGT | SGTU =>
+					alu_opcode_s <= COMPARE_GT;
+					
+				when SLE | SLEU =>
+					alu_opcode_s <= COMPARE_LE;
+					
+				when SGE | SGEU =>
+					alu_opcode_s <= COMPARE_GE;
 					
 				when others =>
 					alu_opcode_s <= MOV;
@@ -81,14 +105,38 @@ begin
 				when SLLI | SRLI | SRAI =>
 					alu_opcode_s <= SHIFT;
 			
-				when ADDI | ADDUI | SUBI | SUBUI =>
-					alu_opcode_s <= ADD_SUB;
+				when ADDI | ADDUI =>
+					alu_opcode_s <= ADD;
 					
-				when ANDI | ORI | XORI =>
-					alu_opcode_s <= LOGIC;
+				when SUBI | SUBUI =>
+					alu_opcode_s <= SUB;
 					
-				when SEQI | SNEI | SLTI | SGTI | SLEI | SGEI | SLTUI | SGTUI | SLEUI | SGEUI =>
-					alu_opcode_s <= COMPARISON;
+				when ANDI =>
+					alu_opcode_s <= LOGIC_AND;
+					
+				when ORI =>
+					alu_opcode_s <= LOGIC_OR;
+					
+				when XORI =>
+					alu_opcode_s <= LOGIC_AND;
+					
+				when SEQI =>
+					alu_opcode_s <= COMPARE_EQ;
+					
+				when SNEI =>
+					alu_opcode_s <= COMPARE_NE;
+				
+				when SLTI | SLTUI =>
+					alu_opcode_s <= COMPARE_LT;
+					
+				when SGTI | SGTUI =>
+					alu_opcode_s <= COMPARE_GT;
+					
+				when SLEI | SLEUI =>
+					alu_opcode_s <= COMPARE_LE;
+					
+				when SGEI | SGEUI =>
+					alu_opcode_s <= COMPARE_GE;
 					
 				when others =>
 					alu_opcode_s <= MOV;

@@ -6,7 +6,7 @@ entity ADD_SUB is
 	generic (OPERAND_SIZE : natural);
 	port (
 		R1, R2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-   		CIN	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
+   		CIN		: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
 		S, C	: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
 	);
 end entity;
@@ -22,6 +22,6 @@ begin
 		B(i) <= R2(i) xor CIN;
 	end generate;
 
-	adder: CLA_ADDER generic map(OPERAND_SIZE) port map(A, B, CIN, S, C);
+	adder: CLA generic map(OPERAND_SIZE) port map(A, B, CIN, S, C);
 
 end architecture;
