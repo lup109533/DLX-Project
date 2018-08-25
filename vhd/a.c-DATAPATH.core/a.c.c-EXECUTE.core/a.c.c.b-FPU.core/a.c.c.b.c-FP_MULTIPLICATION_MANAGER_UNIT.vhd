@@ -9,14 +9,14 @@ entity FP_MULTIPLICATION_MANAGER_UNIT is
 		EXPONENT_SIZE	: natural
 	);
 	port (
-		MANTISSA	: in	std_logic_vector(2*(MANTISSA_SIZE+1) downto 0);
+		MANTISSA	: in	std_logic_vector(2*(MANTISSA_SIZE+1)-1 downto 0);
 		EXPONENT1	: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
 		EXPONENT2	: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
 		SIGN		: in	std_logic;
 		NAN			: in	std_logic;
 		ZERO		: in	std_logic;
 		INF			: in	std_logic;
-		PACKED		: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0);
+		PACKED		: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0)
 	);
 end entity;
 
@@ -27,8 +27,8 @@ architecture structural of FP_MULTIPLICATION_MANAGER_UNIT is
 		generic (EXP_SIZE	: natural);
 		port (
 			EXP1, EXP2	: in	std_logic_vector(EXP_SIZE-1 downto 0);
-			SHIFT		: in	std_logic_vector;
-			ROUND		: in	std_logic_vector;
+			SHIFT		: in	std_logic;
+			ROUND		: in	std_logic;
 			EXPO		: out	std_logic_vector(EXP_SIZE-1 downto 0);
 			OVFL		: out	std_logic;
 			UNFL		: out	std_logic
@@ -46,18 +46,18 @@ architecture structural of FP_MULTIPLICATION_MANAGER_UNIT is
 	end component;
 	
 	-- SIGNALS
-	expo_s			: std_logic_vector(EXPONENT_SIZE-1 downto 0);
-	pack_exp_s		: std_logic_vector(EXPONENT_SIZE-1 downto 0);
-	manto_s			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	pack_mant_s		: std_logic_vector(MANTISSA_SIZE-1 downto 0);
+	signal expo_s			: std_logic_vector(EXPONENT_SIZE-1 downto 0);
+	signal pack_exp_s		: std_logic_vector(EXPONENT_SIZE-1 downto 0);
+	signal manto_s			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
+	signal pack_mant_s		: std_logic_vector(MANTISSA_SIZE-1 downto 0);
 	
-	ovfl_s			: std_logic;
-	unfl_s			: std_logic;
-	shift_s			: std_logic;
-	round_s			: std_logic;
-	result_is_nan	: std_logic;
-	result_is_inf	: std_logic;
-	result_is_zero	: std_logic;
+	signal ovfl_s			: std_logic;
+	signal unfl_s			: std_logic;
+	signal shift_s			: std_logic;
+	signal round_s			: std_logic;
+	signal result_is_nan	: std_logic;
+	signal result_is_inf	: std_logic;
+	signal result_is_zero	: std_logic;
 	
 begin
 
@@ -76,7 +76,7 @@ begin
 	select_output: process (expo_s, manto_s, result_is_nan, result_is_inf, result_is_zero) is
 	begin
 		if (result_is_nan = '1') then
-			pack_mant_s	<= (0 => '1', others => '0');
+			pack_mant_s	<= std_logic_vector(to_unsigned(1, MANTISSA_SIZE));
 			pack_exp_s	<= (others => '1');
 		elsif (result_is_inf = '1') then
 			pack_mant_s	<= (others => '0');

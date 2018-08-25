@@ -30,19 +30,20 @@ architecture structural of FPU is
 			EXPONENT_SIZE	: natural
 		);
 		port (
-			MANTISSA	: in	std_logic_vector(2*(MANTISSA_SIZE+1) downto 0);
+			MANTISSA	: in	std_logic_vector(2*(MANTISSA_SIZE+1)-1 downto 0);
 			EXPONENT1	: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
 			EXPONENT2	: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
 			SIGN		: in	std_logic;
 			NAN			: in	std_logic;
 			ZERO		: in	std_logic;
 			INF			: in	std_logic;
-			PACKED		: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0);
+			PACKED		: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0)
 		);
 	end component;
 
 	signal mul1, mul2			: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal mul_out				: std_logic_vector(2*OPERAND_SIZE-1 downto 0);
+	signal int_mul_o			: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	
 	signal sign1, sign2			: std_logic;
 	signal exponent1, exponent2	: std_logic_vector(FP_EXPONENT_SIZE-1 downto 0);
@@ -69,13 +70,13 @@ begin
 	mantissa2	<= F2(MANTISSA_RANGE);
 	
 	---- Extend mantissa to OPERAND_SIZE
-	extended_mantissa1 <= (MANTISSA_RANGE	=> mantissa1,
-						   FP_MANTISSA_SIZE	=> or_reduce(exponent1), -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
-					       others			=> '0');
-						  
-	extended_mantissa2 <= (MANTISSA_RANGE	=> mantissa2,
-						   FP_MANTISSA_SIZE	=> or_reduce(exponent2), -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
-					       others			=> '0');
+	extended_mantissa1(MANTISSA_RANGE)								<= mantissa1;
+	extended_mantissa1(FP_MANTISSA_SIZE)							<= or_reduce(exponent1); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
+	extended_mantissa1(OPERAND_SIZE-1 downto FP_MANTISSA_SIZE+1)	<= (others => '0');
+	
+	extended_mantissa2(MANTISSA_RANGE)								<= mantissa2;
+	extended_mantissa2(FP_MANTISSA_SIZE)							<= or_reduce(exponent2); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
+	extended_mantissa2(OPERAND_SIZE-1 downto FP_MANTISSA_SIZE+1)	<= (others => '0');
 						  
 	---- Sign calculation
 	sign_o <= sign1 xor sign2;
@@ -88,7 +89,7 @@ begin
 
 	-- MULTIPLIER
 	MUL: BOOTH_MULTIPLIER generic map (OPERAND_SIZE) port map (mul1, mul2, mul_out);
-	int_mul_o <= mul_out;
+	int_mul_o <= mul_out(OPERAND_SIZE-1 downto 0);
 	
 	---- Choose multiplier operands (integer or fp)
 	mul1 <= F1 when (OPCODE = INT_MULTIPLY) else extended_mantissa1;
@@ -98,15 +99,15 @@ begin
 	FP_MUL_MANAGER:	FP_MULTIPLICATION_MANAGER_UNIT	generic map (
 														MANTISSA_SIZE	=> FP_MANTISSA_SIZE,
 														EXPONENT_SIZE	=> FP_EXPONENT_SIZE
-													);
+													)
 													port map (
-														MANTISSA 	=> mul_out(2*FP_MANTISSA_SIZE downto 0),
+														MANTISSA 	=> mul_out(2*(FP_MANTISSA_SIZE+1)-1 downto 0),
 														EXPONENT1	=> exponent1,
 														EXPONENT2	=> exponent2,
 														SIGN		=> sign_o,
-														NAN			=> fp_nan_s;
-														INF			=> fp_inf_s;
-														ZERO		=> fp_zero_s;
+														NAN			=> fp_nan_s,
+														INF			=> fp_inf_s,
+														ZERO		=> fp_zero_s,
 														PACKED		=> fp_mul_o
 													);
 	

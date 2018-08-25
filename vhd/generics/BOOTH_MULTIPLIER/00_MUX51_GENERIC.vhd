@@ -1,9 +1,8 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use WORK.constants.all;
 
 entity MUX51_GENERIC is
-	Generic (N: integer:= numBit);
+	Generic (N: integer);
 	Port (	A, B, C, D, E:	In	std_logic_vector(N-1 downto 0);
 		SEL:		In	std_logic_vector(  2 downto 0);
 		Y:		Out	std_logic_vector(N-1 downto 0)

@@ -30,7 +30,7 @@ architecture structural of ROUNDING_UNIT is
 	end component;
 
 	-- SIGNALS
-	constant ONE					: std_logic_vector(MANTISSA_SIZE-1 downto 0) := (0 => '1', others => '0');
+	constant ONE					: std_logic_vector(MANTISSA_SIZE-1 downto 0) := std_logic_vector(to_unsigned(1, MANTISSA_SIZE));
 
 	signal shifted_s				: std_logic_vector(2*MANTISSA_SIZE-1 downto 0);
 	signal truncated_s				: std_logic_vector(MANTISSA_SIZE-1 downto 0);
@@ -41,6 +41,7 @@ architecture structural of ROUNDING_UNIT is
 	signal round_bit				: std_logic;
 	signal sticky_bit				: std_logic;
 	signal round_s					: std_logic;
+	signal rounding_ovfl_s			: std_logic;
 	
 begin
 
@@ -48,9 +49,9 @@ begin
 	shift_correction: process (DIN) is
 	begin
 		if (DIN(MANTISSA_SIZE*2-1) = '1') then
-			SHIFT		<= '1';
-			shifted_s	<= (MANTISSA_SIZE*2-1			=> '0',
-						    MANTISSA_SIZE*2-2 downto 0	=> DIN(MANTISSA_SIZE*2-1 downto 1));
+			SHIFT									<= '1';
+			shifted_s(MANTISSA_SIZE*2-1)			<= '0';
+			shifted_s(MANTISSA_SIZE*2-2 downto 0)	<= DIN(MANTISSA_SIZE*2-1 downto 1);
 		else
 			SHIFT		<= '0';
 			shifted_s	<= DIN;
@@ -64,7 +65,7 @@ begin
 	
 	check_if_round: process (guard_bit, round_bit, sticky_bit, shifted_s) is
 	begin
-		if (guard = '0') then
+		if (guard_bit = '0') then
 			round_s <= '0';
 		else
 			if (round_bit = '0' and sticky_bit = '0' and shifted_s(MANTISSA_SIZE) = '1') then
@@ -73,6 +74,7 @@ begin
 				round_s <= '1';
 			else
 				round_s <= '0';
+			end if;
 		end if;
 	end process;
 	
@@ -86,11 +88,11 @@ begin
 	post_rounding_correction: process (rounded_s, rounding_ovfl_s) is
 	begin
 		if (rounding_ovfl_s = '1') then
-			rounded_and_shifted_s	<= (MANTISSA_SIZE-1				=> '0',
-									    MANTISSA_SIZE-2 downto 0	=> rounded_s(MANTISSA_SIZE-1 downto 1));
+			rounded_and_shifted_s(MANTISSA_SIZE-1)			<= '0';
+			rounded_and_shifted_s(MANTISSA_SIZE-2 downto 0)	<= rounded_s(MANTISSA_SIZE-1 downto 1);
 			ROUND <= '1';
 		else
-			rounded_and_shifted_s	<= rounded_s;
+			rounded_and_shifted_s <= rounded_s;
 			ROUND <= '0';
 		end if;
 	end process;

@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use WORK.constants.all;
 
 entity BOOTH_ENCODER is
 	port (

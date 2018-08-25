@@ -1,7 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
-use WORK.constants.all;
 
 entity BOOTH_MULTIPLIER is
 	generic (N : natural);
@@ -23,7 +22,7 @@ architecture STRUCTURAL of BOOTH_MULTIPLIER is
 	end component;
 
 	component MUX51_GENERIC is
-		generic (N: integer:= numBit);
+		generic (N: integer);
 		port (	A, B, C, D, E:	In	std_logic_vector(N-1 downto 0);
 			SEL:		In	std_logic_vector(  2 downto 0);
 			Y:		Out	std_logic_vector(N-1 downto 0)
@@ -122,7 +121,7 @@ begin
 	add_in(0) <= mux_out(0);   -- B operand of first stage is mux output, successive stages have previous output as operand
 	adders: for i in 0 to N/2-2 generate
 
-		add_i: CLA generic map (N => 2*N) port map (mux_out(i+1), add_in(i), mode(i), add_in(i+1), open);
+		add_i: CLA generic map (OPERAND_SIZE => 2*N) port map (mux_out(i+1), add_in(i), mode(i), add_in(i+1), open);
 
 	end generate;
 

@@ -6,8 +6,8 @@ entity EXPONENT_ADDER is
 	generic (EXP_SIZE	: natural);
 	port (
 		EXP1, EXP2	: in	std_logic_vector(EXP_SIZE-1 downto 0);
-		SHIFT		: in	std_logic_vector;
-		ROUND		: in	std_logic_vector;
+		SHIFT		: in	std_logic;
+		ROUND		: in	std_logic;
 		EXPO		: out	std_logic_vector(EXP_SIZE-1 downto 0);
 		OVFL		: out	std_logic;
 		UNFL		: out	std_logic
@@ -31,7 +31,7 @@ architecture structural of EXPONENT_ADDER is
 	end component;
 
 	-- SIGNALS
-	signal bias				: std_logic_vector(EXP_SIZE-1 downto 0) := std_logic_vector(to_signed(-(2**(EXP_SIZE-1)-1), bias'length));
+	signal bias				: std_logic_vector(EXP_SIZE-1 downto 0) := std_logic_vector(to_signed(-(2**(EXP_SIZE-1)-1), EXP_SIZE));
 	signal add0_out			: std_logic_vector(EXP_SIZE-1 downto 0);
 	signal de_biased_out	: std_logic_vector(EXP_SIZE-1 downto 0);
 	signal add1_out			: std_logic_vector(EXP_SIZE-1 downto 0);
@@ -51,13 +51,11 @@ begin
 	-- Second adder
 	ADD1: CLA generic map (EXP_SIZE) port map (de_biased_out, ext_shift, ROUND, EXPO, add1_cout);
 	---- Extend shift signal
-	ext_shift <= (0 => SHIFT, others => '0');
+	ext_shift(0)					<= SHIFT;
+	ext_shift(EXP_SIZE-1 downto 1)	<= (others => '0');
 	
 	-- Check  and signal overflow and underflow
 	OVFL <= '1' when (add0_cout = '1' or add1_cout = '1') else '0';
 	UNFL <= '1' when (de_biased_cout = '0' and add0_cout = '0') else '0';
-	
-	-- OUTPUT
-	EXPO <= add1_cout;
 
 end architecture;
