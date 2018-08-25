@@ -2,10 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity EXP_ADD is
-	generic (
-		EXP_SIZE	: natural;
-	);
+entity EXPONENT_ADDER is
+	generic (EXP_SIZE	: natural);
 	port (
 		EXP1, EXP2	: in	std_logic_vector(EXP_SIZE-1 downto 0);
 		SHIFT		: in	std_logic_vector;
@@ -16,8 +14,9 @@ entity EXP_ADD is
 	);
 end entity;
 
-architecture structural of EXP_ADD is
+architecture structural of EXPONENT_ADDER is
 
+	-- COMPONENTS
 	component CLA
 		generic (
 			OPERAND_SIZE	: natural;
@@ -31,7 +30,15 @@ architecture structural of EXP_ADD is
 		);
 	end component;
 
-	signal bias	: std_logic_vector(EXP_SIZE-1 downto 0) := std_logic_vector(to_signed(-(2**(EXP_SIZE-1)-1), bias'length));
+	-- SIGNALS
+	signal bias				: std_logic_vector(EXP_SIZE-1 downto 0) := std_logic_vector(to_signed(-(2**(EXP_SIZE-1)-1), bias'length));
+	signal add0_out			: std_logic_vector(EXP_SIZE-1 downto 0);
+	signal de_biased_out	: std_logic_vector(EXP_SIZE-1 downto 0);
+	signal add1_out			: std_logic_vector(EXP_SIZE-1 downto 0);
+	signal ext_shift		: std_logic_vector(EXP_SIZE-1 downto 0);
+	signal add0_cout		: std_logic;
+	signal de_biased_cout	: std_logic;
+	signal add1_cout		: std_logic;
 	
 begin
 
@@ -43,9 +50,14 @@ begin
 	
 	-- Second adder
 	ADD1: CLA generic map (EXP_SIZE) port map (de_biased_out, ext_shift, ROUND, EXPO, add1_cout);
+	---- Extend shift signal
+	ext_shift <= (0 => SHIFT, others => '0');
 	
 	-- Check  and signal overflow and underflow
 	OVFL <= '1' when (add0_cout = '1' or add1_cout = '1') else '0';
 	UNFL <= '1' when (de_biased_cout = '0' and add0_cout = '0') else '0';
+	
+	-- OUTPUT
+	EXPO <= add1_cout;
 
 end architecture;
