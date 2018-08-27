@@ -5,9 +5,10 @@ use work.DLX_globals.all;
 
 entity CU is
 	port (
-		CLK	: in	std_logic;
-		RST	: in	std_logic;
-		INSTR	: in	DLX_instruction_t;
+		CLK			: in	std_logic;
+		RST			: in	std_logic;
+		INSTR		: in	DLX_instruction_t;
+		INSTR_TYPE	: out	DLX_instr_type_t;
 		-- Control signals here.
 	     );
 end entity;
@@ -279,7 +280,7 @@ begin
 	-- If the instruction at the EXECUTION stage is a branch, the prediction obtained at the DECODE stage is checked against the result.
 	-- If the prediction is correct, execution continues as normal, otherwise flushing is required (previous pipeline instructions are
 	-- replaced with NOP).
-	flush_s	<= '1' when (hazard_pipe_t(EXE) = J_TYPE or hazard_pipe_t(EXE) = JR_TYPE) and not(prediction_exe_s = BRANCH_TAKEN) else '0';
+	flush_s	<= '1' when (hazard_pipe_t(EXE) = J_TYPE) and not(prediction_exe_s = BRANCH_TAKEN) else '0';
 	FLUSH	<= flush_s;
 	
 	-- STALL CHECK

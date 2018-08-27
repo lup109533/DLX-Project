@@ -62,6 +62,9 @@ package DLX_globals is
 	constant JUMP_PC_OFFSET_SIZE	: natural := 26;
 	constant FP_MANTISSA_SIZE		: natural := 23;
 	constant FP_EXPONENT_SIZE		: natural := 8;
+	
+	constant BRANCH_TAKEN			: std_logic := '1';
+	constant BRANCH_NOT_TAKEN		: std_logic := '1';
 
 	-- RANGES
 	subtype OPCODE_RANGE		is natural range (DLX_INSTRUCTION_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE);
@@ -72,6 +75,7 @@ package DLX_globals is
 	subtype IMMEDIATE_ARG_RANGE	is natural range (IMMEDIATE_ARG_SIZE)-1 downto 0;
 	subtype PC_OFFSET_RANGE		is natural range (JUMP_PC_OFFSET_SIZE)-1 downto 0;
 	subtype FPU_FUNC_RANGE		is natural range (FPU_FUNCTION_SIZE)-1 downto 0;
+	subtype SIGN_RANGE			is natural range (DLX_OPERAND_SIZE-1) downto (DLX_OPERAND_SIZE-1);
 	subtype EXPONENT_RANGE		is natural range (DLX_OPERAND_SIZE-1)-1 downto FP_MANTISSA_SIZE;
 	subtype MANTISSA_RANGE		is natural range (FP_MANTISSA_SIZE)-1 downto 0;
 

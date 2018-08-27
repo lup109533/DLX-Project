@@ -48,7 +48,7 @@ architecture structural of FP_MULTIPLICATION_MANAGER_UNIT is
 	-- SIGNALS
 	signal expo_s			: std_logic_vector(EXPONENT_SIZE-1 downto 0);
 	signal pack_exp_s		: std_logic_vector(EXPONENT_SIZE-1 downto 0);
-	signal manto_s			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
+	signal manto_s			: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal pack_mant_s		: std_logic_vector(MANTISSA_SIZE-1 downto 0);
 	
 	signal ovfl_s			: std_logic;
@@ -85,7 +85,7 @@ begin
 			pack_mant_s	<= (others => '0');
 			pack_exp_s	<= (others => '0');
 		else
-			pack_mant_s	<= manto_s;
+			pack_mant_s	<= manto_s(MANTISSA_SIZE-1 downto 0);
 			pack_exp_s	<= expo_s;
 		end if;
 	end process;

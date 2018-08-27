@@ -79,7 +79,7 @@ begin
 	end process;
 	
 	-- Select if rounded or not
-	truncated_s	<= shifted_s(MANTISSA_SIZE*2-1 downto MANTISSA_SIZE-1);
+	truncated_s	<= shifted_s(MANTISSA_SIZE*2-1 downto MANTISSA_SIZE);
 	
 	-- Rounding adder
 	ROUND_ADD: CLA generic map (MANTISSA_SIZE) port map (truncated_s, ONE, '0', rounded_s, rounding_ovfl_s);

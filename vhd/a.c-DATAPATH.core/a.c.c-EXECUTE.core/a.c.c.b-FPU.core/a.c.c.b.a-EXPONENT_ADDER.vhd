@@ -34,7 +34,6 @@ architecture structural of EXPONENT_ADDER is
 	signal bias				: std_logic_vector(EXP_SIZE-1 downto 0) := std_logic_vector(to_signed(-(2**(EXP_SIZE-1)-1), EXP_SIZE));
 	signal add0_out			: std_logic_vector(EXP_SIZE-1 downto 0);
 	signal de_biased_out	: std_logic_vector(EXP_SIZE-1 downto 0);
-	signal add1_out			: std_logic_vector(EXP_SIZE-1 downto 0);
 	signal ext_shift		: std_logic_vector(EXP_SIZE-1 downto 0);
 	signal add0_cout		: std_logic;
 	signal de_biased_cout	: std_logic;
