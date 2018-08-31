@@ -62,9 +62,6 @@ package DLX_globals is
 	constant JUMP_PC_OFFSET_SIZE	: natural := 26;
 	constant FP_MANTISSA_SIZE		: natural := 23;
 	constant FP_EXPONENT_SIZE		: natural := 8;
-	
-	constant BRANCH_TAKEN			: std_logic := '1';
-	constant BRANCH_NOT_TAKEN		: std_logic := '1';
 
 	-- RANGES
 	subtype OPCODE_RANGE		is natural range (DLX_INSTRUCTION_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE);
@@ -93,6 +90,7 @@ package DLX_globals is
 	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, JR_TYPE, F_TYPE, S_TYPE, L_TYPE);
 	type ALU_opcode_t		is (SHIFT, IADD, ISUB, LOGIC_AND, LOGIC_OR, LOGIC_XOR,
 							    COMPARE_EQ, COMPARE_NE, COMPARE_LT, COMPARE_GT, COMPARE_LE, COMPARE_GE,
+								BRANCH_IF_EQ, BRANCH_IF_NE,
 								MOV);
 	type FPU_opcode_t		is (FP_ADD_SUB,  FP_MULTIPLY,  FP_DIVIDE,
 							    DEC_ADD_SUB, DEC_MULTIPLY, DEC_DIVIDE,

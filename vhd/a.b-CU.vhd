@@ -139,6 +139,12 @@ begin
 				when SGEI | SGEUI =>
 					alu_opcode_s <= COMPARE_GE;
 					
+				when BEQZ =>
+					alu_opcode_s <= BRANCH_IF_EQ;
+					
+				when BNEZ =>
+					alu_opcode_s <= BRANCH_IF_NE;
+					
 				when others =>
 					alu_opcode_s <= MOV;
 			end case;
@@ -280,7 +286,7 @@ begin
 	-- If the instruction at the EXECUTION stage is a branch, the prediction obtained at the DECODE stage is checked against the result.
 	-- If the prediction is correct, execution continues as normal, otherwise flushing is required (previous pipeline instructions are
 	-- replaced with NOP).
-	flush_s	<= '1' when (hazard_pipe_t(EXE) = J_TYPE) and not(prediction_exe_s = BRANCH_TAKEN) else '0';
+	flush_s	<= '1' when (hazard_pipe_t(EXE) = J_TYPE or hazard_pipe_t(EXE) = JR_TYPE) and not(prediction_exe_s = BRANCH_TAKEN) else '0';
 	FLUSH	<= flush_s;
 	
 	-- STALL CHECK

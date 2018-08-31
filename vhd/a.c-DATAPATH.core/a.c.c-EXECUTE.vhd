@@ -10,6 +10,8 @@ entity EXECUTE is
 		FPU_OPCODE		: in	fpu_opcode_t;
 		IMM_SEL			: in	std_logic;
 		FPU_FUNC_SEL	: in	std_logic;
+		BRANCH_TAKEN	: out	std_logic;
+		BRANCH_ADDR		: out	DLX_addr_t;
 		-- Signals from/to previous/successive stages.
 		R1, R2			: in	DLX_oper_t;	-- Register inputs.
 		IMM				: in	DLX_oper_t;	-- Immediate input, extended with/without sign during DECODE stage.
@@ -24,7 +26,8 @@ architecture structural of EXECUTE is
 		port (
 			FUNC	: in	alu_opcode_t;
 			R1, R2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-			O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
+			O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
+			CMP_OUT	: out	std_logic
 		);
 	end component;
 	
@@ -44,7 +47,7 @@ architecture structural of EXECUTE is
 	
 begin
 
-	EX_ALU: ALU generic map(DLX_OPERAND_SIZE) port map(alu_opcode_s, r1_s, r2_s, alu_out_s);
+	EX_ALU: ALU generic map(DLX_OPERAND_SIZE) port map(alu_opcode_s, r1_s, r2_s, alu_out_s, BRANCH_TAKEN);
 	EX_FPU: FPU generic map(DLX_OPERAND_SIZE) port map(fpu_opcode_s, f1_s, f2_s, fpu_out_s);
 	
 	-- MUX INPUTS

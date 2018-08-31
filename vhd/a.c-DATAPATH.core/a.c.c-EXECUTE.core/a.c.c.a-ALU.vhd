@@ -10,7 +10,8 @@ entity ALU is
 	port (
 		R1, R2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
 		OPCODE	: in	ALU_opcode_t;
-		O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
+		O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
+		CMP_OUT	: out	std_logic
 	);
 end entity;
 
@@ -53,9 +54,9 @@ architecture structural of ALU is
 
 begin
 	-- CHECK OPERATION TYPE
-	alu_function <=	SHIFT		when (OPCODE = SHIFT)													else
-					SUM_OR_SUB	when (OPCODE = IADD or OPCODE = ISUB)									else
-					LOGIC		when (OPCODE = LOGIC_AND or OPCODE = LOGIC_OR or OPCODE = LOGIC_XOR)	else
+	alu_function <=	SHIFT		when (OPCODE = SHIFT)																	else
+					SUM_OR_SUB	when (OPCODE = IADD or OPCODE = ISUB or OPCODE = BRANCH_IF_EQ or OPCODE = BRANCH_IF_NE)	else
+					LOGIC		when (OPCODE = LOGIC_AND or OPCODE = LOGIC_OR or OPCODE = LOGIC_XOR)					else
 					COMPARE;
 
 					
@@ -76,13 +77,15 @@ begin
 	---- For set-type operations
 	set_out			<= (OPERAND_SIZE-1 downto 1 => '0', others => comparator_out);
 	---- Translate opcode into comparison type
-	compare_sel		<=	EQUAL		when (OPCODE = COMPARE_EQ)	else
-						NOT_EQUAL	when (OPCODE = COMPARE_NE)	else
-						GREATER		when (OPCODE = COMPARE_GT)	else
-						GREATER_EQ	when (OPCODE = COMPARE_GE)	else
-						LESS		when (OPCODE = COMPARE_LT)	else
-						LESS_EQ		when (OPCODE = COMPARE_LE)	else
+	compare_sel		<=	EQUAL		when (OPCODE = COMPARE_EQ or OPCODE = BRANCH_IF_EQ)	else
+						NOT_EQUAL	when (OPCODE = COMPARE_NE or OPCODE = BRANCH_IF_NE)	else
+						GREATER		when (OPCODE = COMPARE_GT)							else
+						GREATER_EQ	when (OPCODE = COMPARE_GE)							else
+						LESS		when (OPCODE = COMPARE_LT)							else
+						LESS_EQ		when (OPCODE = COMPARE_LE)							else
 						NIL;
+	---- Comparator output for conditional branching
+	CMP_OUT			<= comparator_out;
 	
 	
 	-- LOGIC UNIT

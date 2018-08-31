@@ -5,15 +5,17 @@ use work.DLX_globals.all;
 
 entity FETCH is
 	port (
-		CLK			: in	std_logic;
-		RST			: in	std_logic;
-		INSTR		: in	DLX_instr_t;
-		INSTR_TYPE	: in	DLX_instr_type_t;
-		FOUT		: out	DLX_instr_t;
-		PC			: out	DLX_addr_t;
-		PREDICTION	: out	std_logic;
+		CLK				: in	std_logic;
+		RST				: in	std_logic;
+		INSTR			: in	DLX_instr_t;
+		INSTR_TYPE		: in	DLX_instr_type_t;
+		FOUT			: out	DLX_instr_t;
+		PC				: out	DLX_addr_t;
+		PREDICTION		: out	std_logic;
 		-- CU signals
-		FLUSH		: in	std_logic
+		FLUSH			: in	std_logic;
+		BRANCH_TAKEN	: in	std_logic;
+		BRANCH_ADDR		: in	DLX_addr_t
 	);
 end entity;
 
@@ -59,11 +61,11 @@ begin
 	end process;
 
 	-- Instantiate address predictor
-	prediction_s	<= BRANCH_TAKEN when (INSTR_TYPE = J_TYPE) else BRANCH_NOT_TAKEN;	-- For now always taken
+	prediction_s	<= '1' when (INSTR_TYPE = J_TYPE) else '0';	-- For now always taken if branch
 	PREDICTION		<= prediction_s;
 	
 	-- PC register process
-	ic_register: process (CLK, RST) is
+	pc_register: process (CLK, RST, next_pc) is
 	begin
 		if rising_edge(CLK) then
 			if (RST = '0') then
@@ -75,7 +77,10 @@ begin
 	end process;
 	
 	-- Address adder instantiation
-	PC_ADD: CLA generic map (DLX_ADDR_SIZE) port map (curr_pc, selected_offset, '0', next_pc, open);
+	PC_ADD: CLA generic map (DLX_ADDR_SIZE) port map (curr_pc, selected_offset, '0', pc_add_out, open);
+	
+	-- Select next address (branch may have been calculated in EX stage)
+	next_pc <= pc_add_out when (BRANCH_TAKEN = '0') else BRANCH_ADDR;
 	
 	-- Select offset according to prediction
 	selected_offset <= pc_offset when (prediction_s = '1') else std_logic_vector(to_unsigned(4, selected_offset'length));
