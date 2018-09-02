@@ -27,17 +27,19 @@ architecture test of TB_FPU is
 	end component;
 	
 	constant OPERAND_SIZE	: natural := 32;
-	constant MAX_F1			: natural := 2**(OPERAND_SIZE/8)-1;
+	constant MAX_F1			: natural := 2**(OPERAND_SIZE/2)-1;
 	constant MAX_F2			: natural := 2**(OPERAND_SIZE/8)-1;
 	
 	signal OPCODE_s		: FPU_opcode_t := INT_MULTIPLY;
 	signal F1_s, F2_s	: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal O_s			: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal OK			: boolean;
 	
 begin
 
 	-- UUT
 	UUT: FPU generic map(OPERAND_SIZE) port map(F1_s, F2_s, OPCODE_s, O_s);
+	OK <= to_integer(unsigned(F1_s))*to_integer(unsigned(F2_s)) = to_integer(unsigned(O_s));
 
 	-- STIMULUS
 	stimulus: process is

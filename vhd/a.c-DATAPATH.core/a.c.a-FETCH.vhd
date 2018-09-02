@@ -8,12 +8,9 @@ entity FETCH is
 		CLK				: in	std_logic;
 		RST				: in	std_logic;
 		INSTR			: in	DLX_instr_t;
-		INSTR_TYPE		: in	DLX_instr_type_t;
 		FOUT			: out	DLX_instr_t;
 		PC				: out	DLX_addr_t;
-		PREDICTION		: out	std_logic;
 		-- CU signals
-		FLUSH			: in	std_logic;
 		BRANCH_TAKEN	: in	std_logic;
 		BRANCH_ADDR		: in	DLX_addr_t
 	);
@@ -36,33 +33,11 @@ architecture behavioral of FETCH is
 	end component;
 
 	-- SIGNALS
-	signal NOP_INSTRUCTION	: DLX_instr_t;	
 	signal pc_offset		: pc_offset_t;
-	signal selected_offset	: pc_offset_t;
-	signal prediction_s		: std_logic;
 	signal curr_pc			: DLX_addr_t;
 	signal next_pc			: DLX_addr_t;
 
 begin
-
-	-- Construct NOP instruction
-	NOP_INSTRUCTION(OPCODE_RANGE)		<= NOP;
-	NOP_INSTRUCTION(REG_SOURCE1_RANGE)	<= (others => '0');
-	NOP_INSTRUCTION(REG_SOURCE2_RANGE)	<= (others => '0');
-	NOP_INSTRUCTION(REG_DEST_RANGE)		<= (others => '0');
-
-	-- Unpack INSTR
-	get_pc_offset: process (INSTR_TYPE) is
-	begin
-		pc_offset <= (others => '0');
-		if (INSTR_TYPE = J_TYPE) then
-			pc_offset(PC_OFFSET_RANGE) <= INSTR(PC_OFFSET_RANGE);
-		end if;
-	end process;
-
-	-- Instantiate address predictor
-	prediction_s	<= '1' when (INSTR_TYPE = J_TYPE) else '0';	-- For now always taken if branch
-	PREDICTION		<= prediction_s;
 	
 	-- PC register process
 	pc_register: process (CLK, RST, next_pc) is
@@ -77,18 +52,16 @@ begin
 	end process;
 	
 	-- Address adder instantiation
-	PC_ADD: CLA generic map (DLX_ADDR_SIZE) port map (curr_pc, selected_offset, '0', pc_add_out, open);
+	PC_ADD: CLA generic map (DLX_ADDR_SIZE) port map (curr_pc, instr_offset, '0', pc_add_out, open);
+	instr_offset <= std_logic_vector(to_unsigned(DLX_ADDR_SIZE/8, instr_offset'length));
 	
 	-- Select next address (branch may have been calculated in EX stage)
 	next_pc <= pc_add_out when (BRANCH_TAKEN = '0') else BRANCH_ADDR;
 	
-	-- Select offset according to prediction
-	selected_offset <= pc_offset when (prediction_s = '1') else std_logic_vector(to_unsigned(4, selected_offset'length));
-	
 	-- PC output for memory/cache
 	PC <= curr_pc;
 	
-	-- No instruction when flushing
-	FOUT <= INSTR when (FLUSH = '0') else NOP_INSTRUCTION;
+	-- Forward instruction
+	FOUT <= INSTR;
 
 end architecture;

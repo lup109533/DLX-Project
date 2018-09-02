@@ -41,16 +41,16 @@ architecture structural of FPU is
 		);
 	end component;
 
-	signal mul1, mul2			: std_logic_vector(OPERAND_SIZE-1 downto 0);
-	signal mul_out				: std_logic_vector(2*OPERAND_SIZE-1 downto 0);
+	signal mul1, mul2			: std_logic_vector((FP_MANTISSA_SIZE+1)-1 downto 0);
+	signal mul_out				: std_logic_vector(2*(FP_MANTISSA_SIZE+1)-1 downto 0);
 	signal int_mul_o			: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	
 	signal sign1, sign2			: std_logic;
 	signal exponent1, exponent2	: std_logic_vector(FP_EXPONENT_SIZE-1 downto 0);
 	signal mantissa1, mantissa2	: std_logic_vector(FP_MANTISSA_SIZE-1 downto 0);
 	
-	signal extended_mantissa1	: std_logic_vector(OPERAND_SIZE-1 downto 0);
-	signal extended_mantissa2	: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal extended_mantissa1	: std_logic_vector((FP_MANTISSA_SIZE+1)-1 downto 0);
+	signal extended_mantissa2	: std_logic_vector((FP_MANTISSA_SIZE+1)-1 downto 0);
 	
 	signal sign_o				: std_logic;
 	signal fp_mul_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
@@ -72,11 +72,9 @@ begin
 	---- Extend mantissa to OPERAND_SIZE
 	extended_mantissa1(MANTISSA_RANGE)								<= mantissa1;
 	extended_mantissa1(FP_MANTISSA_SIZE)							<= or_reduce(exponent1); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
-	extended_mantissa1(OPERAND_SIZE-1 downto FP_MANTISSA_SIZE+1)	<= (others => '0');
 	
 	extended_mantissa2(MANTISSA_RANGE)								<= mantissa2;
 	extended_mantissa2(FP_MANTISSA_SIZE)							<= or_reduce(exponent2); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
-	extended_mantissa2(OPERAND_SIZE-1 downto FP_MANTISSA_SIZE+1)	<= (others => '0');
 						  
 	---- Sign calculation
 	sign_o <= sign1 xor sign2;
@@ -88,12 +86,12 @@ begin
 	
 
 	-- MULTIPLIER
-	MUL: BOOTH_MULTIPLIER generic map (OPERAND_SIZE) port map (mul1, mul2, mul_out);
+	MUL: BOOTH_MULTIPLIER generic map (FP_MANTISSA_SIZE+1) port map (mul1, mul2, mul_out);
 	int_mul_o <= mul_out(OPERAND_SIZE-1 downto 0);
 	
 	---- Choose multiplier operands (integer or fp)
-	mul1 <= F1 when (OPCODE = INT_MULTIPLY) else extended_mantissa1;
-	mul2 <= F2 when (OPCODE = INT_MULTIPLY) else extended_mantissa2;
+	mul1 <= F1(FP_MANTISSA_SIZE downto 0) when (OPCODE = INT_MULTIPLY) else extended_mantissa1;
+	mul2 <= F2(FP_MANTISSA_SIZE downto 0) when (OPCODE = INT_MULTIPLY) else extended_mantissa2;
 	
 	---- FP exponent calculation and mantissa rounding
 	FP_MUL_MANAGER:	FP_MULTIPLICATION_MANAGER_UNIT	generic map (

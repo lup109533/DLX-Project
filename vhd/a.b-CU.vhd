@@ -35,27 +35,15 @@ begin
 	immediate_s		<= INSTR(IMMEDIATE_ARG_RANGE);
 	pc_offset_s		<= INSTR(PC_OFFSET_RANGE);
 	
-	-- CONTROL SIGNAL GENERATOR
-	control_signal_gen: process (RST, ENB, opcode_s) is
-	begin
-		if (RST <= '0' or ENB = '0') then
-			ctrl_s(FET) <= (others => '0');
-			ctrl_s(DEC) <= (others => '0');
-			ctrl_s(EXE) <= (others => '0');
-			ctrl_s(MEM) <= (others => '0');
-			ctrl_s(WRB) <= (others => '0');
-		else
-			case (opcode_s) is
-				when NOP =>
-					ctrl_s(FET) <= (others => '0');
-					ctrl_s(DEC) <= (others => '0');
-					ctrl_s(EXE) <= (others => '0');
-					ctrl_s(MEM) <= (others => '0');
-					ctrl_s(WRB) <= (others => '0');
-				-- ...
-			end case;
-		end if;
-	end process;
+	-- CONTROL SIGNAL GENERATION
+	SIGNED_EXT	<= '0' when	(	opcode_s = ADDUI or
+								opcode_s = SUBUI or
+								opcode_s = SLTUI or
+								opcode_s = SGTUI or
+								opcode_s = SLEUI or
+								opcode_s = SGEUI) else '1';
+	-- ...
+								
 	
 	-- ALU OPCODE GENERATOR
 	alu_opcode_manager: process (opcode_s, func_s) is
@@ -106,7 +94,7 @@ begin
 				when SLLI | SRLI | SRAI =>
 					alu_opcode_s <= SHIFT;
 			
-				when ADDI | ADDUI =>
+				when ADDI | ADDUI | BEQZ | BNEZ | J | JR | JALR =>
 					alu_opcode_s <= ADD;
 					
 				when SUBI | SUBUI =>
@@ -138,12 +126,6 @@ begin
 					
 				when SGEI | SGEUI =>
 					alu_opcode_s <= COMPARE_GE;
-					
-				when BEQZ =>
-					alu_opcode_s <= BRANCH_IF_EQ;
-					
-				when BNEZ =>
-					alu_opcode_s <= BRANCH_IF_NE;
 					
 				when others =>
 					alu_opcode_s <= MOV;
