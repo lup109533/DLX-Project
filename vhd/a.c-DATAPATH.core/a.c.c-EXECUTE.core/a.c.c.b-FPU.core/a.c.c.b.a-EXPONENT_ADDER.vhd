@@ -38,6 +38,7 @@ architecture structural of EXPONENT_ADDER is
 	signal add0_cout		: std_logic;
 	signal de_biased_cout	: std_logic;
 	signal add1_cout		: std_logic;
+	signal ovfl_possible	: std_logic;
 	
 begin
 
@@ -54,7 +55,9 @@ begin
 	ext_shift(EXP_SIZE-1 downto 1)	<= (others => '0');
 	
 	-- Check  and signal overflow and underflow
-	OVFL <= '1' when (add0_cout = '1' or add1_cout = '1') else '0';
+	ovfl_possible <= EXP1(EXP_SIZE-1) and EXP2(EXP_SIZE-1); -- Overflow only possible among positive exponents
+	
+	OVFL <= '1' when ((add0_cout = '1' or add1_cout = '1') and ovfl_possible = '1') else '0';
 	UNFL <= '1' when (de_biased_cout = '0' and add0_cout = '0') else '0';
 
 end architecture;

@@ -27,7 +27,7 @@ architecture test of TB_FPU is
 	end component;
 	
 	constant OPERAND_SIZE	: natural := 32;
-	constant MAX_F1			: natural := 2**(OPERAND_SIZE/2)-1;
+	constant MAX_F1			: natural := 2**(OPERAND_SIZE/8)-1;
 	constant MAX_F2			: natural := 2**(OPERAND_SIZE/8)-1;
 	
 	signal OPCODE_s		: FPU_opcode_t := INT_MULTIPLY;
