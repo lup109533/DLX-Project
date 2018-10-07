@@ -10,8 +10,7 @@ entity DECODE is
 		ENB				: in	std_logic;
 		REG_A			: out	DLX_oper_t;
 		REG_B			: out	DLX_oper_t;
-		IMM_ARG1		: out	DLX_oper_t;
-		IMM_ARG2		: out	DLX_oper_t;
+		IMM				: out	DLX_oper_t;
 		-- CU signals
 		PC				: in	DLX_addr_t;
 		RF_DIN			: in	DLX_oper_t;
@@ -29,6 +28,8 @@ entity DECODE is
 end entity;
 
 architecture behavioral of DECODE is
+
+	signal RF_dout1_s : DLX_oper_t;
 
 begin
 
@@ -63,7 +64,7 @@ begin
 	ext_imm_s(IMMEDIATE_ARG_SIZE-1 downto 0)				<= IMM;
 	
 	-- Assign immediates
-	IMM_ARG1 <= PC when (OPCODE = BEQZ or OPCODE = BNEZ or OPCODE = JR or OPCODE = JALR) else imm_s; -- Propagate pc in case of branch address calculation
-	IMM_ARG2 <= imm_s;
+	REG_A	<= PC when (OPCODE = BEQZ or OPCODE = BNEZ or OPCODE = JR or OPCODE = JALR) else RF_dout1_s; -- Propagate pc in case of branch address calculation
+	IMM		<= imm_s;
 
 end architecture;
