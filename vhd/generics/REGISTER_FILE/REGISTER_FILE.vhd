@@ -7,9 +7,7 @@ use work.utils.max;
 entity REGISTER_FILE is
 	generic (
 		WORD_SIZE			: natural;
-		GLOBAL_REGISTER_NUM	: natural;
-		IO_REGISTER_NUM		: natural;
-		LOCAL_REGISTER_NUM	: natural;
+		REGISTER_NUM		: natural;
 		WINDOWS_NUM			: natural;
 		SYSTEM_ADDR_SIZE	: natural
 	);
@@ -24,9 +22,9 @@ entity REGISTER_FILE is
 		DIN			: in	std_logic_vector(WORD_SIZE-1 downto 0);
 		DOUT1		: out	std_logic_vector(WORD_SIZE-1 downto 0);
 		DOUT2		: out	std_logic_vector(WORD_SIZE-1 downto 0);
-		ADDR_IN		: in	std_logic_vector(log2(GLOBAL_REGISTER_NUM + 2*IO_REGISTER_NUM + LOCAL_REGISTER_NUM)-1 downto 0);
-		ADDR_OUT1	: in	std_logic_vector(log2(GLOBAL_REGISTER_NUM + 2*IO_REGISTER_NUM + LOCAL_REGISTER_NUM)-1 downto 0);
-		ADDR_OUT2	: in	std_logic_vector(log2(GLOBAL_REGISTER_NUM + 2*IO_REGISTER_NUM + LOCAL_REGISTER_NUM)-1 downto 0);
+		ADDR_IN		: in	std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
+		ADDR_OUT1	: in	std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
+		ADDR_OUT2	: in	std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
 		CALL		: in 	std_logic;
 		RETN		: in 	std_logic;
 		SPILL		: out 	std_logic;
@@ -55,35 +53,34 @@ architecture behavioral of REGISTER_FILE is
 		);
 	end component;		
 
-	constant RF_ADDR_SIZE			: natural := log2(GLOBAL_REGISTER_NUM + 2*IO_REGISTER_NUM + LOCAL_REGISTER_NUM);
-	constant WINDOW_SIZE			: natural := IO_REGISTER_NUM + LOCAL_REGISTER_NUM;
-	constant PHYSICAL_RF_SIZE		: natural := GLOBAL_REGISTER_NUM + WINDOWS_NUM*(IO_REGISTER_NUM + LOCAL_REGISTER_NUM);
+	constant RF_ADDR_SIZE			: natural := REGISTER_NUM;
+	constant WINDOW_SIZE			: natural := REGISTER_NUM;
+	constant PHYSICAL_RF_SIZE		: natural := REGISTER_NUM * WINDOWS_NUM;
+	constant PHYSICAL_RF_ADDR_SIZE	: natural := PHYSICAL_RF_SIZE;
 	
 	type   mem_array is array (0 to PHYSICAL_RF_SIZE-1) of std_logic_vector(WORD_SIZE-1 downto 0);
 	signal memory					: mem_array;
 	
-	signal translated_addr_in_s		: integer range 0 to RF_ADDR_SIZE-1;
-	signal translated_addr_out1_s	: integer range 0 to RF_ADDR_SIZE-1;
-	signal translated_addr_out2_s	: integer range 0 to RF_ADDR_SIZE-1;
+	signal memory_in				: std_logic_vector(WORD_SIZE-1 downto 0);
+	
 	signal addr_in_s				: integer range 0 to RF_ADDR_SIZE-1;
 	signal addr_out1_s				: integer range 0 to RF_ADDR_SIZE-1;
 	signal addr_out2_s				: integer range 0 to RF_ADDR_SIZE-1;
-	signal addr_in_index			: integer range 0 to RF_ADDR_SIZE-1;
-	signal addr_out1_index			: integer range 0 to RF_ADDR_SIZE-1;
-	signal addr_out2_index			: integer range 0 to RF_ADDR_SIZE-1;
+	signal translated_addr_in_s		: integer range 0 to PHYSICAL_RF_ADDR_SIZE-1;
+	signal translated_addr_out1_s	: integer range 0 to PHYSICAL_RF_ADDR_SIZE-1;
+	signal translated_addr_out2_s	: integer range 0 to PHYSICAL_RF_ADDR_SIZE-1;
+	signal addr_in_index			: integer range 0 to PHYSICAL_RF_ADDR_SIZE-1;
+	signal addr_out1_index			: integer range 0 to PHYSICAL_RF_ADDR_SIZE-1;
+	signal addr_out2_index			: integer range 0 to PHYSICAL_RF_ADDR_SIZE-1;
 	
-	signal cwp_init					: std_logic_vector(WINDOWS_NUM*2-1 downto 0);
-	signal cwp_s					: std_logic_vector(WINDOWS_NUM*2-1 downto 0);
-	signal io_cwp_s					: std_logic_vector(WINDOWS_NUM-1 downto 0);
-	signal local_cwp_s				: std_logic_vector(WINDOWS_NUM-1 downto 0);
+	signal cwp_init					: std_logic_vector(WINDOWS_NUM-1 downto 0);
+	signal cwp_s					: std_logic_vector(WINDOWS_NUM-1 downto 0);
 	
-	signal global_enable			: std_logic;
+	signal memory_enable			: std_logic;
 	signal spill_s					: std_logic;
 	signal fill_s					: std_logic;
 	
-	signal in_offset_sel			: integer range 0 to WINDOWS_NUM-1;
-	signal local_offset_sel			: integer range 0 to WINDOWS_NUM-1;
-	signal out_offset_sel			: integer range 0 to WINDOWS_NUM-1;
+	signal offset_sel				: integer range 0 to WINDOWS_NUM-1;
 	
 	type   offset_array	is array (0 to WINDOWS_NUM-1) of integer range 0 to PHYSICAL_RF_SIZE-1;
 	signal offset					: offset_array;
@@ -91,7 +88,7 @@ architecture behavioral of REGISTER_FILE is
 	type   rf_state is (OK, SPILL_WAIT_ACK, RF_SPILL, FILL_WAIT_ACK, RF_FILL, UPDATE_SWP);
 	signal state					: rf_state;
 	
-	signal spill_fill_counter		: integer range 0 to WINDOW_SIZE-1;
+	signal spill_fill_counter		: integer range 0 to PHYSICAL_RF_ADDR_SIZE;
 	signal swp_reg					: std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
 	signal swp_s					: std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
 	
@@ -105,13 +102,13 @@ begin
 	begin
 		if (RST = '0') then
 			-- Reset memory
-			for i in 0 to PHYSICAL_RF_SIZE loop
+			for i in 0 to PHYSICAL_RF_SIZE-1 loop
 				memory(i) <= (others => '0');
 			end loop;
-		elsif (ENB = '1' and rising_edge(CLK) and global_enable = '1') then
+		elsif (ENB = '1' and rising_edge(CLK) and memory_enable = '1') then
 			-- Write to memory
 			if (WR = '1') then
-				memory(addr_in_index) <= DIN;
+				memory(addr_in_index) <= memory_in;
 			end if;
 			-- Read1 from memory
 			if (RD1 = '1') then
@@ -128,51 +125,22 @@ begin
 		end if;
 	end process;
 	
-	addr_in_index	<= translated_addr_in_s;
-	addr_out1_index <= spill_fill_counter when (state = RF_SPILL or state = RF_FILL) else translated_addr_out1_s;
+	memory_in		<= MBUS(WORD_SIZE-1 downto 0) when (state = RF_FILL) else DIN;
+	addr_in_index	<= spill_fill_counter when (state = RF_FILL)  else translated_addr_in_s;
+	addr_out1_index <= spill_fill_counter when (state = RF_SPILL) else translated_addr_out1_s;
 	addr_out2_index <= translated_addr_out2_s;
 	
-	addr_translator: process (addr_in_s, addr_out1_s, addr_out2_s, offset, in_offset_sel, local_offset_sel, out_offset_sel) is
-	begin
-		-- ADDR_IN
-		if (addr_in_s < GLOBAL_REGISTER_NUM) then
-			translated_addr_in_s <= addr_in_s;
-		elsif (addr_in_s < GLOBAL_REGISTER_NUM + IO_REGISTER_NUM) then
-			translated_addr_in_s <= addr_in_s + offset(in_offset_sel);
-		elsif (addr_in_s < GLOBAL_REGISTER_NUM + IO_REGISTER_NUM + LOCAL_REGISTER_NUM) then
-			translated_addr_in_s <= addr_in_s + offset(local_offset_sel);
-		else
-			translated_addr_in_s <= addr_in_s + offset(out_offset_sel);
-		end if;
-		-- ADDR_OUT1
-		if (addr_out1_s < GLOBAL_REGISTER_NUM) then
-			translated_addr_out1_s <= addr_out1_s;
-		elsif (addr_out1_s < GLOBAL_REGISTER_NUM + IO_REGISTER_NUM) then
-			translated_addr_out1_s <= addr_out1_s + offset(in_offset_sel);
-		elsif (addr_out1_s < GLOBAL_REGISTER_NUM + IO_REGISTER_NUM + LOCAL_REGISTER_NUM) then
-			translated_addr_out1_s <= addr_out1_s + offset(local_offset_sel);
-		else
-			translated_addr_out1_s <= addr_out1_s + offset(out_offset_sel);
-		end if;
-		-- ADDR_OUT2
-		if (addr_out2_s < GLOBAL_REGISTER_NUM) then
-			translated_addr_out2_s <= addr_out2_s;
-		elsif (addr_out2_s < GLOBAL_REGISTER_NUM + IO_REGISTER_NUM) then
-			translated_addr_out2_s <= addr_out2_s + offset(in_offset_sel);
-		elsif (addr_out2_s < GLOBAL_REGISTER_NUM + IO_REGISTER_NUM + LOCAL_REGISTER_NUM) then
-			translated_addr_out2_s <= addr_out2_s + offset(local_offset_sel);
-		else
-			translated_addr_out2_s <= addr_out2_s + offset(out_offset_sel);
-		end if;
-	end process;
+	translated_addr_in_s	<= addr_in_s   + offset(offset_sel);
+	translated_addr_out1_s	<= addr_out1_s + offset(offset_sel);
+	translated_addr_out2_s	<= addr_out2_s + offset(offset_sel);
 	
-	cwp_init(2 downto 0)				<= "111";
-	cwp_init(2*WINDOWS_NUM-1 downto 3)	<= (others => '0');
-	CWP: CIRCULAR_BUFFER	generic map (N => 2*WINDOWS_NUM)
+	cwp_init(0 downto 0)				<= "1";
+	cwp_init(WINDOWS_NUM-1 downto 1)	<= (others => '0');
+	CWP: CIRCULAR_BUFFER	generic map (N => WINDOWS_NUM)
 							port map (
 								CLK  => CLK,
 								RST  => RST,
-								ENB  => global_enable,
+								ENB  => memory_enable,
 								INIT => cwp_init,
 								SHR  => CALL,
 								SHL	 => RETN,
@@ -180,38 +148,16 @@ begin
 								UNFL => fill_s,
 								DOUT => cwp_s
 							);
-	cwp_proc: process (cwp_s) is
-	begin
-		for i in 0 to WINDOWS_NUM-2 loop
-			io_cwp_s(i) <= cwp_s(2*i);
-		end loop;
-		
-		for i in 0 to WINDOWS_NUM-2 loop
-			local_cwp_s(i) <= cwp_s(2*i+1);
-		end loop;
-	end process;
 	
-	offset_sel_proc: process (io_cwp_s, local_cwp_s) is
-		variable i : integer;
+	offset_sel_proc: process (cwp_s) is
+		variable i : integer range 0 to WINDOWS_NUM-1;
 	begin
-		if (io_cwp_s(0) = '1' and io_cwp_s(WINDOWS_NUM-1) = '1') then
-			in_offset_sel	<= WINDOWS_NUM-1;
-			out_offset_sel	<= 0;
-		else
-			for i in 0 to WINDOWS_NUM-1 loop
-				if (io_cwp_s(i) = '1') then
-					exit;
-				end if;
-			end loop;
-			in_offset_sel	<= i;
-			out_offset_sel	<= i+1;
-		end if;
 		for i in 0 to WINDOWS_NUM-1 loop
-			if (local_cwp_s(i) = '1') then
+			if (cwp_s(i) = '1') then
+				offset_sel <= i;
 				exit;
 			end if;
 		end loop;
-		local_offset_sel	<= i;
 	end process;
 	
 	offset_proc: process (offset) is
@@ -271,15 +217,13 @@ begin
 	end process;
 	SPILL			<= spill_s;
 	FILL			<= fill_s;
-	global_enable	<= '1' when (state = OK and spill_s = '0' and fill_s = '0') else '0';
-	RF_OK			<= global_enable;
+	memory_enable	<= '1' when (state = OK and spill_s = '0' and fill_s = '0') else '0';
+	RF_OK			<= memory_enable;
 	
-	bus_manager: process (state) is
+	bus_manager: process (spill_fill_counter, state) is
 	begin
 		if (state = RF_SPILL) then
-			MBUS(WORD_SIZE-1 downto 0) <= memory(addr_out1_index);
-		elsif (state = RF_FILL) then
-			memory(addr_out1_index) <= MBUS(WORD_SIZE-1 downto 0);
+			MBUS(WORD_SIZE-1 downto 0) <= memory(spill_fill_counter);
 		else
 			MBUS <= (others => 'Z');
 		end if;
@@ -288,7 +232,7 @@ begin
 	swp_manager: process (CLK, RST, ENB) is
 	begin
 		if (RST = '0') then
-			swp_reg <= (others => '0');
+			swp_reg <= HEAP_ADDR;
 		elsif (ENB = '1' and rising_edge(CLK)) then
 			swp_reg <= swp_s;
 		end if;
@@ -302,7 +246,7 @@ begin
 			spill_fill_counter <= 0;
 		elsif (rising_edge(CLK)) then
 			if (state = SPILL_WAIT_ACK or state = FILL_WAIT_ACK) then
-				spill_fill_counter <= offset(in_offset_sel);
+				spill_fill_counter <= offset(offset_sel);
 			elsif (state = RF_SPILL or state = RF_FILL) then
 				spill_fill_counter <= spill_fill_counter + 1;
 			else

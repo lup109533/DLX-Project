@@ -20,7 +20,8 @@ end entity;
 architecture behavioural of CIRCULAR_BUFFER is
 
 	signal buff		: std_logic_vector(N-1 downto 0);
-	signal tmp		: std_logic;
+	signal rhs		: std_logic;
+	signal lhs		: std_logic;
 	signal unfl_s	: std_logic;
 	signal ovfl_s	: std_logic;
 
@@ -32,31 +33,31 @@ begin
 			buff <= INIT;
 		elsif (ENB = '1' and rising_edge(CLK)) then
 			if (SHR = '1') then
-				tmp					<= buff(N-1);
 				buff(N-1 downto 1)	<= buff(N-2 downto 0);
-				buff(0)				<= tmp;
+				buff(0)				<= rhs;
 			elsif (SHL = '1') then
-				tmp					<= buff(0);
+				buff(N-1)			<= lhs;
 				buff(N-2 downto 0)	<= buff(N-1 downto 1);
-				buff(N-1)			<=tmp;
 			end if;
 		end if;
 	end process;
+	lhs <= buff(0);
+	rhs <= buff(N-1);
 	
-	ovfl_unfl_manager: process (CLK, RST, ENB) is
+	ovfl_unfl_manager: process (CLK, RST) is
 	begin
 		if (RST = '0') then
 			unfl_s <= '0';
 			ovfl_s <= '0';
-		elsif (ENB = '1' and rising_edge(CLK)) then
+		elsif (rising_edge(CLK)) then
 			if (unfl_s = '1') then
 				unfl_s <= '0';
-			elsif (buff(N-1) = '1' and buff(0) = '1' and SHL = '1') then
+			elsif (buff(0) = '1' and SHL = '1') then
 				unfl_s <= '1';
 			end if;
 			if (ovfl_s = '1') then
 				ovfl_s <= '0';
-			elsif (buff(N-1) = '1' and buff(0) = '1' and SHR = '1') then
+			elsif (buff(N-1) = '1' and SHR = '1') then
 				ovfl_s <= '1';
 			end if;
 		end if;
