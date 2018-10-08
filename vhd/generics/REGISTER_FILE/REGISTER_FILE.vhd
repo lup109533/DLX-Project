@@ -245,9 +245,7 @@ begin
 		if (RST = '0') then
 			spill_fill_counter <= 0;
 		elsif (rising_edge(CLK)) then
-			if (state = SPILL_WAIT_ACK or state = FILL_WAIT_ACK) then
-				spill_fill_counter <= offset(offset_sel);
-			elsif (state = RF_SPILL or state = RF_FILL) then
+			if (state = RF_SPILL or state = RF_FILL) then
 				spill_fill_counter <= spill_fill_counter + 1;
 			else
 				spill_fill_counter <= 0;

@@ -35,22 +35,33 @@ begin
 
 	-- Instantiate RF
 	RF: REGISTER_FILE	generic map (
-							WORD_SIZE	=> DLX_OPERAND_SIZE,
-							WORD_NUM	=> 2**REGISTER_ADDR_SIZE
-						)
+							WORD_SIZE			: natural;
+							REGISTER_NUM		: natural;
+							WINDOWS_NUM			: natural;
+							SYSTEM_ADDR_SIZE	: natural
+						);
 						port map (
-							CLK			=> CLK,
-							RST			=> RST,
-							ENB			=> ENB,
-							DIN			=> RF_DIN,
-							RD1			=> RF_RD1,
-							RD2			=> RF_RD2,
-							WR			=> RF_WR,
-							RD1_ADDR	=> RF_RD1_ADDR,
-							RD2_ADDR	=> RF_RD2_ADDR,
-							WR_ADDR		=> RF_WR_ADDR,
-							DOUT1		=> RF_dout1_s,
-							DOUT2		=> REG_B
+							CLK			: in	std_logic;
+							RST			: in	std_logic;
+							ENB			: in	std_logic;
+							HEAP_ADDR	: in	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
+							RD1			: in	std_logic;
+							RD2			: in	std_logic;
+							WR			: in	std_logic;
+							DIN			: in	std_logic_vector(WORD_SIZE-1 downto 0);
+							DOUT1		: out	std_logic_vector(WORD_SIZE-1 downto 0);
+							DOUT2		: out	std_logic_vector(WORD_SIZE-1 downto 0);
+							ADDR_IN		: in	std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
+							ADDR_OUT1	: in	std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
+							ADDR_OUT2	: in	std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
+							CALL		: in 	std_logic;
+							RETN		: in 	std_logic;
+							SPILL		: out 	std_logic;
+							FILL		: out	std_logic;
+							SWP			: out	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
+							MBUS		: inout	std_logic_vector(max(log2(SYSTEM_ADDR_SIZE), WORD_SIZE)-1 downto 0);
+							ACK			: in	std_logic;
+							RF_OK		: out	std_logic
 						);
 						
 	-- Instantiate zero detector to check if branch taken

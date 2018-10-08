@@ -169,6 +169,25 @@ begin
 		RD1			<= '1';
 		RD2			<= '1';
 		ADDR_OUT2	<= (0 => '1', others => '0');
+		wait for 2 ns;
+		
+		RD1		<= '0';
+		RD2		<= '0';
+		RETN	<= '1';
+		wait for 6 ns;
+		
+		RETN <= '0';
+		ACK  <= '1';
+		wait for 64 ns;
+		
+		ACK  <= '0';
+		MBUS <= "00000000";
+		wait for 6 ns;
+		
+		RETN <= '1';
+		MBUS <= "ZZZZZZZZ";
+		wait for 2 ns;
+		
 		wait;
 	end process;
 
