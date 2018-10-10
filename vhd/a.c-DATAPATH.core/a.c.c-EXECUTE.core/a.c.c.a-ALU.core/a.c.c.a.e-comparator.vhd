@@ -1,64 +1,51 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+package cmp_ctrl is
+	type compare_type		is (EQUAL, NOT_EQUAL, GREATER, GREATER_EQ, LESS, LESS_EQ, NO_COMPARE);
+end package;
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 USE ieee.std_logic_signed.ALL;
+use work.cmp_ctrl.all;
 
-entity comparator is
-	port(	A: IN std_logic_vector(31 downto 0);
-			B: IN std_logic_vector(31 downto 0);
-			Sel: IN std_logic_vector(2 downto 0);
-			O: out std_logic_vector(31 downto 0)
-			);
-end comparator;
+entity COMPARATOR is
+	port(
+		Z	: in	std_logic;
+		C	: in	std_logic;
+		SEL	: in	compare_type;
+		O	: out	std_logic
+	);
+end COMPARATOR;
 
-architecture Behavioral of comparator is
+architecture Behavioral of COMPARATOR is
 begin 
-	process(A,B,Sel)
-	begin 
-			-- 000 -> equal
-			-- 001 -> not equal
-			-- 010 -> greater
-			-- 011 -> greater equal
-			-- 100 -> less
-			-- 101 -> less equal
-		 case sel is
-			 when "000" => -- equal check
-				if (A=B) then
-					o <= (0 => '1', others=>'0');
-				else
-					o <= (others=>'0');
-				end if;
-			 when "001" => -- not equal check
-				if (A=B) then
-					o <= (others=>'0');
-				else
-					o <= (0 => '1', others=>'0');
-				end if;
-			 when "010" => -- greater check	
-				if (A>B) then
-					o <= (0 => '1', others=>'0');
-				else
-					o <= (others=>'0');
-				end if;
-			 when "011" => -- greater equal check	
-				if (A>=B) then
-					o <= (0 => '1', others=>'0');
-				else
-					o <= (others=>'0');
-				end if;
-			 when "100" => -- less check
-				if (A<B) then
-					o <= (0 => '1', others=>'0');
-				else
-					o <= (others=>'0');
-				end if;
-			 when "101" => --less equal check
-				if (A<=B) then
-					o <= (0 => '1', others=>'0');
-				else
-					o <= (others=>'0');
-				end if;
-			 when others => 
-				o <= (others=>'0');
-		 end case;
+	
+	process (SEL, C, Z) is
+	begin
+		case (SEL) is
+			when EQUAL =>
+				O <= Z;
+				
+			when NOT_EQUAL =>
+				O <= not Z;
+				
+			when GREATER =>
+				O <= C and not Z;
+				
+			when GREATER_EQ =>
+				O <= C;
+				
+			when LESS =>
+				O <= not C;
+				
+			when LESS_EQ =>
+				O <= not C or Z;
+				
+			when NO_COMPARE =>
+				O <= '0';
+		end case;
 	end process;
+	
 end Behavioral;

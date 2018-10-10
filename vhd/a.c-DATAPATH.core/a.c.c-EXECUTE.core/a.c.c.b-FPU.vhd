@@ -70,11 +70,11 @@ begin
 	mantissa2	<= F2(MANTISSA_RANGE);
 	
 	---- Extend mantissa to OPERAND_SIZE
-	extended_mantissa1(MANTISSA_RANGE)								<= mantissa1;
-	extended_mantissa1(FP_MANTISSA_SIZE)							<= '0';--or_reduce(exponent1); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
+	extended_mantissa1(MANTISSA_RANGE)		<= mantissa1;
+	extended_mantissa1(FP_MANTISSA_SIZE)	<= '0';--or_reduce(exponent1); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
 	
-	extended_mantissa2(MANTISSA_RANGE)								<= mantissa2;
-	extended_mantissa2(FP_MANTISSA_SIZE)							<= '0';--or_reduce(exponent2); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
+	extended_mantissa2(MANTISSA_RANGE)		<= mantissa2;
+	extended_mantissa2(FP_MANTISSA_SIZE)	<= '0';--or_reduce(exponent2); -- If exponent all 0s, implicit digit is 0 (gradual underflow), else 1.
 						  
 	---- Sign calculation
 	sign_o <= sign1 xor sign2;

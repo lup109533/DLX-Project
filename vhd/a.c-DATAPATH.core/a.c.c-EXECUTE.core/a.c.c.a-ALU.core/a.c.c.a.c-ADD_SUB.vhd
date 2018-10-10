@@ -6,8 +6,9 @@ entity ADD_SUB is
 	generic (OPERAND_SIZE : natural);
 	port (
 		R1, R2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-   		CIN		: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-		S, C	: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
+   		CIN		: in	std_logic;
+		S		: out	std_logic_vector(OPERAND_SIZE-1 downto 0);
+		C		: out	std_logic
 	);
 end entity;
 

@@ -153,12 +153,9 @@ begin
 		case (opcode_s) is
 			when NOP =>
 				op_type <= NO_TYPE;
-		
-			when J | JAL =>
-				op_type <= J_TYPE;
 				
-			when BEQZ | BNEZ | JR | JALR =>
-				op_type <= JR_TYPE;
+			when J | JA | BEQZ | BNEZ | JR | JALR =>
+				op_type <= J_TYPE;
 				
 			when ALU_I | FPU_I =>
 				op_type <= R_TYPE;
