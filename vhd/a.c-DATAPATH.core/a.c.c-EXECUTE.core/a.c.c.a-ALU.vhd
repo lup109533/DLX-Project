@@ -104,7 +104,7 @@ begin
 	
 	
 	-- COMPARATOR
-	COMPARE0: COMPARATOR generic map (OPERAND_SIZE) port map (zero_flag, carry_flag, compare_sel, compare_out);
+	COMPARE0: COMPARATOR port map (zero_flag, carry_flag, compare_sel, compare_out);
 	---- Zero flag generation
 	zero_flag		<= not(or_reduce(addsub_out));
 	---- For set-type operations
