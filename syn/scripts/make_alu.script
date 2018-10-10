@@ -1,0 +1,7 @@
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.a-LU_CTRL.vhd
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.b-LOGIC_UNIT.vhd
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.c-ADD_SUB.vhd
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.d-SHIFTER.vhd
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.e-COMPARATOR.vhd
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.f-ZERO_DETECTOR.vhd
+analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.vhd
