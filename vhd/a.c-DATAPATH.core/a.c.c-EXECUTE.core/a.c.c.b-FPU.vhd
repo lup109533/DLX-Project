@@ -40,10 +40,36 @@ architecture structural of FPU is
 			PACKED		: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0)
 		);
 	end component;
+	
+	component F2I_CONVERTER
+		generic (
+			MANTISSA_SIZE	: natural;
+			EXPONENT_SIZE	: natural
+		);
+		port (
+			MANTISSA	: in	std_logic_vector(MANTISSA_SIZE-1 downto 0);
+			EXPONENT	: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
+			SIGN		: in	std_logic;
+			CONV		: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0)
+		);
+	end component;
+	
+	component I2F_CONVERTER
+		generic (
+			MANTISSA_SIZE	: natural;
+			EXPONENT_SIZE	: natural
+		);
+		port (
+			DIN		: in	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0);
+			CONV	: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0)
+		);
+	end component;
 
 	signal mul1, mul2			: std_logic_vector((FP_MANTISSA_SIZE+1)-1 downto 0);
 	signal mul_out				: std_logic_vector(2*(FP_MANTISSA_SIZE+1)-1 downto 0);
 	signal int_mul_o			: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal f2i_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal i2f_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	
 	signal sign1, sign2			: std_logic;
 	signal exponent1, exponent2	: std_logic_vector(FP_EXPONENT_SIZE-1 downto 0);
@@ -108,8 +134,34 @@ begin
 														ZERO		=> fp_zero_s,
 														PACKED		=> fp_mul_o
 													);
+													
+	-- CONVERTERS
+	-- FP to INT
+	F2I: F2I_CONVERTER	generic map (
+							MANTISSA_SIZE	=> FP_MANTISSA_SIZE,
+							EXPONENT_SIZE	=> FP_EXPONENT_SIZE
+						)
+						port map (
+							MANTISSA	=> mantissa1,
+							EXPONENT	=> exponent1,
+							SIGN		=> sign1,
+							CONV		=> f2i_o
+						);
+						
+	-- INT to FP					
+	I2F: I2F_CONVERTER	generic map (
+							MANTISSA_SIZE	=> FP_MANTISSA_SIZE,
+							EXPONENT_SIZE	=> FP_EXPONENT_SIZE
+						)
+						port map (
+							DIN		=> F1,
+							CONV	=> i2f_o
+						);
 	
 	-- OUTPUT MUX
-	O <= int_mul_o when (OPCODE = INT_MULTIPLY) else fp_mul_o; -- For now only multiplication
+	O 	<=	int_mul_o when (OPCODE = INT_MULTIPLY) else
+			fp_mul_o  when (OPCODE = FP_MULTIPLY)  else
+			f2i_o     when (OPCODE = F2I_CONVERT)  else
+			i2f_o;
 
 end architecture;

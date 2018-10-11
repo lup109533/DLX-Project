@@ -50,14 +50,20 @@ begin
 	begin
 		if (opcode_s = ALU_I) then
 			case (func_s) is
-				when SHLL | SHRL | SHRA =>
-					alu_opcode_s <= SHIFT;
+				when SHLL =>
+					alu_opcode_s <= SHIFT_LL;
+					
+				when SHRL =>
+					alu_opcode_s <= SHIFT_RL;
+					
+				when SHRA =>
+					alu_opcode_s <= SHIFT_RA;
 				
 				when ADD | ADDU =>
-					alu_opcode_s <= ADD;
+					alu_opcode_s <= IADD;
 					
 				when SUB | SUBU =>
-					alu_opcode_s <= SUB;
+					alu_opcode_s <= ISUB;
 					
 				when LAND =>
 					alu_opcode_s <= LOGIC_AND;
@@ -135,14 +141,20 @@ begin
 	ALU_OPCODE <= alu_opcode_s;
 	
 	-- FPU OPCODE GENERATOR
-	alu_opcode_manager: process (fpu_func_s) is
+	fpu_opcode_manager: process (fpu_func_s) is
 	begin
 		case (fpu_func_s) is
 			when MUL | MULU =>
 				fpu_opcode_s <= INT_MULTIPLY;
+				
+			when MULF =>
+				fpu_opcode_s <= FP_MULTIPLY;
+			
+			when CVTF2I =>
+				fpu_opcode_s <= F2I_CONVERT;
 			
 			when others =>
-				fpu_opcode_s <= CONVERSION;
+				fpu_opcode_s <= F2I_CONVERT;
 		end case;
 	end process;
 	FPU_OPCODE <= fpu_opcode_s;
