@@ -35,7 +35,7 @@ architecture behavioural of F2I_CONVERTER is
 	signal mantissa_s			: std_logic_vector(EXTENDED_SIZE-1      downto 0);
 	signal exponent_s			: std_logic_vector(EXPONENT_SIZE-1 downto 0);
 	signal exp_sign				: std_logic;
-	signal shift_amount			: integer range 0 to log2(INT_SIZE)-1;
+	signal shift_amount			: integer range 0 to INT_SIZE-1;
 	signal conv_s				: std_logic_vector(EXTENDED_SIZE-1 downto 0);
 	
 begin

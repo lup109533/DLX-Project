@@ -7,9 +7,9 @@ use work.DLX_globals.all;
 entity FPU is
 	generic (OPERAND_SIZE : natural);
 	port (
-		F1, F2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-		OPCODE	: in	FPU_opcode_t;
-		O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
+		F1, F2		: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
+		OPCODE		: in	FPU_opcode_t;
+		O			: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
 	);
 end entity;
 
@@ -41,6 +41,23 @@ architecture structural of FPU is
 		);
 	end component;
 	
+	component FP_ADD_SUB
+		generic (
+			MANTISSA_SIZE	: natural;
+			EXPONENT_SIZE	: natural
+		);
+		port (
+			ADD_SUB			: in	std_logic; -- 0 = add / 1 = sub
+			SIGN1			: in	std_logic;
+			SIGN2			: in	std_logic;
+			EXPONENT1		: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
+			EXPONENT2		: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
+			MANTISSA1		: in	std_logic_vector(MANTISSA_SIZE-1 downto 0);
+			MANTISSA2		: in	std_logic_vector(MANTISSA_SIZE-1 downto 0);
+			RESULT			: out	std_logic_vector((1 + EXPONENT_SIZE + MANTISSA_SIZE)-1 downto 0)
+		);
+	end component;
+	
 	component F2I_CONVERTER
 		generic (
 			MANTISSA_SIZE	: natural;
@@ -68,6 +85,7 @@ architecture structural of FPU is
 	signal mul1, mul2			: std_logic_vector((FP_MANTISSA_SIZE+1)-1 downto 0);
 	signal mul_out				: std_logic_vector(2*(FP_MANTISSA_SIZE+1)-1 downto 0);
 	signal int_mul_o			: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal addsub_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal f2i_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal i2f_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	
@@ -83,6 +101,7 @@ architecture structural of FPU is
 	signal fp_nan_s				: std_logic;
 	signal fp_inf_s				: std_logic;
 	signal fp_zero_s			: std_logic;
+	signal add_sub				: std_logic;
 	
 	
 begin
@@ -125,7 +144,7 @@ begin
 														EXPONENT_SIZE	=> FP_EXPONENT_SIZE
 													)
 													port map (
-														MANTISSA 	=> mul_out(2*(FP_MANTISSA_SIZE+1)-1 downto 0),
+														MANTISSA 	=> mul_out,
 														EXPONENT1	=> exponent1,
 														EXPONENT2	=> exponent2,
 														SIGN		=> sign_o,
@@ -134,7 +153,24 @@ begin
 														ZERO		=> fp_zero_s,
 														PACKED		=> fp_mul_o
 													);
-													
+	
+	-- ADDER/SUBTRACTOR
+	add_sub <= '1' when (OPCODE = FP_SUB) else '0';
+	ADDSUB: FP_ADD_SUB	generic map (
+							MANTISSA_SIZE	=> FP_MANTISSA_SIZE,
+							EXPONENT_SIZE	=> FP_EXPONENT_SIZE
+						)
+						port map (
+							ADD_SUB		=> add_sub,
+							SIGN1		=> sign1,
+							SIGN2		=> sign1,
+							MANTISSA1	=> mantissa1,
+							MANTISSA2	=> mantissa2,
+							EXPONENT1	=> exponent1,
+							EXPONENT2	=> exponent2,
+							RESULT		=> addsub_o
+						);
+	
 	-- CONVERTERS
 	-- FP to INT
 	F2I: F2I_CONVERTER	generic map (
@@ -159,9 +195,10 @@ begin
 						);
 	
 	-- OUTPUT MUX
-	O 	<=	int_mul_o when (OPCODE = INT_MULTIPLY) else
-			fp_mul_o  when (OPCODE = FP_MULTIPLY)  else
-			f2i_o     when (OPCODE = F2I_CONVERT)  else
+	O 	<=	int_mul_o when (OPCODE = INT_MULTIPLY)              else
+			fp_mul_o  when (OPCODE = FP_MULTIPLY)               else
+			addsub_o  when (OPCODE = FP_ADD or OPCODE = FP_SUB) else
+			f2i_o     when (OPCODE = F2I_CONVERT)               else
 			i2f_o;
 
 end architecture;

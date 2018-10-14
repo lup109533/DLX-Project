@@ -48,7 +48,7 @@ begin
 	-- Shift correction if overflow
 	shift_correction: process (DIN) is
 	begin
-		if (DIN(MANTISSA_SIZE*2-1) = '1') then
+		if (DIN(MANTISSA_SIZE*2-3) = '1') then
 			SHIFT									<= '1';
 			shifted_s(MANTISSA_SIZE*2-1)			<= '0';
 			shifted_s(MANTISSA_SIZE*2-2 downto 0)	<= DIN(MANTISSA_SIZE*2-1 downto 1);
@@ -59,9 +59,9 @@ begin
 	end process;
 	
 	-- Generate rounding signals
-	guard_bit	<= shifted_s(MANTISSA_SIZE-1);
-	round_bit	<= shifted_s(MANTISSA_SIZE-2);
-	sticky_bit	<= or_reduce(shifted_s(MANTISSA_SIZE-3 downto 0));
+	guard_bit	<= shifted_s(MANTISSA_SIZE-3);
+	round_bit	<= shifted_s(MANTISSA_SIZE-4);
+	sticky_bit	<= or_reduce(shifted_s(MANTISSA_SIZE-5 downto 0));
 	
 	check_if_round: process (guard_bit, round_bit, sticky_bit, shifted_s) is
 	begin
@@ -79,7 +79,7 @@ begin
 	end process;
 	
 	-- Select if rounded or not
-	truncated_s	<= shifted_s(MANTISSA_SIZE*2-2 downto MANTISSA_SIZE-1);
+	truncated_s	<= shifted_s(MANTISSA_SIZE*2-3 downto MANTISSA_SIZE-2);
 	
 	-- Rounding adder
 	ROUND_ADD: CLA generic map (MANTISSA_SIZE) port map (truncated_s, ONE, '0', rounded_s, rounding_ovfl_s);
