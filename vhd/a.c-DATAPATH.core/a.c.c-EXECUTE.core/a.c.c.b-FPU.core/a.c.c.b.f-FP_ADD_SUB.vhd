@@ -59,11 +59,11 @@ architecture structural of FP_ADD_SUB is
 	signal smallest_mant			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
 	signal mant1_s					: std_logic_vector(MANTISSA_SIZE-1 downto 0);
 	signal mant2_s					: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	signal not_mant1_s				: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	signal not_mant2_s				: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	signal mant1_compl_s			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	signal mant2_compl_s			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
 	signal mant_out					: std_logic_vector(MANTISSA_SIZE-1 downto 0);
+	signal not_mant1_s				: std_logic_vector(MANTISSA_SIZE   downto 0);
+	signal not_mant2_s				: std_logic_vector(MANTISSA_SIZE   downto 0);
+	signal mant1_compl_s			: std_logic_vector(MANTISSA_SIZE   downto 0);
+	signal mant2_compl_s			: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal mant1_signed_s			: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal mant2_signed_s			: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal mant_addsub_out			: std_logic_vector(MANTISSA_SIZE   downto 0);
@@ -81,8 +81,8 @@ architecture structural of FP_ADD_SUB is
 begin
 
 	-- Get correct signs
-	sign1_s		<= SIGN1;
-	sign2_s		<= SIGN2 xor ADD_SUB;
+	sign1_s		<= SIGN1             when (diff_sel = '0') else SIGN2 xor ADD_SUB;
+	sign2_s		<= SIGN2 xor ADD_SUB when (diff_sel = '0') else SIGN1;
 	
 	-- Check particular values
 	is_inf1		<= and_reduce(EXPONENT1) and not(or_reduce(MANTISSA1));
@@ -108,29 +108,29 @@ begin
 	mant2_s			<= MANTISSA2 when (diff_sel = '0') else MANTISSA1;
 	
 	-- Shift smallest mantissa to the right according to exp_diff
-	shift_amount	<= to_integer(unsigned(exp_diff)) when (diff_sel = '1') else to_integer(unsigned(exp_diff) + 1);
+	shift_amount	<= to_integer(unsigned(exp_diff)) when (diff_sel = '1') else to_integer(unsigned(not exp_diff) + 1);
 	mant1_s			<= std_logic_vector(shift_right(unsigned(smallest_mant), shift_amount));
 	
 	-- Complement according to signal
-	mant1_signed_s	<= '0' & mant1_s when (sign1_s = '0') else '1' & mant1_compl_s;
-	mant2_signed_s	<= '0' & mant2_s when (sign2_s = '0') else '1' & mant2_compl_s;
+	mant1_signed_s	<= '0' & mant1_s when (sign1_s = '0') else mant1_compl_s;
+	mant2_signed_s	<= '0' & mant2_s when (sign2_s = '0') else mant2_compl_s;
 	
-	not_mant1_s	<= not mant1_s;
-	not_mant2_s	<= not mant2_s;
+	not_mant1_s	<= '1' & not mant1_s;
+	not_mant2_s	<= '1' & not mant2_s;
 	
-	MANT_COMPL_ADD1: RCA generic map (MANTISSA_SIZE) port map (not_mant1_s, (others => '0'), '1', mant1_compl_s, open);
-	MANT_COMPL_ADD2: RCA generic map (MANTISSA_SIZE) port map (not_mant2_s, (others => '0'), '1', mant2_compl_s, open);
+	MANT_COMPL_ADD1: RCA generic map (MANTISSA_SIZE+1) port map (not_mant1_s, (others => '0'), '1', mant1_compl_s, open);
+	MANT_COMPL_ADD2: RCA generic map (MANTISSA_SIZE+1) port map (not_mant2_s, (others => '0'), '1', mant2_compl_s, open);
 	
 	-- Add or subtract
-	MANTISSA_ADDSUB: RCA generic map (MANTISSA_SIZE+1) port map (mant1_signed_s, mant2_signed_s, ADD_SUB, mant_addsub_out, mant_addsub_carry);
+	MANTISSA_ADDSUB: RCA generic map (MANTISSA_SIZE+1) port map (mant1_signed_s, mant2_signed_s, '0', mant_addsub_out, mant_addsub_carry);
 	
 	-- Calculate sign of output and complement/shift if necessary
-	correct_exp			<= mant_addsub_carry xor ADD_SUB;
-	not_mant_addsub_out	<= not mant_addsub_out;
+	mant_addsub_out_sign	<= sign2_s; -- Sign of biggest operand
+	correct_exp				<= mant_addsub_out_sign xor mant_addsub_out(MANTISSA_SIZE);
 	
+	not_mant_addsub_out	<= not mant_addsub_out;
 	MANT_ADDSUB_COMPL_ADD: RCA generic map (MANTISSA_SIZE+1) port map (not_mant_addsub_out, (others => '0'), '1', mant_addsub_compl, open);
 	
-	mant_addsub_out_sign	<= mant_addsub_out(MANTISSA_SIZE);
 	mant_out 				<= mant_addsub_out(MANTISSA_SIZE-1 downto 0)	when (mant_addsub_out_sign = '0' and correct_exp = '0')	else
 							   mant_addsub_out(MANTISSA_SIZE   downto 1)	when (mant_addsub_out_sign = '0' and correct_exp = '1')	else
 							   mant_addsub_compl(MANTISSA_SIZE-1 downto 0)	when (mant_addsub_out_sign = '1' and correct_exp = '0')	else

@@ -163,7 +163,7 @@ begin
 						port map (
 							ADD_SUB		=> add_sub,
 							SIGN1		=> sign1,
-							SIGN2		=> sign1,
+							SIGN2		=> sign2,
 							MANTISSA1	=> mantissa1,
 							MANTISSA2	=> mantissa2,
 							EXPONENT1	=> exponent1,
