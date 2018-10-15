@@ -144,6 +144,12 @@ begin
 	fpu_opcode_manager: process (fpu_func_s) is
 	begin
 		case (fpu_func_s) is
+			when ADDF =>
+				fpu_opcode_s <= FP_ADD;
+				
+			when SUBF =>
+				fpu_opcode_s <= FP_SUB;
+		
 			when MUL | MULU =>
 				fpu_opcode_s <= INT_MULTIPLY;
 				
@@ -152,6 +158,9 @@ begin
 			
 			when CVTF2I =>
 				fpu_opcode_s <= F2I_CONVERT;
+				
+			when CVTI2F =>
+				fpu_opcode_s <= I2F_CONVERT;
 			
 			when others =>
 				fpu_opcode_s <= F2I_CONVERT;
@@ -272,13 +281,6 @@ begin
 	X2D_FORWARD_S2_EN	<= target_has_s2 and exe_source_has_d and exe_can_forward_s2;
 	M2D_FORWARD_S2_EN	<= target_has_s2 and exe_source_has_d and mem_can_forward_s2;
 	W2D_FORWARD_S2_EN	<= target_has_s2 and exe_source_has_d and wrb_can_forward_s2;
-	
-	-- CONTROL HAZARD FLUSH CHECK
-	-- If the instruction at the EXECUTION stage is a branch, the prediction obtained at the DECODE stage is checked against the result.
-	-- If the prediction is correct, execution continues as normal, otherwise flushing is required (previous pipeline instructions are
-	-- replaced with NOP).
-	flush_s	<= '1' when (hazard_pipe_t(EXE) = J_TYPE or hazard_pipe_t(EXE) = JR_TYPE) and not(prediction_exe_s = BRANCH_TAKEN) else '0';
-	FLUSH	<= flush_s;
 	
 	-- STALL CHECK
 	-- Stall occurs in the particular case in which a source register requires data that has not been fetched from the main memory yet, i.e. if an instruction in the

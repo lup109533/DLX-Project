@@ -3,6 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.or_reduce;
 use ieee.std_logic_misc.and_reduce;
 use work.DLX_globals.all;
+use work.FP_cmp_ctrl.all;
 
 entity FPU is
 	generic (OPERAND_SIZE : natural);
@@ -81,6 +82,23 @@ architecture structural of FPU is
 			CONV	: out	std_logic_vector((MANTISSA_SIZE + EXPONENT_SIZE + 1)-1 downto 0)
 		);
 	end component;
+	
+	component FP_COMPARATOR
+		generic (
+			MANTISSA_SIZE	: natural;
+			EXPONENT_SIZE	: natural
+		);
+		port (
+			COMPARISON		: in	FP_compare_type;
+			SIGN1			: in	std_logic;
+			SIGN2			: in	std_logic;
+			EXPONENT1		: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
+			EXPONENT2		: in	std_logic_vector(EXPONENT_SIZE-1 downto 0);
+			MANTISSA1		: in	std_logic_vector(MANTISSA_SIZE-1 downto 0);
+			MANTISSA2		: in	std_logic_vector(MANTISSA_SIZE-1 downto 0);
+			RESULT			: out	std_logic
+		);
+	end component;
 
 	signal mul1, mul2			: std_logic_vector((FP_MANTISSA_SIZE+1)-1 downto 0);
 	signal mul_out				: std_logic_vector(2*(FP_MANTISSA_SIZE+1)-1 downto 0);
@@ -88,6 +106,8 @@ architecture structural of FPU is
 	signal addsub_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal f2i_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal i2f_o				: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal conv_o				: std_logic;
+	signal conv_ext_o			: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	
 	signal sign1, sign2			: std_logic;
 	signal exponent1, exponent2	: std_logic_vector(FP_EXPONENT_SIZE-1 downto 0);
@@ -102,7 +122,7 @@ architecture structural of FPU is
 	signal fp_inf_s				: std_logic;
 	signal fp_zero_s			: std_logic;
 	signal add_sub				: std_logic;
-	
+	signal cmp_type				: FP_compare_type;
 	
 begin
 
@@ -193,12 +213,40 @@ begin
 							DIN		=> F1,
 							CONV	=> i2f_o
 						);
+						
+	-- COMPARATOR
+	CMP: FP_COMPARATOR	generic map (
+							MANTISSA_SIZE	=> FP_MANTISSA_SIZE,
+							EXPONENT_SIZE	=> FP_EXPONENT_SIZE
+						)
+						port map (
+							COMPARISON	=> cmp_type,
+							SIGN1		=> sign1,
+							SIGN2		=> sign2,
+							MANTISSA1	=> mantissa1,
+							MANTISSA2	=> mantissa2,
+							EXPONENT1	=> exponent1,
+							EXPONENT2	=> exponent2,
+							RESULT		=> conv_o
+						);
+						
+	conv_ext_o(0)						<= conv_o;
+	conv_ext_o(OPERAND_SIZE-1 downto 1)	<= (others => '0');
+	
+	cmp_type	<= FP_CMP_EQ when (OPCODE = FP_COMPARE_EQ) else
+				   FP_CMP_NE when (OPCODE = FP_COMPARE_NE) else
+				   FP_CMP_GE when (OPCODE = FP_COMPARE_GE) else
+				   FP_CMP_GT when (OPCODE = FP_COMPARE_GT) else
+				   FP_CMP_LE when (OPCODE = FP_COMPARE_LE) else
+				   FP_CMP_LT when (OPCODE = FP_COMPARE_LT) else
+				   FP_NO_COMPARE;
 	
 	-- OUTPUT MUX
 	O 	<=	int_mul_o when (OPCODE = INT_MULTIPLY)              else
 			fp_mul_o  when (OPCODE = FP_MULTIPLY)               else
 			addsub_o  when (OPCODE = FP_ADD or OPCODE = FP_SUB) else
 			f2i_o     when (OPCODE = F2I_CONVERT)               else
-			i2f_o;
+			i2f_o     when (OPCODE = I2F_CONVERT)               else
+			conv_ext_o;
 
 end architecture;

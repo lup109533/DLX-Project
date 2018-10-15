@@ -61,7 +61,7 @@ begin
 	-- PC output for memory/cache
 	PC <= curr_pc;
 	
-	-- Forward instruction
-	FOUT <= INSTR;
+	-- Forward instruction, or push bubble (NOP) if branch
+	FOUT <= INSTR when (BRANCH_TAKEN = '0') else NOP & INSTR((DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto 0);
 
 end architecture;

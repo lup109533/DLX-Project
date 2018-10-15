@@ -58,28 +58,49 @@ begin
 --			end loop;
 --		end loop;
 		
-		OPCODE_s <= FP_ADD;
+--		OPCODE_s <= FP_ADD;
+--		
+--		for i in 0 to 10 loop
+--			-- F1
+--			uniform(seed1, seed2, rand);
+--			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+--			uniform(seed1, seed2, rand);
+--			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+--			uniform(seed1, seed2, rand);
+--			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+--			-- F2
+--			uniform(seed1, seed2, rand);
+--			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+--			uniform(seed1, seed2, rand);
+--			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+--			uniform(seed1, seed2, rand);
+--			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+--			
+--			wait for 1 ns;
+--		end loop;
 		
-		for i in 0 to 10 loop
-			-- F1
-			uniform(seed1, seed2, rand);
-			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
-			uniform(seed1, seed2, rand);
-			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
-			uniform(seed1, seed2, rand);
-			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
-			-- F2
-			uniform(seed1, seed2, rand);
-			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
-			uniform(seed1, seed2, rand);
-			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
-			uniform(seed1, seed2, rand);
-			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
-			
-			wait for 1 ns;
-		end loop;
+--		OPCODE_s <= FP_SUB;
+--		
+--		for i in 0 to 10 loop
+--			-- F1
+--			uniform(seed1, seed2, rand);
+--			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+--			uniform(seed1, seed2, rand);
+--			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+--			uniform(seed1, seed2, rand);
+--			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+--			-- F2
+--			uniform(seed1, seed2, rand);
+--			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+--			uniform(seed1, seed2, rand);
+--			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+--			uniform(seed1, seed2, rand);
+--			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+--			
+--			wait for 1 ns;
+--		end loop;
 		
-		OPCODE_s <= FP_SUB;
+		OPCODE_s <= FP_COMPARE_GE;
 		
 		for i in 0 to 10 loop
 			-- F1
