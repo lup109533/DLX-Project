@@ -137,7 +137,7 @@ package DLX_globals is
 	constant LW			: opcode_t	:= std_logic_vector(to_unsigned(16#23#, OPCODE_SIZE));
 	constant LBU		: opcode_t	:= std_logic_vector(to_unsigned(16#24#, OPCODE_SIZE));
 	constant LHU		: opcode_t	:= std_logic_vector(to_unsigned(16#25#, OPCODE_SIZE));
-	constant LF			: opcode_t	:= std_logic_vector(to_unsigned(16#26#, OPCODE_SIZE));
+	constant LF0		: opcode_t	:= std_logic_vector(to_unsigned(16#26#, OPCODE_SIZE));	-- LF0 instead of LF to address namespace visibility problem
 	constant LD			: opcode_t	:= std_logic_vector(to_unsigned(16#27#, OPCODE_SIZE));
 	constant SB			: opcode_t	:= std_logic_vector(to_unsigned(16#28#, OPCODE_SIZE));
 	constant SH			: opcode_t	:= std_logic_vector(to_unsigned(16#29#, OPCODE_SIZE));
@@ -156,7 +156,7 @@ package DLX_globals is
 	constant SHRA		: func_t	:= std_logic_vector(to_unsigned(16#07#, ALU_FUNCTION_SIZE));	-- Disambiguation from VHDL keyword SRA
 	constant ADD		: func_t	:= std_logic_vector(to_unsigned(16#20#, ALU_FUNCTION_SIZE));
 	constant ADDU		: func_t	:= std_logic_vector(to_unsigned(16#21#, ALU_FUNCTION_SIZE));
-	constant SUB		: func_t	:= std_logic_vector(to_unsigned(16#22#, ALU_FUNCTION_SIZE));
+	constant SUB0		: func_t	:= std_logic_vector(to_unsigned(16#22#, ALU_FUNCTION_SIZE));	-- SUB0 instead of SUB to address namespace visibility problem
 	constant SUBU		: func_t	:= std_logic_vector(to_unsigned(16#23#, ALU_FUNCTION_SIZE));
 	constant LAND		: func_t	:= std_logic_vector(to_unsigned(16#24#, ALU_FUNCTION_SIZE));	-- Disambiguation from VHDL keyword AND
 	constant LOR		: func_t	:= std_logic_vector(to_unsigned(16#25#, ALU_FUNCTION_SIZE));	-- Disambiguation from VHDL keyword OR

@@ -8,16 +8,17 @@ entity CU is
 		CLK					: in	std_logic;
 		RST					: in	std_logic;
 		ENB					: in	std_logic;
-		INSTR				: in	DLX_instruction_t;
+		INSTR				: in	DLX_instr_t;
+		
 		-- Special signals for TRAP instruction
-		ISR_EN				: in	std_logic;
-		-- Control signals here.
+		ISR_EN				: out	std_logic;
+		
+		-- DECODE
 		RF_RD1_ADDR			: out	reg_addr_t;
 		RF_RD2_ADDR			: out	reg_addr_t;
 		RF_WR_ADDR			: out	reg_addr_t;
 		RF_RD1				: out	std_logic;
 		RF_RD2				: out	std_logic;
-		RF_WR				: out	std_logic;
 		RF_CALL				: out	std_logic;
 		RF_RETN				: out	std_logic;
 		IMM_ARG				: out	immediate_t;
@@ -26,6 +27,12 @@ entity CU is
 		PC_OFFSET_SEL		: out	std_logic;
 		OPCODE				: out	opcode_t;
 		SIGNED_EXT			: out	std_logic;
+		
+		-- EXECUTE
+		ALU_OPCODE			: out	ALU_opcode_t;
+		FPU_OPCODE			: out	FPU_opcode_t;
+		
+		-- MEMORY
 		MEM_RD_SEL			: out	std_logic;
 		MEM_WR_SEL			: out	std_logic;
 		MEM_EN				: out	std_logic;
@@ -33,6 +40,11 @@ entity CU is
 		MEM_SIGNED_EXT		: out	std_logic;
 		MEM_HALFWORD		: out	std_logic;
 		MEM_BYTE			: out	std_logic;
+		
+		-- WRITE BACK
+		RF_WR				: out	std_logic;
+		
+		-- OTHER
 		X2D_FORWARD_S1_EN	: out	std_logic;
 		M2D_FORWARD_S1_EN	: out	std_logic;
 		W2D_FORWARD_S1_EN	: out	std_logic;
@@ -45,12 +57,10 @@ end entity;
 
 architecture behavioural of CU is
 	
-	type stages_t is (
-					DEC,	-- DECODE
-					EXE,	-- EXCUTE
-					MEM,	-- MEMORY
-					WRB		-- WRITE BACK
-				);
+	constant DEC 				: integer := 0;	-- DECODE
+	constant EXE 				: integer := 1;	-- EXCUTE
+	constant MEM 				: integer := 2;	-- MEMORY
+	constant WRB 				: integer := 3;	-- WRITE BACK
 				
 	signal opcode_s				: opcode_t;
 	signal source1_addr_s		: reg_addr_t;
@@ -62,7 +72,14 @@ architecture behavioural of CU is
 	signal pc_offset_s			: pc_offset_t;
 	signal op_type				: DLX_instr_type_t;
 	
-	type hazard_pipe_op_type_t  is array (DEC to WRB) of op_type;
+	signal signed_immediate		: std_logic;
+	signal signed_alu_op		: std_logic;
+	signal signed_fpu_op		: std_logic;
+	
+	signal alu_opcode_s			: ALU_opcode_t;
+	signal fpu_opcode_s			: FPU_opcode_t;
+	
+	type hazard_pipe_op_type_t  is array (DEC to WRB) of DLX_instr_type_t;
 	type hazard_pipe_reg_addr_t is array (DEC to WRB) of reg_addr_t;
 	
 	signal hazard_pipe_t		: hazard_pipe_op_type_t;
@@ -108,8 +125,8 @@ begin
 	ISR_EN			<= '1' when (opcode_s = TRAP)  else '0';
 	IMM_ARG			<= immediate_s;
 	IMM_SEL			<= '1' when (op_type = I_TYPE or opcode_s = LHI) else '0';
-	PC_OFFSET		<= '1' when (op_type = J_TYPE) else '0';
-	PC_OFFSET_SEL	<= pc_offset_s;
+	PC_OFFSET		<= pc_offset_s;
+	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE) else '0';
 	OPCODE			<= opcode_s;
 	SIGNED_EXT		<= '0' when	((op_type = I_TYPE   and signed_immediate = '1') or
 							     (opcode_s = ALU_I   and signed_alu_op = '1')    or
@@ -130,12 +147,12 @@ begin
 								 opcode_s = SB) else '0';
 								
 	
-	signed_immediate	<= '0' when (OPCODE = ADDUI or
-						             OPCODE = SUBUI or
-									 OPCODE = SLTUI or
-									 OPCODE = SGTUI or
-									 OPCODE = SLEUI or
-									 OPCODE = SGEUI) else '1';
+	signed_immediate	<= '0' when (opcode_s = ADDUI or
+						             opcode_s = SUBUI or
+									 opcode_s = SLTUI or
+									 opcode_s = SGTUI or
+									 opcode_s = SLEUI or
+									 opcode_s = SGEUI) else '1';
 									 
 	signed_alu_op		<= '0' when (func_s = ADDU or
 						             func_s = SUBU or
@@ -147,158 +164,66 @@ begin
 	signed_fpu_op		<= '0' when (fpu_func_s = MULU or fpu_func_s = DIVU) else '1';
 	
 	-- ALU OPCODE GENERATOR
-	alu_opcode_manager: process (opcode_s, func_s) is
-	begin
-		if (opcode_s = ALU_I) then
-			case (func_s) is
-				when SHLL =>
-					alu_opcode_s <= SHIFT_LL;
-					
-				when SHRL =>
-					alu_opcode_s <= SHIFT_RL;
-					
-				when SHRA =>
-					alu_opcode_s <= SHIFT_RA;
-				
-				when ADD | ADDU =>
-					alu_opcode_s <= IADD;
-					
-				when SUB | SUBU =>
-					alu_opcode_s <= ISUB;
-					
-				when LAND =>
-					alu_opcode_s <= LOGIC_AND;
-					
-				when LOR =>
-					alu_opcode_s <= LOGIC_OR;
-					
-				when LXOR =>
-					alu_opcode_s <= LOGIC_AND;
-					
-				when SEQ =>
-					alu_opcode_s <= COMPARE_EQ;
-					
-				when SNE =>
-					alu_opcode_s <= COMPARE_NE;
-				
-				when SLT | SLTU =>
-					alu_opcode_s <= COMPARE_LT;
-					
-				when SGT | SGTU =>
-					alu_opcode_s <= COMPARE_GT;
-					
-				when SLE | SLEU =>
-					alu_opcode_s <= COMPARE_LE;
-					
-				when SGE | SGEU =>
-					alu_opcode_s <= COMPARE_GE;
-					
-				when others =>
-					alu_opcode_s <= MOV;
-			end case;
-		else
-			case (opcode_s) is
-				when SLLI | SRLI | SRAI =>
-					alu_opcode_s <= SHIFT;
-			
-				when ADDI | ADDUI | BEQZ | BNEZ | J | JR | JALR =>
-					alu_opcode_s <= ADD;
-					
-				when SUBI | SUBUI =>
-					alu_opcode_s <= SUB;
-					
-				when ANDI =>
-					alu_opcode_s <= LOGIC_AND;
-					
-				when ORI =>
-					alu_opcode_s <= LOGIC_OR;
-					
-				when XORI =>
-					alu_opcode_s <= LOGIC_AND;
-					
-				when SEQI =>
-					alu_opcode_s <= COMPARE_EQ;
-					
-				when SNEI =>
-					alu_opcode_s <= COMPARE_NE;
-				
-				when SLTI | SLTUI =>
-					alu_opcode_s <= COMPARE_LT;
-					
-				when SGTI | SGTUI =>
-					alu_opcode_s <= COMPARE_GT;
-					
-				when SLEI | SLEUI =>
-					alu_opcode_s <= COMPARE_LE;
-					
-				when SGEI | SGEUI =>
-					alu_opcode_s <= COMPARE_GE;
-					
-				when others =>
-					alu_opcode_s <= MOV;
-			end case;
-		end if;
-	end process;
+	alu_opcode_s	<= SHIFT_LL		when (func_s = SHLL) else
+					   SHIFT_RL		when (func_s = SHRL) else
+					   SHIFT_RA		when (func_s = SHRA) else
+					   IADD			when (func_s = ADD  or func_s = ADDU) else
+					   ISUB			when (func_s = SUB0 or func_s = SUBU) else
+					   LOGIC_AND	when (func_s = LAND) else
+					   LOGIC_OR		when (func_s = LOR)  else
+					   LOGIC_XOR	when (func_s = LXOR) else
+					   COMPARE_EQ	when (func_s = SEQ)  else
+					   COMPARE_NE	when (func_s = SNE)  else
+					   COMPARE_LT	when (func_s = SLT or func_s = SLTU) else
+					   COMPARE_GT	when (func_s = SGT or func_s = SGTU) else
+					   COMPARE_LE	when (func_s = SLE or func_s = SLEU) else
+					   COMPARE_GE	when (func_s = SGE or func_s = SGEU) else
+					   
+					   IADD			when (opcode_s = ADDI or opcode_s = ADDUI) else
+					   IADD			when (opcode_s = J    or opcode_s = JAL    or opcode_s = JR or opcode_s = JALR) else
+					   ISUB			when (opcode_s = SUBI or opcode_s = SUBUI) else
+					   LOGIC_AND	when (opcode_s = ANDI)  else
+					   LOGIC_OR		when (opcode_s = ORI)   else
+					   LOGIC_XOR	when (opcode_s = XORI)  else
+					   COMPARE_EQ	when (opcode_s = SEQI)  else
+					   COMPARE_NE	when (opcode_s = SNEI)  else
+					   COMPARE_LT	when (opcode_s = SLTI or opcode_s = SLTUI) else
+					   COMPARE_GT	when (opcode_s = SGTI or opcode_s = SGTUI) else
+					   COMPARE_LE	when (opcode_s = SLEI or opcode_s = SLEUI) else
+					   COMPARE_GE	when (opcode_s = SGEI or opcode_s = SGEUI) else
+					   MOV;
+					   
 	ALU_OPCODE <= alu_opcode_s;
 	
 	-- FPU OPCODE GENERATOR
-	fpu_opcode_manager: process (fpu_func_s) is
-	begin
-		case (fpu_func_s) is
-			when ADDF =>
-				fpu_opcode_s <= FP_ADD;
-				
-			when SUBF =>
-				fpu_opcode_s <= FP_SUB;
-		
-			when MUL | MULU =>
-				fpu_opcode_s <= INT_MULTIPLY;
-				
-			when MULF =>
-				fpu_opcode_s <= FP_MULTIPLY;
-			
-			when CVTF2I =>
-				fpu_opcode_s <= F2I_CONVERT;
-				
-			when CVTI2F =>
-				fpu_opcode_s <= I2F_CONVERT;
-			
-			when others =>
-				fpu_opcode_s <= F2I_CONVERT;
-		end case;
-	end process;
+	fpu_opcode_s	<= FP_ADD		when (fpu_func_s = ADDF) else
+					   FP_SUB		when (fpu_func_s = SUBF) else
+					   INT_MULTIPLY	when (fpu_func_s = MUL or fpu_func_s = MULU) else
+					   FP_MULTIPLY	when (fpu_func_s = MULF) else
+					   F2I_CONVERT	when (fpu_func_s = CVTF2I) else
+					   I2F_CONVERT;
+					   
 	FPU_OPCODE <= fpu_opcode_s;
 	
 	-- INSTRUCTION TYPE DISCRIMINATOR
-	discriminate_instr_type: process (opcode_s) is
-	begin
-		case (opcode_s) is
-			when NOP =>
-				op_type <= NO_TYPE;
-				
-			when J | JAL =>
-				op_type <= J_TYPE;
-				
-			when ALU_I | FPU_I =>
-				op_type <= R_TYPE;
-				
-			when LHI | LB | LH | LW | LBU | LHU | LF | LD =>
-				op_type <= L_TYPE;
-				
-			when SB | SH | SW | SF | SD =>
-				op_type <= S_TYPE;
-				
-			when others =>
-				op_type <= I_TYPE;
-		end case;
-	end process;
+	op_type	<= NO_TYPE	when (opcode_s = NOP) else
+			   J_TYPE	when (opcode_s = J     or opcode_s = JAL) else
+			   R_TYPE	when (opcode_s = ALU_I or opcode_s = FPU_I) else
+			   L_TYPE	when (opcode_s = LHI   or opcode_s = LB  or
+			                  opcode_s = LH    or opcode_s = LW  or
+							  opcode_s = LBU   or opcode_s = LHU or
+							  opcode_s = LF0   or opcode_s = LD) else
+			   S_TYPE	when (opcode_s = SB    or opcode_s = SH  or
+			                  opcode_s = SW    or opcode_s = SF  or
+							  opcode_s = SD)                     else
+			   I_TYPE;
 	
 	-- HAZARD CHECK PIPELINE
 	hazard_pipeline: process (CLK, RST, ENB, op_type, source1_addr_s, source2_addr_s, dest_addr_s, stall_s) is
 	begin
 		if rising_edge(CLK) then
 			if (RST = '0') then
-				for i in stages_t loop
+				for i in DEC to WRB loop
 					hazard_pipe_t(i)	<= NO_TYPE;
 					hazard_pipe_s1(i)	<= (others => '0');
 					hazard_pipe_s2(i)	<= (others => '0');

@@ -7,7 +7,7 @@ entity WRITE_BACK is
 	port map (
 		DIN		: in	DLX_oper_t;
 		DOUT	: out	DLX_oper_t;
-		WR		: in	std_logic;
+		RF_WR	: in	std_logic;
 		WR_OUT	: out	std_logic
 	);
 end entity;
