@@ -10,7 +10,7 @@ entity FETCH is
 		INSTR			: in	DLX_instr_t;
 		FOUT			: out	DLX_instr_t;
 		PC				: out	DLX_addr_t;
-		-- CU signals
+		-- Datapath signals
 		BRANCH_TAKEN	: in	std_logic;
 		BRANCH_ADDR		: in	DLX_addr_t
 	);

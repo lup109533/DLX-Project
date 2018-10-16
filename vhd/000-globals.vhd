@@ -62,6 +62,7 @@ package DLX_globals is
 	constant JUMP_PC_OFFSET_SIZE	: natural := 26;
 	constant FP_MANTISSA_SIZE		: natural := 23;
 	constant FP_EXPONENT_SIZE		: natural := 8;
+	constant DLX_RF_WINDOWS_NUM		: natural := 4;
 
 	-- RANGES
 	subtype OPCODE_RANGE		is natural range (DLX_INSTRUCTION_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE);
