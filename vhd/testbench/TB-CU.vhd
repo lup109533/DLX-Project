@@ -110,9 +110,9 @@ architecture test of TB_CU is
 	signal W2D_FORWARD_S2_EN_s	: std_logic;
 	signal STALL_s				: std_logic;
 	
-	signal op					: opcodes;
-	signal a					: alu_codes;
-	signal f					: fpu_codes;
+	signal opcodes_s			: opcodes;
+	signal alu_codes_s			: alu_codes;
+	signal fpu_codes_s			: fpu_codes;
 	signal opc					: opcode_t;
 	signal alu					: func_t;
 	signal fpu					: fp_func_t;
@@ -187,33 +187,37 @@ begin
 		RST_s	<= '0';
 		ENB_s	<= '0';
 		INSTR_s	<= (others => '0');
+		opc		<= (others => '0');
 		alu		<= (others => '0');
 		fpu		<= (others => '0');
-		wait for 2 ns;
-	
-		RST_s	<= '1';
-		ENB_s	<= '1';
 		reg1	<= (others => '0');
 		reg2	<= (others => '0');
 		dest	<= (others => '0');
 		imm		<= (others => '0');
 		pcoff	<= (others => '0');
+		wait for 1.5 ns;
+	
+		RST_s	<= '1';
+		ENB_s	<= '1';
 		for op in opcodes loop
+			opcodes_s <= op;
 			opc <= opcode_to_std_logic_v(op);
 			if (opc = ALU_I) then
 				for a in alu_codes loop
+					alu_codes_s	<= a;
 					alu		<= alu_to_std_logic_v(a);
-					INSTR_s	<= opc & alu & dest & reg1 & reg2;
+					INSTR_s	<= opc & reg1 & reg2 & dest & alu;
 					wait for 2 ns;
 				end loop;
 			elsif (opc = FPU_I) then
 				for f in fpu_codes loop
+					fpu_codes_s <= f;
 					fpu		<= fpu_to_std_logic_v(f);
-					INSTR_s	<= opc & fpu & dest & reg1 & reg2;
+					INSTR_s	<= opc & reg1 & reg2 & dest & fpu;
 					wait for 2 ns;
 				end loop;
 			else
-				INSTR_s	<= opc & dest & reg1 & imm;
+				INSTR_s	<= opc & reg1 & dest & imm;
 				wait for 2 ns;
 			end if;
 		end loop;

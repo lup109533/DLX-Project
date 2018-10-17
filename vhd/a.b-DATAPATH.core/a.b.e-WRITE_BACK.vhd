@@ -6,7 +6,10 @@ use work.DLX_globals.all;
 entity WRITE_BACK is
 	port map (
 		DIN		: in	DLX_oper_t;
+		PC		: in	DLX_addr_t;
 		DOUT	: out	DLX_oper_t;
+		-- CU signals
+		LINK_PC	: in	std_logic;
 		RF_WR	: in	std_logic;
 		WR_OUT	: out	std_logic
 	);
@@ -16,8 +19,8 @@ architecture structural of WRITE_BACK is
 
 begin
 
-	DOUT <= DIN;
+	DOUT <= DIN when (LINK_PC = '0') else std_logic_vector(unsigned(PC) + 4);
 	
-	WR <= WR_OUT;
+	WR_OUT <= RF_WR;
 
 end architecture;

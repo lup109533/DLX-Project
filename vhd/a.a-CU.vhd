@@ -42,6 +42,7 @@ entity CU is
 		MEM_BYTE			: out	std_logic;
 		
 		-- WRITE BACK
+		LINK_PC				: in	std_logic;
 		RF_WR				: out	std_logic;
 		
 		-- OTHER
@@ -61,6 +62,8 @@ architecture behavioural of CU is
 	constant EXE 				: integer := 1;	-- EXCUTE
 	constant MEM 				: integer := 2;	-- MEMORY
 	constant WRB 				: integer := 3;	-- WRITE BACK
+	
+	constant JUMP_AND_LINK_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(31, JUMP_AND_LINK_ADDR'length));
 				
 	signal opcode_s				: opcode_t;
 	signal source1_addr_s		: reg_addr_t;
@@ -107,30 +110,36 @@ begin
 	opcode_s		<= INSTR(OPCODE_RANGE);
 	source1_addr_s	<= INSTR(REG_SOURCE1_RANGE);
 	source2_addr_s	<= INSTR(REG_SOURCE2_RANGE);
-	dest_addr_s		<= INSTR(REG_DEST_RANGE);
+	dest_addr_s		<= INSTR(REG_DEST_RANGE) when (op_type = R_TYPE) else INSTR(REG_SOURCE2_RANGE);
 	func_s			<= INSTR(ALU_FUNC_RANGE);
 	fpu_func_s		<= INSTR(FPU_FUNC_RANGE);
 	immediate_s		<= INSTR(IMMEDIATE_ARG_RANGE);
 	pc_offset_s		<= INSTR(PC_OFFSET_RANGE);
 	
 	-- CONTROL SIGNAL GENERATION
+	-- DECODE STAGE
 	RF_RD1_ADDR		<= source1_addr_s;
 	RF_RD2_ADDR		<= source2_addr_s;
-	RF_WR_ADDR		<= dest_addr_s;
+	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else dest_addr_s;
 	RF_RD1			<= '1' when (op_type = R_TYPE) else '0';
 	RF_RD2			<= '1' when (op_type = R_TYPE) else '0';
-	RF_WR			<= '1' when (op_type = R_TYPE) else '0';
 	RF_CALL			<= '1' when (opcode_s = TRAP)  else '0';
 	RF_RETN			<= '1' when (opcode_s = RFE)   else '0';
 	ISR_EN			<= '1' when (opcode_s = TRAP)  else '0';
 	IMM_ARG			<= immediate_s;
 	IMM_SEL			<= '1' when (op_type = I_TYPE or opcode_s = LHI) else '0';
 	PC_OFFSET		<= pc_offset_s;
-	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE) else '0';
+	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE or
+					             opcode_s = BEQZ  or
+								 opcode_s = BNEZ  or
+								 opcode_s = JR    or
+								 opcode_s = JALR) else '0';
 	OPCODE			<= opcode_s;
-	SIGNED_EXT		<= '0' when	((op_type = I_TYPE   and signed_immediate = '1') or
+	SIGNED_EXT		<= '1' when	((op_type = I_TYPE   and signed_immediate = '1') or
 							     (opcode_s = ALU_I   and signed_alu_op = '1')    or
-							     (opcode_s = FPU_I   and signed_fpu_op = '1'))   else '1';
+							     (opcode_s = FPU_I   and signed_fpu_op = '1'))   else '0';
+								 
+	-- MEMORY STAGE
 	MEM_RD_SEL		<= '1' when (op_type = L_TYPE) else '0';
 	MEM_WR_SEL		<= '1' when (op_type = S_TYPE) else '0';
 	MEM_EN			<= '1' when (op_type = L_TYPE  or
@@ -145,6 +154,10 @@ begin
 	MEM_BYTE		<= '1' when (opcode_s = LB  or
 					             opcode_s = LBU or
 								 opcode_s = SB) else '0';
+								 
+	-- WRITE BACK STAGE
+	RF_WR			<= '1' when (op_type = R_TYPE or opcode_s = JAL or opcode_s = JALR) else '0';
+	LINK_PC			<= '1' when (opcode_s = JAL or opcode_s = JALR) else '0';
 								
 	
 	signed_immediate	<= '0' when (opcode_s = ADDUI or

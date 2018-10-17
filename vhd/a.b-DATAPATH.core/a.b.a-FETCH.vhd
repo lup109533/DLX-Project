@@ -59,7 +59,7 @@ begin
 	next_pc <= pc_add_out when (BRANCH_TAKEN = '0') else BRANCH_ADDR;
 	
 	-- PC output for memory/cache
-	PC <= curr_pc;
+	PC <= pc_add_out;
 	
 	-- Forward instruction, or push bubble (NOP) if branch
 	FOUT <= INSTR when (BRANCH_TAKEN = '0') else NOP & INSTR((DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto 0);

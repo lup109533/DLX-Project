@@ -6,6 +6,7 @@ use work.utils.max;
 
 entity REGISTER_FILE is
 	generic (
+		FIXED_R0			: boolean := false;
 		WORD_SIZE			: natural;
 		REGISTER_NUM		: natural;
 		WINDOWS_NUM			: natural;
@@ -125,7 +126,17 @@ begin
 		end if;
 	end process;
 	
-	memory_in		<= MBUS(WORD_SIZE-1 downto 0) when (state = RF_FILL) else DIN;
+	has_not_fixed_r0: if not(FIXED_R0) generate
+		memory_in <= MBUS(WORD_SIZE-1 downto 0) when (state = RF_FILL) else DIN;
+	end generate;
+	
+	has_fixed_r0: if (FIXED_R0) generate
+		memory_in	<= MBUS(WORD_SIZE-1 downto 0) when (state = RF_FILL)   else
+					   (others => '0')            when (addr_in_index = 0) else
+					   DIN;
+	end generate;
+	
+	
 	addr_in_index	<= spill_fill_counter when (state = RF_FILL)  else translated_addr_in_s;
 	addr_out1_index <= spill_fill_counter when (state = RF_SPILL) else translated_addr_out1_s;
 	addr_out2_index <= translated_addr_out2_s;

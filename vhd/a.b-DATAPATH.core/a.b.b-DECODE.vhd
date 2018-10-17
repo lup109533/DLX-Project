@@ -50,6 +50,7 @@ architecture behavioral of DECODE is
 
 	component REGISTER_FILE
 		generic (
+			FIXED_R0			: boolean := false;
 			WORD_SIZE			: natural;
 			REGISTER_NUM		: natural;
 			WINDOWS_NUM			: natural;
@@ -91,6 +92,7 @@ begin
 
 	-- Instantiate RF
 	RF: REGISTER_FILE	generic map (
+							FIXED_R0			=> true,
 							WORD_SIZE			=> DLX_OPERAND_SIZE,
 							REGISTER_NUM		=> 2**REGISTER_ADDR_SIZE,
 							WINDOWS_NUM			=> DLX_RF_WINDOWS_NUM,
