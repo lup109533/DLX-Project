@@ -36,6 +36,8 @@ architecture behavioral of FETCH is
 	signal pc_offset		: pc_offset_t;
 	signal curr_pc			: DLX_addr_t;
 	signal next_pc			: DLX_addr_t;
+	signal instr_offset		: DLX_addr_t;
+	signal pc_add_out		: DLX_addr_t;
 
 begin
 	

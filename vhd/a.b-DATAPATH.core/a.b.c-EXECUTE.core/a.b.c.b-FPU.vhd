@@ -8,8 +8,8 @@ use work.FP_cmp_ctrl.all;
 entity FPU is
 	generic (OPERAND_SIZE : natural);
 	port (
+		FUNC		: in	FPU_opcode_t;
 		F1, F2		: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-		OPCODE		: in	FPU_opcode_t;
 		O			: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
 	);
 end entity;
@@ -155,8 +155,8 @@ begin
 	int_mul_o <= mul_out(OPERAND_SIZE-1 downto 0);
 	
 	---- Choose multiplier operands (integer or fp)
-	mul1 <= F1(FP_MANTISSA_SIZE downto 0) when (OPCODE = INT_MULTIPLY) else extended_mantissa1;
-	mul2 <= F2(FP_MANTISSA_SIZE downto 0) when (OPCODE = INT_MULTIPLY) else extended_mantissa2;
+	mul1 <= F1(FP_MANTISSA_SIZE downto 0) when (FUNC = INT_MULTIPLY) else extended_mantissa1;
+	mul2 <= F2(FP_MANTISSA_SIZE downto 0) when (FUNC = INT_MULTIPLY) else extended_mantissa2;
 	
 	---- FP exponent calculation and mantissa rounding
 	FP_MUL_MANAGER:	FP_MULTIPLICATION_MANAGER_UNIT	generic map (
@@ -175,7 +175,7 @@ begin
 													);
 	
 	-- ADDER/SUBTRACTOR
-	add_sub <= '1' when (OPCODE = FP_SUB) else '0';
+	add_sub <= '1' when (FUNC = FP_SUB) else '0';
 	ADDSUB: FP_ADD_SUB	generic map (
 							MANTISSA_SIZE	=> FP_MANTISSA_SIZE,
 							EXPONENT_SIZE	=> FP_EXPONENT_SIZE
@@ -233,20 +233,20 @@ begin
 	conv_ext_o(0)						<= conv_o;
 	conv_ext_o(OPERAND_SIZE-1 downto 1)	<= (others => '0');
 	
-	cmp_type	<= FP_CMP_EQ when (OPCODE = FP_COMPARE_EQ) else
-				   FP_CMP_NE when (OPCODE = FP_COMPARE_NE) else
-				   FP_CMP_GE when (OPCODE = FP_COMPARE_GE) else
-				   FP_CMP_GT when (OPCODE = FP_COMPARE_GT) else
-				   FP_CMP_LE when (OPCODE = FP_COMPARE_LE) else
-				   FP_CMP_LT when (OPCODE = FP_COMPARE_LT) else
+	cmp_type	<= FP_CMP_EQ when (FUNC = FP_COMPARE_EQ) else
+				   FP_CMP_NE when (FUNC = FP_COMPARE_NE) else
+				   FP_CMP_GE when (FUNC = FP_COMPARE_GE) else
+				   FP_CMP_GT when (FUNC = FP_COMPARE_GT) else
+				   FP_CMP_LE when (FUNC = FP_COMPARE_LE) else
+				   FP_CMP_LT when (FUNC = FP_COMPARE_LT) else
 				   FP_NO_COMPARE;
 	
 	-- OUTPUT MUX
-	O 	<=	int_mul_o when (OPCODE = INT_MULTIPLY)              else
-			fp_mul_o  when (OPCODE = FP_MULTIPLY)               else
-			addsub_o  when (OPCODE = FP_ADD or OPCODE = FP_SUB) else
-			f2i_o     when (OPCODE = F2I_CONVERT)               else
-			i2f_o     when (OPCODE = I2F_CONVERT)               else
+	O 	<=	int_mul_o when (FUNC = INT_MULTIPLY)              else
+			fp_mul_o  when (FUNC = FP_MULTIPLY)               else
+			addsub_o  when (FUNC = FP_ADD or FUNC = FP_SUB) else
+			f2i_o     when (FUNC = F2I_CONVERT)               else
+			i2f_o     when (FUNC = I2F_CONVERT)               else
 			conv_ext_o;
 
 end architecture;

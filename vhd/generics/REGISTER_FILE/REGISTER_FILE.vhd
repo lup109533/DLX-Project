@@ -16,7 +16,7 @@ entity REGISTER_FILE is
 		CLK			: in	std_logic;
 		RST			: in	std_logic;
 		ENB			: in	std_logic;
-		HEAP_ADDR	: in	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
+		HEAP_ADDR	: in	std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
 		RD1			: in	std_logic;
 		RD2			: in	std_logic;
 		WR			: in	std_logic;
@@ -30,8 +30,8 @@ entity REGISTER_FILE is
 		RETN		: in 	std_logic;
 		SPILL		: out 	std_logic;
 		FILL		: out	std_logic;
-		SWP			: out	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
-		MBUS		: inout	std_logic_vector(max(log2(SYSTEM_ADDR_SIZE), WORD_SIZE)-1 downto 0);
+		SWP			: out	std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
+		MBUS		: inout	std_logic_vector(max(SYSTEM_ADDR_SIZE, WORD_SIZE)-1 downto 0);
 		ACK			: in	std_logic;
 		RF_OK		: out	std_logic
 	);
@@ -90,8 +90,8 @@ architecture behavioral of REGISTER_FILE is
 	signal state					: rf_state;
 	
 	signal spill_fill_counter		: integer range 0 to PHYSICAL_RF_ADDR_SIZE;
-	signal swp_reg					: std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
-	signal swp_s					: std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
+	signal swp_reg					: std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
+	signal swp_s					: std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
 	
 begin
 
@@ -248,7 +248,7 @@ begin
 			swp_reg <= swp_s;
 		end if;
 	end process;
-	swp_s <= MBUS(log2(SYSTEM_ADDR_SIZE)-1 downto 0) when (state = UPDATE_SWP) else swp_reg;
+	swp_s <= MBUS(SYSTEM_ADDR_SIZE-1 downto 0) when (state = UPDATE_SWP) else swp_reg;
 	SWP   <= swp_s;
 	
 	spill_fill_counter_manager: process (CLK, RST) is

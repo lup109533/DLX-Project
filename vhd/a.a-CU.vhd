@@ -42,7 +42,7 @@ entity CU is
 		MEM_BYTE			: out	std_logic;
 		
 		-- WRITE BACK
-		LINK_PC				: in	std_logic;
+		LINK_PC				: out	std_logic;
 		RF_WR				: out	std_logic;
 		
 		-- OTHER
@@ -63,7 +63,7 @@ architecture behavioural of CU is
 	constant MEM 				: integer := 2;	-- MEMORY
 	constant WRB 				: integer := 3;	-- WRITE BACK
 	
-	constant JUMP_AND_LINK_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(31, JUMP_AND_LINK_ADDR'length));
+	constant JUMP_AND_LINK_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(31, REGISTER_ADDR_SIZE));
 				
 	signal opcode_s				: opcode_t;
 	signal source1_addr_s		: reg_addr_t;
@@ -128,7 +128,7 @@ begin
 	ISR_EN			<= '1' when (opcode_s = TRAP)  else '0';
 	IMM_ARG			<= immediate_s;
 	IMM_SEL			<= '1' when (op_type = I_TYPE or opcode_s = LHI) else '0';
-	PC_OFFSET		<= pc_offset_s;
+	PC_OFFSET		<= (others => '0') when (opcode_s = JAL or opcode_s = JALR) else pc_offset_s;
 	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE or
 					             opcode_s = BEQZ  or
 								 opcode_s = BNEZ  or
@@ -209,11 +209,17 @@ begin
 	ALU_OPCODE <= alu_opcode_s;
 	
 	-- FPU OPCODE GENERATOR
-	fpu_opcode_s	<= FP_ADD		when (fpu_func_s = ADDF) else
-					   FP_SUB		when (fpu_func_s = SUBF) else
-					   INT_MULTIPLY	when (fpu_func_s = MUL or fpu_func_s = MULU) else
-					   FP_MULTIPLY	when (fpu_func_s = MULF) else
-					   F2I_CONVERT	when (fpu_func_s = CVTF2I) else
+	fpu_opcode_s	<= FP_ADD		 when (fpu_func_s = ADDF) else
+					   FP_SUB		 when (fpu_func_s = SUBF) else
+					   INT_MULTIPLY	 when (fpu_func_s = MUL or fpu_func_s = MULU) else
+					   FP_MULTIPLY	 when (fpu_func_s = MULF) else
+					   FP_COMPARE_EQ when (fpu_func_s = EQF) else 
+					   FP_COMPARE_NE when (fpu_func_s = NEF) else  
+					   FP_COMPARE_LT when (fpu_func_s = LTF) else  
+					   FP_COMPARE_GT when (fpu_func_s = GTF) else  
+					   FP_COMPARE_LE when (fpu_func_s = LEF) else  
+					   FP_COMPARE_GE when (fpu_func_s = GEF) else 
+					   F2I_CONVERT	 when (fpu_func_s = CVTF2I) else
 					   I2F_CONVERT;
 					   
 	FPU_OPCODE <= fpu_opcode_s;

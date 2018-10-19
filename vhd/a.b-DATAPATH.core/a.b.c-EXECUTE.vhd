@@ -11,7 +11,7 @@ entity EXECUTE is
 		FPU_FUNC_SEL	: in	std_logic;
 		-- Signals from/to previous/successive stages.
 		R1, R2			: in	DLX_oper_t;	-- Register inputs.
-		EX_OUT			: out	DLX_oper_t;	-- EXECUTE stage output.
+		EX_OUT			: out	DLX_oper_t	-- EXECUTE stage output.
 	);
 end entity;
 

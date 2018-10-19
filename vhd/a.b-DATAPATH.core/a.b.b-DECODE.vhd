@@ -12,7 +12,6 @@ entity DECODE is
 		ENB				: in	std_logic;
 		REG_A			: out	DLX_oper_t;
 		REG_B			: out	DLX_oper_t;
-		IMM_ARG			: out	DLX_oper_t;
 		-- Special signals for TRAP instruction
 		ISR_TABLE_ADDR	: in	DLX_addr_t;
 		ISR_EN			: in	std_logic;
@@ -31,11 +30,15 @@ entity DECODE is
 		RF_RETN			: in	std_logic;
 		IMM_ARG			: in	immediate_t;
 		IMM_SEL			: in	std_logic;
-		PC_OFFSET		: out	pc_offset_t;
-		PC_OFFSET_SEL	: out	std_logic;
+		PC_OFFSET		: in	pc_offset_t;
+		PC_OFFSET_SEL	: in	std_logic;
 		SIGNED_EXT		: in	std_logic;
 		OPCODE			: in	opcode_t;
 		-- Datapath signals
+		FORWARD_R1_EN	: in	std_logic;
+		FORWARD_R2_EN	: in	std_logic;
+		FORWARD_VALUE1	: in	DLX_oper_t;
+		FORWARD_VALUE2	: in	DLX_oper_t;
 		PC				: in	DLX_addr_t;
 		RF_DIN			: in	DLX_oper_t;
 		RF_SPILL		: out	std_logic;
@@ -48,6 +51,7 @@ end entity;
 
 architecture behavioral of DECODE is
 
+	-- COMPONENTS
 	component REGISTER_FILE
 		generic (
 			FIXED_R0			: boolean := false;
@@ -60,7 +64,7 @@ architecture behavioral of DECODE is
 			CLK			: in	std_logic;
 			RST			: in	std_logic;
 			ENB			: in	std_logic;
-			HEAP_ADDR	: in	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
+			HEAP_ADDR	: in	std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
 			RD1			: in	std_logic;
 			RD2			: in	std_logic;
 			WR			: in	std_logic;
@@ -74,19 +78,28 @@ architecture behavioral of DECODE is
 			RETN		: in 	std_logic;
 			SPILL		: out 	std_logic;
 			FILL		: out	std_logic;
-			SWP			: out	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
-			MBUS		: inout	std_logic_vector(max(log2(SYSTEM_ADDR_SIZE), WORD_SIZE)-1 downto 0);
+			SWP			: out	std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
+			MBUS		: inout	std_logic_vector(max(SYSTEM_ADDR_SIZE, WORD_SIZE)-1 downto 0);
 			ACK			: in	std_logic;
 			RF_OK		: out	std_logic
 		);
 	end component;
+	
+	component ZERO_DETECTOR
+		generic (NBIT: integer);
+		port (
+			A: in std_logic_vector(NBIT-1 downto 0);
+			Z : out std_logic
+		);
+	end component;
 
+	-- SIGNALS
 	signal RF_dout1_s		: DLX_oper_t;
 	signal RF_dout2_s		: DLX_oper_t;
 	signal is_zero_s		: std_logic;
 	signal ext_imm_s		: DLX_oper_t;
 	signal branch_taken_s	: std_logic;
-	signal pc_offset_s		: pc_offset_t;
+	signal pc_offset_s		: DLX_oper_t;
 	
 begin
 
@@ -127,7 +140,7 @@ begin
 	
 	-- Check branch taken
 	BRANCH_TAKEN	<= branch_taken_s;
-	branch_taken_s	<= '1' when (iz_zero_s = '1' and OPCODE = BEQZ) or (is_zero_s = '0' and OPCODE = BNEZ) else -- when conditional branch matches
+	branch_taken_s	<= '1' when (is_zero_s = '1' and OPCODE = BEQZ) or (is_zero_s = '0' and OPCODE = BNEZ) else -- when conditional branch matches
 					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) else               -- when operation is unconditional branch
 					   '0';
 						
@@ -136,15 +149,17 @@ begin
 	ext_imm_s(IMMEDIATE_ARG_SIZE-1 downto                  0)	<= IMM_ARG;
 	
 	-- Extend pc offset
-	pc_offset_s(DLX_OPERAND_SIZE-1    downto JUMP_PC_OFFSET_SIZE)	<= (others => PC_OFFSET(IMMEDIATE_ARG_SIZE-1));
-	pc_offset_s(JUMP_PC_OFFSET_SIZE-1 downto                   0)	<= IMM_ARG;
+	pc_offset_s(DLX_OPERAND_SIZE-1    downto JUMP_PC_OFFSET_SIZE)	<= (others => PC_OFFSET(JUMP_PC_OFFSET_SIZE-1));
+	pc_offset_s(JUMP_PC_OFFSET_SIZE-1 downto                   0)	<= PC_OFFSET;
 	
 	-- Assign immediates
 	REG_A	<= PC             when (branch_taken_s = '1') else -- Propagate pc in case of branch address calculation
-			   IRS_TABLE_ADDR when (ISR_EN = '1')         else -- Load ISR table pointer if TRAP instruction called
+			   ISR_TABLE_ADDR when (ISR_EN = '1')         else -- Load ISR table pointer if TRAP instruction called
+			   FORWARD_VALUE1 when (FORWARD_R1_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout2_s;
 	REG_B	<= ext_imm_s      when (IMM_SEL = '1')        else -- Select immediate value if I-type
-			   pc_offset_s    when (PC_OFFSET_SET = '1')  else -- Select PC offset if J-type
+			   pc_offset_s    when (PC_OFFSET_SEL = '1')  else -- Select PC offset if J-type
+			   FORWARD_VALUE2 when (FORWARD_R2_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout2_s;
 
 end architecture;

@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 use work.DLX_globals.all;
 
 entity WRITE_BACK is
-	port map (
+	port (
 		DIN		: in	DLX_oper_t;
 		PC		: in	DLX_addr_t;
 		DOUT	: out	DLX_oper_t;

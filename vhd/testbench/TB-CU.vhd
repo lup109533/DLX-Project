@@ -49,6 +49,7 @@ architecture test of TB_CU is
 			MEM_BYTE			: out	std_logic;
 			
 			-- WRITE BACK
+			LINK_PC				: out	std_logic;
 			RF_WR				: out	std_logic;
 			
 			-- OTHER
@@ -99,6 +100,7 @@ architecture test of TB_CU is
 	signal MEM_BYTE_s			: std_logic;
 	
 	-- WRITE BACK
+	signal LINK_PC_s			: std_logic;
 	signal RF_WR_s				: std_logic;
 	
 	-- OTHER
@@ -160,6 +162,7 @@ begin
 					MEM_BYTE_s,
 					
 					-- WRITE BACK
+					LINK_PC_s,
 					RF_WR_s,
 					
 					-- OTHER
