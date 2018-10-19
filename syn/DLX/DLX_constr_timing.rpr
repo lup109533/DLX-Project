@@ -1,0 +1,948 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : DLX
+Version: Z-2007.03-SP1
+Date   : Sat Oct 20 01:30:02 2018
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: DP0/DEC_REG_B_PIPELINE/FF_i_1/DOUT_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: DP0/DEC_REG_B_PIPELINE/FF_i_30/DOUT_reg
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock CLK (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  DP0/DEC_REG_B_PIPELINE/FF_i_1/DOUT_reg/CK (SDFF_X1)     0.00 #     0.00 r
+  DP0/DEC_REG_B_PIPELINE/FF_i_1/DOUT_reg/Q (SDFF_X1)      0.08       0.08 f
+  DP0/DEC_REG_B_PIPELINE/FF_i_1/DOUT (FF_159)             0.00       0.08 f
+  DP0/DEC_REG_B_PIPELINE/DOUT[1] (REG_N_N32_5)            0.00       0.08 f
+  DP0/EXE_STAGE/R2[1] (EXECUTE)                           0.00       0.08 f
+  DP0/EXE_STAGE/EX_FPU/F2[1] (FPU_OPERAND_SIZE32)         0.00       0.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/B[1] (BOOTH_MULTIPLIER_N24)
+                                                          0.00       0.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/enc_i_1/I[0] (BOOTH_ENCODER_11)
+                                                          0.00       0.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/enc_i_1/U6/ZN (INV_X1)         0.04       0.12 r
+  DP0/EXE_STAGE/EX_FPU/MUL/enc_i_1/U8/ZN (NAND2_X1)       0.03       0.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/enc_i_1/U5/ZN (NAND2_X1)       0.04       0.18 r
+  DP0/EXE_STAGE/EX_FPU/MUL/enc_i_1/U10/ZN (AND3_X2)       0.07       0.25 r
+  DP0/EXE_STAGE/EX_FPU/MUL/enc_i_1/O[2] (BOOTH_ENCODER_11)
+                                                          0.00       0.25 r
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/SEL[2] (MUX51_GENERIC_N48_11)
+                                                          0.00       0.25 r
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U191/ZN (INV_X1)       0.03       0.28 f
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U7/ZN (AND3_X2)        0.05       0.33 f
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U98/ZN (INV_X1)        0.03       0.36 r
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U4/ZN (AND4_X1)        0.10       0.46 r
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U14/Z (BUF_X4)         0.08       0.54 r
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U202/ZN (NAND2_X1)     0.05       0.59 f
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/U206/ZN (NAND4_X1)     0.03       0.62 r
+  DP0/EXE_STAGE/EX_FPU/MUL/mux_i_1/Y[2] (MUX51_GENERIC_N48_11)
+                                                          0.00       0.62 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/A[2] (RCA_OPERAND_SIZE48_0)
+                                                          0.00       0.62 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/A (FA_750)      0.00       0.62 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha0/A (HA_1500)
+                                                          0.00       0.62 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha0/U2/Z (XOR2_X1)
+                                                          0.08       0.70 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha0/S (HA_1500)
+                                                          0.00       0.70 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha1/A (HA_1499)
+                                                          0.00       0.70 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha1/U3/ZN (INV_X1)
+                                                          0.03       0.73 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha1/U2/ZN (XNOR2_X1)
+                                                          0.06       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/ha1/S (HA_1499)
+                                                          0.00       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/fa_i_2/S (FA_750)      0.00       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_0/S[2] (RCA_OPERAND_SIZE48_0)
+                                                          0.00       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/B[2] (RCA_OPERAND_SIZE48_10)
+                                                          0.00       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/B (FA_702)      0.00       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/ha0/B (HA_1404)
+                                                          0.00       0.79 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/ha0/U2/Z (XOR2_X1)
+                                                          0.08       0.87 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/ha0/S (HA_1404)
+                                                          0.00       0.87 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/ha1/A (HA_1403)
+                                                          0.00       0.87 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/ha1/U1/Z (XOR2_X1)
+                                                          0.08       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/ha1/S (HA_1403)
+                                                          0.00       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/fa_i_2/S (FA_702)      0.00       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_1/S[2] (RCA_OPERAND_SIZE48_10)
+                                                          0.00       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/B[2] (RCA_OPERAND_SIZE48_9)
+                                                          0.00       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/B (FA_654)      0.00       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/ha0/B (HA_1308)
+                                                          0.00       0.95 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/ha0/U2/Z (XOR2_X1)
+                                                          0.08       1.03 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/ha0/S (HA_1308)
+                                                          0.00       1.03 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/ha1/A (HA_1307)
+                                                          0.00       1.03 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/ha1/U1/Z (XOR2_X1)
+                                                          0.08       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/ha1/S (HA_1307)
+                                                          0.00       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/fa_i_2/S (FA_654)      0.00       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_2/S[2] (RCA_OPERAND_SIZE48_9)
+                                                          0.00       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/B[2] (RCA_OPERAND_SIZE48_8)
+                                                          0.00       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/B (FA_606)      0.00       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/ha0/B (HA_1212)
+                                                          0.00       1.11 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/ha0/U1/Z (XOR2_X1)
+                                                          0.08       1.19 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/ha0/S (HA_1212)
+                                                          0.00       1.19 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/ha1/A (HA_1211)
+                                                          0.00       1.19 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/ha1/U2/Z (XOR2_X1)
+                                                          0.08       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/ha1/S (HA_1211)
+                                                          0.00       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/fa_i_2/S (FA_606)      0.00       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_3/S[2] (RCA_OPERAND_SIZE48_8)
+                                                          0.00       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/B[2] (RCA_OPERAND_SIZE48_7)
+                                                          0.00       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/B (FA_558)      0.00       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/ha0/B (HA_1116)
+                                                          0.00       1.27 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/ha0/U2/ZN (XNOR2_X1)
+                                                          0.07       1.34 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/ha0/S (HA_1116)
+                                                          0.00       1.34 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/ha1/A (HA_1115)
+                                                          0.00       1.34 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/ha1/U2/Z (XOR2_X1)
+                                                          0.08       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/ha1/S (HA_1115)
+                                                          0.00       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/fa_i_2/S (FA_558)      0.00       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_4/S[2] (RCA_OPERAND_SIZE48_7)
+                                                          0.00       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/B[2] (RCA_OPERAND_SIZE48_6)
+                                                          0.00       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/B (FA_510)      0.00       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/ha0/B (HA_1020)
+                                                          0.00       1.41 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/ha0/U4/ZN (XNOR2_X1)
+                                                          0.07       1.48 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/ha0/S (HA_1020)
+                                                          0.00       1.48 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/ha1/A (HA_1019)
+                                                          0.00       1.48 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/ha1/U1/Z (XOR2_X1)
+                                                          0.08       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/ha1/S (HA_1019)
+                                                          0.00       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/fa_i_2/S (FA_510)      0.00       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_5/S[2] (RCA_OPERAND_SIZE48_6)
+                                                          0.00       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/B[2] (RCA_OPERAND_SIZE48_5)
+                                                          0.00       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/B (FA_462)      0.00       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/ha0/B (HA_924)
+                                                          0.00       1.56 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/ha0/U4/ZN (XNOR2_X1)
+                                                          0.04       1.61 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/ha0/S (HA_924)
+                                                          0.00       1.61 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/ha1/A (HA_923)
+                                                          0.00       1.61 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/ha1/U2/ZN (AND2_X1)
+                                                          0.04       1.65 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/ha1/C (HA_923)
+                                                          0.00       1.65 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/U1/ZN (OR2_X2)
+                                                          0.05       1.70 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_2/C (FA_462)      0.00       1.70 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_3/CIN (FA_461)
+                                                          0.00       1.70 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_3/ha1/B (HA_921)
+                                                          0.00       1.70 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_3/ha1/U2/ZN (AND2_X1)
+                                                          0.04       1.74 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_3/ha1/C (HA_921)
+                                                          0.00       1.74 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_3/U1/ZN (OR2_X2)
+                                                          0.05       1.80 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_3/C (FA_461)      0.00       1.80 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_4/CIN (FA_460)
+                                                          0.00       1.80 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_4/ha1/B (HA_919)
+                                                          0.00       1.80 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_4/ha1/U1/ZN (AND2_X1)
+                                                          0.04       1.84 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_4/ha1/C (HA_919)
+                                                          0.00       1.84 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_4/U1/ZN (OR2_X2)
+                                                          0.05       1.89 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_4/C (FA_460)      0.00       1.89 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_5/CIN (FA_459)
+                                                          0.00       1.89 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_5/ha1/B (HA_917)
+                                                          0.00       1.89 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_5/ha1/U2/ZN (AND2_X1)
+                                                          0.04       1.93 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_5/ha1/C (HA_917)
+                                                          0.00       1.93 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_5/U1/ZN (OR2_X2)
+                                                          0.05       1.98 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_5/C (FA_459)      0.00       1.98 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_6/CIN (FA_458)
+                                                          0.00       1.98 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_6/ha1/B (HA_915)
+                                                          0.00       1.98 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_6/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.02 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_6/ha1/C (HA_915)
+                                                          0.00       2.02 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_6/U1/ZN (OR2_X1)
+                                                          0.06       2.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_6/C (FA_458)      0.00       2.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_7/CIN (FA_457)
+                                                          0.00       2.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_7/ha1/B (HA_913)
+                                                          0.00       2.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_7/ha1/U1/Z (XOR2_X1)
+                                                          0.07       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_7/ha1/S (HA_913)
+                                                          0.00       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/fa_i_7/S (FA_457)      0.00       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_6/S[7] (RCA_OPERAND_SIZE48_5)
+                                                          0.00       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/B[7] (RCA_OPERAND_SIZE48_4)
+                                                          0.00       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/B (FA_409)      0.00       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/ha0/B (HA_818)
+                                                          0.00       2.15 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/ha0/U2/Z (XOR2_X1)
+                                                          0.07       2.23 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/ha0/S (HA_818)
+                                                          0.00       2.23 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/ha1/A (HA_817)
+                                                          0.00       2.23 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.27 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/ha1/C (HA_817)
+                                                          0.00       2.27 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/U1/ZN (OR2_X2)
+                                                          0.05       2.33 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_7/C (FA_409)      0.00       2.33 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_8/CIN (FA_408)
+                                                          0.00       2.33 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_8/ha1/B (HA_815)
+                                                          0.00       2.33 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_8/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.36 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_8/ha1/C (HA_815)
+                                                          0.00       2.36 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_8/U1/ZN (OR2_X2)
+                                                          0.05       2.42 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_8/C (FA_408)      0.00       2.42 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_9/CIN (FA_407)
+                                                          0.00       2.42 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_9/ha1/B (HA_813)
+                                                          0.00       2.42 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_9/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.46 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_9/ha1/C (HA_813)
+                                                          0.00       2.46 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_9/U1/ZN (OR2_X2)
+                                                          0.05       2.51 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_9/C (FA_407)      0.00       2.51 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_10/CIN (FA_406)
+                                                          0.00       2.51 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_10/ha1/B (HA_811)
+                                                          0.00       2.51 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_10/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.55 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_10/ha1/C (HA_811)
+                                                          0.00       2.55 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_10/U1/ZN (OR2_X2)
+                                                          0.05       2.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_10/C (FA_406)     0.00       2.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_11/CIN (FA_405)
+                                                          0.00       2.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_11/ha1/B (HA_809)
+                                                          0.00       2.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_11/ha1/U1/Z (XOR2_X1)
+                                                          0.07       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_11/ha1/S (HA_809)
+                                                          0.00       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/fa_i_11/S (FA_405)     0.00       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_7/S[11] (RCA_OPERAND_SIZE48_4)
+                                                          0.00       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/B[11] (RCA_OPERAND_SIZE48_3)
+                                                          0.00       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/B (FA_357)     0.00       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/ha0/B (HA_714)
+                                                          0.00       2.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/ha0/U2/Z (XOR2_X1)
+                                                          0.07       2.75 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/ha0/S (HA_714)
+                                                          0.00       2.75 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/ha1/A (HA_713)
+                                                          0.00       2.75 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.79 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/ha1/C (HA_713)
+                                                          0.00       2.79 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/U1/ZN (OR2_X1)
+                                                          0.06       2.85 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_11/C (FA_357)     0.00       2.85 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_12/CIN (FA_356)
+                                                          0.00       2.85 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_12/ha1/B (HA_711)
+                                                          0.00       2.85 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_12/ha1/U2/ZN (AND2_X1)
+                                                          0.04       2.89 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_12/ha1/C (HA_711)
+                                                          0.00       2.89 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_12/U1/ZN (OR2_X2)
+                                                          0.05       2.95 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_12/C (FA_356)     0.00       2.95 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_13/CIN (FA_355)
+                                                          0.00       2.95 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_13/ha1/B (HA_709)
+                                                          0.00       2.95 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_13/ha1/U1/ZN (AND2_X1)
+                                                          0.04       2.98 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_13/ha1/C (HA_709)
+                                                          0.00       2.98 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_13/U1/ZN (OR2_X1)
+                                                          0.06       3.04 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_13/C (FA_355)     0.00       3.04 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_14/CIN (FA_354)
+                                                          0.00       3.04 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_14/ha1/B (HA_707)
+                                                          0.00       3.04 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_14/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_14/ha1/C (HA_707)
+                                                          0.00       3.08 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_14/U1/ZN (OR2_X2)
+                                                          0.05       3.13 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_14/C (FA_354)     0.00       3.13 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_15/CIN (FA_353)
+                                                          0.00       3.13 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_15/ha1/B (HA_705)
+                                                          0.00       3.13 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_15/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.17 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_15/ha1/C (HA_705)
+                                                          0.00       3.17 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_15/U1/ZN (OR2_X2)
+                                                          0.05       3.22 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_15/C (FA_353)     0.00       3.22 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_16/CIN (FA_352)
+                                                          0.00       3.22 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_16/ha1/B (HA_703)
+                                                          0.00       3.22 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_16/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.26 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_16/ha1/C (HA_703)
+                                                          0.00       3.26 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_16/U1/ZN (OR2_X2)
+                                                          0.05       3.32 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_16/C (FA_352)     0.00       3.32 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_17/CIN (FA_351)
+                                                          0.00       3.32 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_17/ha1/B (HA_701)
+                                                          0.00       3.32 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_17/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.36 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_17/ha1/C (HA_701)
+                                                          0.00       3.36 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_17/U1/ZN (OR2_X2)
+                                                          0.05       3.41 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_17/C (FA_351)     0.00       3.41 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_18/CIN (FA_350)
+                                                          0.00       3.41 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_18/ha1/B (HA_699)
+                                                          0.00       3.41 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_18/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.45 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_18/ha1/C (HA_699)
+                                                          0.00       3.45 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_18/U1/ZN (OR2_X1)
+                                                          0.06       3.50 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_18/C (FA_350)     0.00       3.50 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_19/CIN (FA_349)
+                                                          0.00       3.50 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_19/ha1/B (HA_697)
+                                                          0.00       3.50 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_19/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.54 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_19/ha1/C (HA_697)
+                                                          0.00       3.54 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_19/U1/ZN (OR2_X2)
+                                                          0.05       3.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_19/C (FA_349)     0.00       3.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_20/CIN (FA_348)
+                                                          0.00       3.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_20/ha1/B (HA_695)
+                                                          0.00       3.60 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_20/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.64 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_20/ha1/C (HA_695)
+                                                          0.00       3.64 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_20/U1/ZN (OR2_X2)
+                                                          0.05       3.69 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_20/C (FA_348)     0.00       3.69 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_21/CIN (FA_347)
+                                                          0.00       3.69 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_21/ha1/B (HA_693)
+                                                          0.00       3.69 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_21/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.73 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_21/ha1/C (HA_693)
+                                                          0.00       3.73 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_21/U1/ZN (OR2_X1)
+                                                          0.06       3.78 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_21/C (FA_347)     0.00       3.78 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/CIN (FA_346)
+                                                          0.00       3.78 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/ha1/B (HA_691)
+                                                          0.00       3.78 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.82 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/ha1/C (HA_691)
+                                                          0.00       3.82 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/U1/ZN (INV_X1)
+                                                          0.02       3.85 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/U3/ZN (NAND2_X1)
+                                                          0.03       3.88 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_22/C (FA_346)     0.00       3.88 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_23/CIN (FA_345)
+                                                          0.00       3.88 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_23/ha1/B (HA_689)
+                                                          0.00       3.88 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_23/ha1/U2/ZN (AND2_X1)
+                                                          0.04       3.91 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_23/ha1/C (HA_689)
+                                                          0.00       3.91 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_23/U1/ZN (OR2_X2)
+                                                          0.05       3.97 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_23/C (FA_345)     0.00       3.97 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_24/CIN (FA_344)
+                                                          0.00       3.97 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_24/ha1/B (HA_687)
+                                                          0.00       3.97 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_24/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.01 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_24/ha1/C (HA_687)
+                                                          0.00       4.01 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_24/U1/ZN (OR2_X2)
+                                                          0.05       4.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_24/C (FA_344)     0.00       4.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_25/CIN (FA_343)
+                                                          0.00       4.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_25/ha1/B (HA_685)
+                                                          0.00       4.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_25/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.10 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_25/ha1/C (HA_685)
+                                                          0.00       4.10 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_25/U1/ZN (OR2_X2)
+                                                          0.05       4.16 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_25/C (FA_343)     0.00       4.16 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_26/CIN (FA_342)
+                                                          0.00       4.16 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_26/ha1/B (HA_683)
+                                                          0.00       4.16 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_26/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.19 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_26/ha1/C (HA_683)
+                                                          0.00       4.19 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_26/U1/ZN (OR2_X2)
+                                                          0.05       4.25 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_26/C (FA_342)     0.00       4.25 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_27/CIN (FA_341)
+                                                          0.00       4.25 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_27/ha1/B (HA_681)
+                                                          0.00       4.25 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_27/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.29 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_27/ha1/C (HA_681)
+                                                          0.00       4.29 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_27/U1/ZN (OR2_X2)
+                                                          0.05       4.34 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_27/C (FA_341)     0.00       4.34 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_28/CIN (FA_340)
+                                                          0.00       4.34 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_28/ha1/B (HA_679)
+                                                          0.00       4.34 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_28/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.38 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_28/ha1/C (HA_679)
+                                                          0.00       4.38 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_28/U1/ZN (OR2_X2)
+                                                          0.05       4.43 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_28/C (FA_340)     0.00       4.43 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_29/CIN (FA_339)
+                                                          0.00       4.43 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_29/ha1/B (HA_677)
+                                                          0.00       4.43 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_29/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.47 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_29/ha1/C (HA_677)
+                                                          0.00       4.47 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_29/U1/ZN (OR2_X1)
+                                                          0.06       4.53 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_29/C (FA_339)     0.00       4.53 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_30/CIN (FA_338)
+                                                          0.00       4.53 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_30/ha1/B (HA_675)
+                                                          0.00       4.53 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_30/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.57 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_30/ha1/C (HA_675)
+                                                          0.00       4.57 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_30/U1/ZN (OR2_X2)
+                                                          0.05       4.62 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_30/C (FA_338)     0.00       4.62 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_31/CIN (FA_337)
+                                                          0.00       4.62 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_31/ha1/B (HA_673)
+                                                          0.00       4.62 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_31/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.66 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_31/ha1/C (HA_673)
+                                                          0.00       4.66 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_31/U1/ZN (OR2_X2)
+                                                          0.05       4.71 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_31/C (FA_337)     0.00       4.71 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_32/CIN (FA_336)
+                                                          0.00       4.71 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_32/ha1/B (HA_671)
+                                                          0.00       4.71 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_32/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.75 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_32/ha1/C (HA_671)
+                                                          0.00       4.75 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_32/U1/ZN (OR2_X2)
+                                                          0.05       4.81 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_32/C (FA_336)     0.00       4.81 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_33/CIN (FA_335)
+                                                          0.00       4.81 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_33/ha1/B (HA_669)
+                                                          0.00       4.81 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_33/ha1/U1/ZN (AND2_X1)
+                                                          0.04       4.85 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_33/ha1/C (HA_669)
+                                                          0.00       4.85 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_33/U1/ZN (OR2_X2)
+                                                          0.05       4.90 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_33/C (FA_335)     0.00       4.90 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_34/CIN (FA_334)
+                                                          0.00       4.90 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_34/ha1/B (HA_667)
+                                                          0.00       4.90 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_34/ha1/U2/ZN (AND2_X1)
+                                                          0.04       4.94 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_34/ha1/C (HA_667)
+                                                          0.00       4.94 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_34/U1/ZN (OR2_X1)
+                                                          0.06       4.99 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_34/C (FA_334)     0.00       4.99 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_35/CIN (FA_333)
+                                                          0.00       4.99 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_35/ha1/B (HA_665)
+                                                          0.00       4.99 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_35/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.03 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_35/ha1/C (HA_665)
+                                                          0.00       5.03 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_35/U1/ZN (OR2_X2)
+                                                          0.05       5.09 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_35/C (FA_333)     0.00       5.09 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_36/CIN (FA_332)
+                                                          0.00       5.09 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_36/ha1/B (HA_663)
+                                                          0.00       5.09 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_36/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.13 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_36/ha1/C (HA_663)
+                                                          0.00       5.13 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_36/U1/ZN (OR2_X2)
+                                                          0.05       5.18 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_36/C (FA_332)     0.00       5.18 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_37/CIN (FA_331)
+                                                          0.00       5.18 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_37/ha1/B (HA_661)
+                                                          0.00       5.18 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_37/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.22 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_37/ha1/C (HA_661)
+                                                          0.00       5.22 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_37/U1/ZN (OR2_X2)
+                                                          0.05       5.27 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_37/C (FA_331)     0.00       5.27 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_38/CIN (FA_330)
+                                                          0.00       5.27 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_38/ha1/B (HA_659)
+                                                          0.00       5.27 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_38/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.31 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_38/ha1/C (HA_659)
+                                                          0.00       5.31 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_38/U1/ZN (OR2_X2)
+                                                          0.05       5.37 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_38/C (FA_330)     0.00       5.37 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_39/CIN (FA_329)
+                                                          0.00       5.37 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_39/ha1/B (HA_657)
+                                                          0.00       5.37 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_39/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.40 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_39/ha1/C (HA_657)
+                                                          0.00       5.40 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_39/U1/ZN (OR2_X2)
+                                                          0.05       5.46 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_39/C (FA_329)     0.00       5.46 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_40/CIN (FA_328)
+                                                          0.00       5.46 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_40/ha1/B (HA_655)
+                                                          0.00       5.46 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_40/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.50 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_40/ha1/C (HA_655)
+                                                          0.00       5.50 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_40/U1/ZN (OR2_X1)
+                                                          0.05       5.55 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_40/C (FA_328)     0.00       5.55 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_41/CIN (FA_327)
+                                                          0.00       5.55 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_41/ha1/B (HA_653)
+                                                          0.00       5.55 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_41/ha1/U8/ZN (AND2_X1)
+                                                          0.04       5.59 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_41/ha1/C (HA_653)
+                                                          0.00       5.59 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_41/U1/ZN (OR2_X1)
+                                                          0.06       5.64 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_41/C (FA_327)     0.00       5.64 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_42/CIN (FA_326)
+                                                          0.00       5.64 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_42/ha1/B (HA_651)
+                                                          0.00       5.64 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_42/ha1/U2/ZN (AND2_X1)
+                                                          0.04       5.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_42/ha1/C (HA_651)
+                                                          0.00       5.68 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_42/U1/ZN (OR2_X2)
+                                                          0.05       5.74 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_42/C (FA_326)     0.00       5.74 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_43/CIN (FA_325)
+                                                          0.00       5.74 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_43/ha1/B (HA_649)
+                                                          0.00       5.74 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_43/ha1/U1/ZN (AND2_X1)
+                                                          0.04       5.77 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_43/ha1/C (HA_649)
+                                                          0.00       5.77 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_43/U1/ZN (OR2_X1)
+                                                          0.06       5.83 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_43/C (FA_325)     0.00       5.83 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_44/CIN (FA_324)
+                                                          0.00       5.83 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_44/ha1/B (HA_647)
+                                                          0.00       5.83 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_44/ha1/U1/ZN (AND2_X1)
+                                                          0.04       5.87 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_44/ha1/C (HA_647)
+                                                          0.00       5.87 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_44/U1/ZN (OR2_X1)
+                                                          0.06       5.92 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_44/C (FA_324)     0.00       5.92 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_45/CIN (FA_323)
+                                                          0.00       5.92 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_45/ha1/B (HA_645)
+                                                          0.00       5.92 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_45/ha1/U1/Z (XOR2_X1)
+                                                          0.07       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_45/ha1/S (HA_645)
+                                                          0.00       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/fa_i_45/S (FA_323)     0.00       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_8/S[45] (RCA_OPERAND_SIZE48_3)
+                                                          0.00       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/B[45] (RCA_OPERAND_SIZE48_2)
+                                                          0.00       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/B (FA_275)     0.00       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha0/B (HA_550)
+                                                          0.00       6.00 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha0/U2/ZN (XNOR2_X1)
+                                                          0.06       6.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha0/S (HA_550)
+                                                          0.00       6.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha1/A (HA_549)
+                                                          0.00       6.06 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha1/U2/ZN (INV_X1)
+                                                          0.03       6.09 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha1/U1/ZN (XNOR2_X1)
+                                                          0.06       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/ha1/S (HA_549)
+                                                          0.00       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/fa_i_45/S (FA_275)     0.00       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_9/S[45] (RCA_OPERAND_SIZE48_2)
+                                                          0.00       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/B[45] (RCA_OPERAND_SIZE48_1)
+                                                          0.00       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/B (FA_227)
+                                                          0.00       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha0/B (HA_454)
+                                                          0.00       6.15 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha0/U2/ZN (XNOR2_X1)
+                                                          0.07       6.22 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha0/S (HA_454)
+                                                          0.00       6.22 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha1/A (HA_453)
+                                                          0.00       6.22 r
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha1/U2/ZN (INV_X1)
+                                                          0.03       6.24 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha1/U1/ZN (XNOR2_X1)
+                                                          0.06       6.30 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/ha1/S (HA_453)
+                                                          0.00       6.30 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/fa_i_45/S (FA_227)
+                                                          0.00       6.30 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_i_10/S[45] (RCA_OPERAND_SIZE48_1)
+                                                          0.00       6.30 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_141/A[45] (BOOTH_MULTIPLIER_N24_DW01_add_0)
+                                                          0.00       6.30 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_141/U1/ZN (XNOR2_X1)       0.07       6.37 f
+  DP0/EXE_STAGE/EX_FPU/MUL/add_141/SUM[45] (BOOTH_MULTIPLIER_N24_DW01_add_0)
+                                                          0.00       6.37 f
+  DP0/EXE_STAGE/EX_FPU/MUL/P[45] (BOOTH_MULTIPLIER_N24)
+                                                          0.00       6.37 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/MANTISSA[45] (FP_MULTIPLICATION_MANAGER_UNIT_MANTISSA_SIZE23_EXPONENT_SIZE8)
+                                                          0.00       6.37 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/DIN[45] (ROUNDING_UNIT_MANTISSA_SIZE24)
+                                                          0.00       6.37 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/U18/ZN (INV_X1)
+                                                          0.05       6.42 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/U17/Z (MUX2_X1)
+                                                          0.09       6.51 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/A[17] (CLA_OPERAND_SIZE24_RADIX2)
+                                                          0.00       6.51 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/A[17] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE24_RADIX2)
+                                                          0.00       6.51 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/U13/ZN (OR2_X1)
+                                                          0.06       6.57 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_1_8/P_ik (PG_BLOCK_11)
+                                                          0.00       6.57 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_1_8/U3/ZN (NAND2_X1)
+                                                          0.03       6.60 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_1_8/U1/ZN (NAND2_X1)
+                                                          0.03       6.63 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_1_8/G_ij (PG_BLOCK_11)
+                                                          0.00       6.63 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_2_4/G_km1j (PG_BLOCK_4)
+                                                          0.00       6.63 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_2_4/U1/ZN (NAND2_X1)
+                                                          0.03       6.65 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_2_4/U2/ZN (NAND2_X1)
+                                                          0.03       6.68 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/first_rows_pg_block_ij_2_4/G_ij (PG_BLOCK_4)
+                                                          0.00       6.68 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/tree_pg_block_ij_1_5/G_km1j (PG_BLOCK_1)
+                                                          0.00       6.68 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/tree_pg_block_ij_1_5/U1/ZN (NAND2_X1)
+                                                          0.03       6.71 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/tree_pg_block_ij_1_5/U2/ZN (NAND2_X1)
+                                                          0.03       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/tree_pg_block_ij_1_5/G_ij (PG_BLOCK_1)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/sparse_tree/CARRY[5] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE24_RADIX2)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND_ADD/C (CLA_OPERAND_SIZE24_RADIX2)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/ROUNDER/ROUND (ROUNDING_UNIT_MANTISSA_SIZE24)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ROUND (EXPONENT_ADDER_EXP_SIZE8)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/CIN (CLA_OPERAND_SIZE8_RADIX2_1)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/CIN (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE8_RADIX2_1)
+                                                          0.00       6.74 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/U3/ZN (AOI21_X1)
+                                                          0.04       6.78 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/U4/ZN (INV_X1)
+                                                          0.02       6.81 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_1_0/G_km1j (G_BLOCK_8)
+                                                          0.00       6.81 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_1_0/U3/ZN (NAND2_X1)
+                                                          0.03       6.83 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_1_0/U1/ZN (NAND2_X1)
+                                                          0.03       6.86 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_1_0/G_ij (G_BLOCK_8)
+                                                          0.00       6.86 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_2_0/G_km1j (G_BLOCK_7)
+                                                          0.00       6.86 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (NAND2_X1)
+                                                          0.03       6.88 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (NAND2_X1)
+                                                          0.03       6.92 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_7)
+                                                          0.00       6.92 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/sparse_tree/CARRY[0] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE8_RADIX2_1)
+                                                          0.00       6.92 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/CIN (RCA_OPERAND_SIZE4_7)
+                                                          0.00       6.92 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/CIN (FA_28)
+                                                          0.00       6.92 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/ha1/B (HA_55)
+                                                          0.00       6.92 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/ha1/U1/ZN (AND2_X1)
+                                                          0.04       6.96 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/ha1/C (HA_55)
+                                                          0.00       6.96 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/U3/ZN (INV_X1)
+                                                          0.02       6.98 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/U2/ZN (NAND2_X1)
+                                                          0.03       7.01 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_0/C (FA_28)
+                                                          0.00       7.01 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_1/CIN (FA_27)
+                                                          0.00       7.01 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_1/ha1/B (HA_53)
+                                                          0.00       7.01 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_1/ha1/U1/ZN (AND2_X1)
+                                                          0.04       7.04 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_1/ha1/C (HA_53)
+                                                          0.00       7.04 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_1/U1/ZN (OR2_X2)
+                                                          0.05       7.10 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_1/C (FA_27)
+                                                          0.00       7.10 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_2/CIN (FA_26)
+                                                          0.00       7.10 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_2/ha1/B (HA_51)
+                                                          0.00       7.10 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_2/ha1/U1/ZN (AND2_X1)
+                                                          0.04       7.14 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_2/ha1/C (HA_51)
+                                                          0.00       7.14 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_2/U1/ZN (OR2_X2)
+                                                          0.05       7.19 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_2/C (FA_26)
+                                                          0.00       7.19 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_3/CIN (FA_25)
+                                                          0.00       7.19 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_3/ha1/B (HA_49)
+                                                          0.00       7.19 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_3/ha1/U1/ZN (XNOR2_X1)
+                                                          0.06       7.25 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_3/ha1/S (HA_49)
+                                                          0.00       7.25 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/fa_i_3/S (FA_25)
+                                                          0.00       7.25 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/rca_i_1/S[3] (RCA_OPERAND_SIZE4_7)
+                                                          0.00       7.25 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/ADD1/O[7] (CLA_OPERAND_SIZE8_RADIX2_1)
+                                                          0.00       7.25 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/EXP_ADD/EXPO[7] (EXPONENT_ADDER_EXP_SIZE8)
+                                                          0.00       7.25 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/U8/ZN (NAND2_X1)
+                                                          0.03       7.27 r
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/U7/ZN (NAND2_X1)
+                                                          0.03       7.30 f
+  DP0/EXE_STAGE/EX_FPU/FP_MUL_MANAGER/PACKED[30] (FP_MULTIPLICATION_MANAGER_UNIT_MANTISSA_SIZE23_EXPONENT_SIZE8)
+                                                          0.00       7.30 f
+  DP0/EXE_STAGE/EX_FPU/U32/ZN (NAND2_X1)                  0.03       7.33 r
+  DP0/EXE_STAGE/EX_FPU/U33/ZN (NAND2_X1)                  0.03       7.35 f
+  DP0/EXE_STAGE/EX_FPU/O[30] (FPU_OPERAND_SIZE32)         0.00       7.35 f
+  DP0/EXE_STAGE/U26/ZN (NAND2_X1)                         0.03       7.38 r
+  DP0/EXE_STAGE/U27/ZN (NAND2_X1)                         0.03       7.41 f
+  DP0/EXE_STAGE/EX_OUT[30] (EXECUTE)                      0.00       7.41 f
+  DP0/U26/ZN (NAND2_X1)                                   0.03       7.44 r
+  DP0/U200/ZN (NAND2_X1)                                  0.03       7.47 f
+  DP0/DEC_STAGE/FORWARD_VALUE2[30] (DECODE)               0.00       7.47 f
+  DP0/DEC_STAGE/U199/ZN (NAND2_X1)                        0.03       7.50 r
+  DP0/DEC_STAGE/U316/ZN (NAND2_X1)                        0.03       7.53 f
+  DP0/DEC_STAGE/REG_B[30] (DECODE)                        0.00       7.53 f
+  DP0/DEC_REG_B_PIPELINE/DIN[30] (REG_N_N32_5)            0.00       7.53 f
+  DP0/DEC_REG_B_PIPELINE/FF_i_30/DIN (FF_130)             0.00       7.53 f
+  DP0/DEC_REG_B_PIPELINE/FF_i_30/U4/ZN (NAND2_X1)         0.03       7.55 r
+  DP0/DEC_REG_B_PIPELINE/FF_i_30/U7/ZN (NAND2_X1)         0.02       7.58 f
+  DP0/DEC_REG_B_PIPELINE/FF_i_30/DOUT_reg/D (DFF_X1)      0.01       7.58 f
+  data arrival time                                                  7.58
+
+  clock CLK (rise edge)                                   1.00       1.00
+  clock network delay (ideal)                             0.00       1.00
+  DP0/DEC_REG_B_PIPELINE/FF_i_30/DOUT_reg/CK (DFF_X1)     0.00       1.00 r
+  library setup time                                     -0.04       0.96
+  data required time                                                 0.96
+  --------------------------------------------------------------------------
+  data required time                                                 0.96
+  data arrival time                                                 -7.58
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -6.62
+
+
+  Startpoint: MBUS[0] (input port)
+  Endpoint: RF_SWP[0] (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                    0.00       0.00 r
+  MBUS[0] (inout)                                         0.00       0.00 r
+  DP0/MBUS[0] (DATAPATH)                                  0.00       0.00 r
+  DP0/DEC_STAGE/MBUS[0] (DECODE)                          0.00       0.00 r
+  DP0/DEC_STAGE/RF/MBUS[0] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.00 r
+  DP0/DEC_STAGE/RF/U15496/ZN (INV_X1)                     0.02       0.02 f
+  DP0/DEC_STAGE/RF/U15497/ZN (OAI22_X1)                   0.04       0.06 r
+  DP0/DEC_STAGE/RF/SWP[0] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.06 r
+  DP0/DEC_STAGE/RF_SWP[0] (DECODE)                        0.00       0.06 r
+  DP0/RF_SWP[0] (DATAPATH)                                0.00       0.06 r
+  RF_SWP[0] (out)                                         0.00       0.06 r
+  data arrival time                                                  0.06
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
+  --------------------------------------------------------------------------
+  data required time                                                 0.00
+  data arrival time                                                 -0.06
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.06
+
+
+1

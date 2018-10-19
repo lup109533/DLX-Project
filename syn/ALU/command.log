@@ -1,6 +1,6 @@
 #@ # 
 #@ # Running dc_shell Version Z-2007.03-SP1 for linux -- Apr 19, 2007
-#@ # Date:   Thu Oct 11 02:51:17 2018
+#@ # Date:   Thu Oct 11 16:26:35 2018
 #@ # Run by: ms18.12@microelnsys
 #@ 
 
@@ -3656,51 +3656,3 @@ source /home/ms18.12/DLX-Project/syn/ALU/.synopsys_dc.setup
 #@ # -- End source /home/ms18.12/DLX-Project/syn/ALU/.synopsys_dc.setup
 
 gui_start
-analyze -format vhdl ../../vhd/000-globals.vhd
-source ../scripts/make_cla.script
-#@ -- RCA
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/00-HA.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/01-FA.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/02-RCA.vhd
-#@ -- CLA
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/00-G_BLOCK.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/01-PG_BLOCK.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/02-SPARSE_TREE_CARRY_GENERATOR.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/03-CLA.vhd
-#@ # -- End source ../scripts/make_cla.script
-
-source ../scripts/make_alu.script
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.a-LU_CTRL.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.b-LOGIC_UNIT.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.c-ADD_SUB.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.d-SHIFTER.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.e-COMPARATOR.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.f-ZERO_DETECTOR.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.vhd
-#@ # -- End source ../scripts/make_alu.script
-
-source ../scripts/make_alu.script
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.a-LU_CTRL.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.b-LOGIC_UNIT.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.c-ADD_SUB.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.d-SHIFTER.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.e-COMPARATOR.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.core/a.c.c.a.f-ZERO_DETECTOR.vhd
-#@ analyze -library WORK -format vhdl ../../vhd/a.c-DATAPATH.core/a.c.c-EXECUTE.core/a.c.c.a-ALU.vhd
-#@ # -- End source ../scripts/make_alu.script
-
-elaborate ALU
-elaborate ALU -parameters "OPERAND_SIZE=32"
-compile
-::cmenus::create_schematic
-report_timing
-gui_zoom -window [gui_get_current_window -view] -factor 0.5
-report_power
-set_max_delay -from [all_inputs] -to [all_outputs] 1
-compile -map_effort high
-report_timing
-compile_ultra
-report_timing
-::cmenus::create_schematic
-exkt
-exit

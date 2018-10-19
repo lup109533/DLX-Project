@@ -1,0 +1,20 @@
+analyze -library WORK -format vhdl ../../vhd/000-globals.vhd
+# RCA
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/00-HA.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/01-FA.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/02-RCA.vhd
+# CLA
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/00-G_BLOCK.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/01-PG_BLOCK.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/02-SPARSE_TREE_CARRY_GENERATOR.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/03-CLA.vhd
+# Multiplier
+analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/00-MUX51_GENERIC.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/01-BOOTH_ENCODER.vhd
+analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/02-BOOTH_MULTIPLIER.vhd
+# FP multiplier
+analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.a-EXPONENT_ADDER.vhd
+analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.b-ROUNDING_UNIT.vhd
+analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.c-FP_MULTIPLICATION_MANAGER_UNIT.vhd
+# FPU
+analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.vhd

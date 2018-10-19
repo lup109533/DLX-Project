@@ -1,0 +1,2 @@
+analyze -library WORK -format vhdl ../../vhd/000-globals.vhd
+analyze -library WORK -format vhdl ../../vhd/a.a-CU.vhd

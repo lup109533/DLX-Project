@@ -1,0 +1,30 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'DLX' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Information: Timing loop detected. (OPT-150)
+	DP0/FET_STAGE/U69/A2 DP0/FET_STAGE/U69/ZN DP0/DEC_STAGE/U47/A DP0/DEC_STAGE/U47/ZN DP0/DEC_STAGE/U43/A1 DP0/DEC_STAGE/U43/ZN DP0/FET_STAGE/U10/A DP0/FET_STAGE/U10/ZN 
+Information: Timing loop detected. (OPT-150)
+	DP0/FET_STAGE/U14/A DP0/FET_STAGE/U14/ZN DP0/FET_STAGE/U70/A1 DP0/FET_STAGE/U70/ZN DP0/DEC_STAGE/U228/A1 DP0/DEC_STAGE/U228/ZN DP0/DEC_STAGE/U227/A DP0/DEC_STAGE/U227/ZN DP0/DEC_STAGE/U46/A DP0/DEC_STAGE/U46/ZN DP0/DEC_STAGE/U43/A2 DP0/DEC_STAGE/U43/ZN DP0/FET_STAGE/U10/A DP0/FET_STAGE/U10/ZN 
+ 
+****************************************
+Report : area
+Design : DLX
+Version: Z-2007.03-SP1
+Date   : Sat Oct 20 01:30:02 2018
+****************************************
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/mariagrazia.graziano/do/libnangate/NangateOpenCellLibrary_typical_ecsm.db)
+
+Number of ports:              263
+Number of nets:               443
+Number of cells:               31
+Number of references:          31
+
+Combinational area:       36739.122067
+Noncombinational area:    23961.280624
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:          60700.402344
+Total area:                 undefined
+1
