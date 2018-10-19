@@ -5,13 +5,13 @@ use work.DLX_globals.all;
 
 entity WRITE_BACK is
 	port (
-		DIN		: in	DLX_oper_t;
-		PC		: in	DLX_addr_t;
-		DOUT	: out	DLX_oper_t;
+		DIN			: in	DLX_oper_t;
+		PC			: in	DLX_addr_t;
+		DOUT		: out	DLX_oper_t;
 		-- CU signals
-		LINK_PC	: in	std_logic;
-		RF_WR	: in	std_logic;
-		WR_OUT	: out	std_logic
+		LINK_PC		: in	std_logic;
+		RF_WR		: in	std_logic;
+		RF_WR_OUT	: out	std_logic
 	);
 end entity;
 
@@ -21,6 +21,6 @@ begin
 
 	DOUT <= DIN when (LINK_PC = '0') else std_logic_vector(unsigned(PC) + 4);
 	
-	WR_OUT <= RF_WR;
+	RF_WR_OUT <= RF_WR;
 
 end architecture;

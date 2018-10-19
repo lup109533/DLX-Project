@@ -31,6 +31,7 @@ entity CU is
 		-- EXECUTE
 		ALU_OPCODE			: out	ALU_opcode_t;
 		FPU_OPCODE			: out	FPU_opcode_t;
+		FPU_FUNC_SEL		: out	std_logic;
 		
 		-- MEMORY
 		MEM_RD_SEL			: out	std_logic;
@@ -138,7 +139,10 @@ begin
 	SIGNED_EXT		<= '1' when	((op_type = I_TYPE   and signed_immediate = '1') or
 							     (opcode_s = ALU_I   and signed_alu_op = '1')    or
 							     (opcode_s = FPU_I   and signed_fpu_op = '1'))   else '0';
-								 
+	
+	-- EXCUTE STAGE
+	FPU_FUNC_SEL	<= '1' when (opcode_s = FPU_I) else '0';
+	
 	-- MEMORY STAGE
 	MEM_RD_SEL		<= '1' when (op_type = L_TYPE) else '0';
 	MEM_WR_SEL		<= '1' when (op_type = S_TYPE) else '0';

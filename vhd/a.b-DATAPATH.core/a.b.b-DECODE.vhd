@@ -25,7 +25,6 @@ entity DECODE is
 		RF_WR_ADDR		: in	reg_addr_t;
 		RF_RD1			: in	std_logic;
 		RF_RD2			: in	std_logic;
-		RF_WR			: in	std_logic;
 		RF_CALL			: in	std_logic;
 		RF_RETN			: in	std_logic;
 		IMM_ARG			: in	immediate_t;
@@ -40,6 +39,7 @@ entity DECODE is
 		FORWARD_VALUE1	: in	DLX_oper_t;
 		FORWARD_VALUE2	: in	DLX_oper_t;
 		PC				: in	DLX_addr_t;
+		RF_WR			: in	std_logic;
 		RF_DIN			: in	DLX_oper_t;
 		RF_SPILL		: out	std_logic;
 		RF_FILL			: out	std_logic;

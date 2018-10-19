@@ -10,6 +10,8 @@ entity DATAPATH is
 		ENB					: in	std_logic;
 		-- FETCH
 		ICACHE_INSTR		: in	DLX_instr_t;
+		FETCHED_INSTR		: out	DLX_instr_t;
+		
 		-- DECODE
 		ISR_TABLE_ADDR		: in	DLX_addr_t;
 		ISR_EN				: in	std_logic;
@@ -36,13 +38,15 @@ entity DATAPATH is
 		M2D_FORWARD_S2_EN	: in	std_logic;
 		W2D_FORWARD_S2_EN	: in	std_logic;
 		RF_SPILL			: out	std_logic;
-		RF_FILL			: out	std_logic;
+		RF_FILL				: out	std_logic;
 		RF_ACK				: in	std_logic;
 		RF_OK				: out	std_logic;
+		
 		-- EXECUTE
 		ALU_OPCODE			: in	alu_opcode_t;
 		FPU_OPCODE			: in	fpu_opcode_t;
 		FPU_FUNC_SEL		: in	std_logic;
+		
 		-- MEMORY
 		MEM_RD_SEL			: in	std_logic;
 		MEM_WR_SEL			: in	std_logic;
@@ -57,10 +61,10 @@ entity DATAPATH is
 		EXT_MEM_WR			: out	std_logic;
 		EXT_MEM_ENABLE		: out	std_logic;
 		EXT_MEM_DOUT		: in	DLX_oper_t;
+		
 		-- WRITE BACK
 		LINK_PC				: in	std_logic;
-		RF_WR				: in	std_logic;
-		WR_OUT				: out	std_logic
+		RF_WR				: in	std_logic
 	);
 end entity;
 
@@ -100,7 +104,6 @@ architecture structural of DATAPATH is
 			RF_WR_ADDR		: in	reg_addr_t;
 			RF_RD1			: in	std_logic;
 			RF_RD2			: in	std_logic;
-			RF_WR			: in	std_logic;
 			RF_CALL			: in	std_logic;
 			RF_RETN			: in	std_logic;
 			IMM_ARG			: in	immediate_t;
@@ -115,6 +118,7 @@ architecture structural of DATAPATH is
 			FORWARD_VALUE1	: in	DLX_oper_t;
 			FORWARD_VALUE2	: in	DLX_oper_t;
 			PC				: in	DLX_addr_t;
+			RF_WR			: in	std_logic;
 			RF_DIN			: in	DLX_oper_t;
 			RF_SPILL		: out	std_logic;
 			RF_FILL			: out	std_logic;
@@ -154,20 +158,21 @@ architecture structural of DATAPATH is
 			EXT_MEM_ENABLE	: out	std_logic;
 			EXT_MEM_DOUT	: in	DLX_oper_t;
 			-- Signals from/to previous/next stage.
-			EX_IN			: in	DLX_oper_t;
+			ADDR_IN			: in	DLX_oper_t;
+			DATA_IN			: in	DLX_oper_t;
 			MEM_OUT			: out	DLX_oper_t
 		);
 	end component;
 	
 	component WRITE_BACK
 		port (
-			DIN		: in	DLX_oper_t;
-			PC		: in	DLX_addr_t;
-			DOUT	: out	DLX_oper_t;
+			DIN			: in	DLX_oper_t;
+			PC			: in	DLX_addr_t;
+			DOUT		: out	DLX_oper_t;
 			-- CU signals
-			LINK_PC	: in	std_logic;
-			RF_WR	: in	std_logic;
-			WR_OUT	: out	std_logic
+			LINK_PC		: in	std_logic;
+			RF_WR		: in	std_logic;
+			RF_WR_OUT	: out	std_logic
 		);
 	end component;
 	
@@ -198,6 +203,7 @@ architecture structural of DATAPATH is
 	signal dec_forward_value2	: DLX_oper_t;
 	signal dec_pc				: DLX_addr_t;
 	signal dec_rf_din			: DLX_oper_t;
+	signal dec_rf_wr			: std_logic;
 	signal dec_branch_taken		: std_logic;
 	signal dec_reg_a_pipe		: DLX_oper_t;
 	signal dec_reg_b_pipe		: DLX_oper_t;
@@ -206,8 +212,10 @@ architecture structural of DATAPATH is
 	signal exe_r2				: DLX_oper_t;
 	signal exe_ex_out			: DLX_oper_t;
 	signal exe_ex_out_pipe		: DLX_oper_t;
+	signal exe_r2_pipe			: DLX_oper_t;
 	
-	signal mem_ex_in			: DLX_oper_t;
+	signal mem_addr_in			: DLX_oper_t;
+	signal mem_data_in			: DLX_oper_t;
 	signal mem_mem_out			: DLX_oper_t;
 	signal mem_mem_out_pipe		: DLX_oper_t;
 	signal mem_pc_out_pipe		: DLX_oper_t;
@@ -215,6 +223,7 @@ architecture structural of DATAPATH is
 	signal wrb_din				: DLX_oper_t;
 	signal wrb_pc				: DLX_oper_t;
 	signal wrb_dout				: DLX_oper_t;
+	signal wrb_rf_wr_out		: std_logic;
 
 begin
 
@@ -222,6 +231,7 @@ begin
 	-- Connect inputs to pipelines of other stages or other signals
 	fet_branch_taken	<= dec_branch_taken;
 	fet_branch_addr		<= exe_ex_out;
+	FETCHED_INSTR		<= fet_fout;
 	
 	FET_STAGE: FETCH		port map (
 								CLK				=> CLK,
@@ -253,6 +263,7 @@ begin
 						   
 	dec_pc				<= fet_pc_pipe;
 	dec_rf_din			<= wrb_dout;
+	dec_rf_wr			<= wrb_rf_wr_out;
 	
 	DEC_STAGE: DECODE		port map (
 								CLK				=> CLK,
@@ -273,7 +284,6 @@ begin
 								RF_WR_ADDR		=> RF_WR_ADDR,
 								RF_RD1			=> RF_RD1,
 								RF_RD2			=> RF_RD2,
-								RF_WR			=> RF_WR,
 								RF_CALL			=> RF_CALL,
 								RF_RETN			=> RF_RETN,
 								IMM_ARG			=> IMM_ARG,
@@ -288,6 +298,7 @@ begin
 								FORWARD_VALUE1	=> dec_forward_value1,
 								FORWARD_VALUE2	=> dec_forward_value2,
 								PC				=> dec_pc,
+								RF_WR			=> dec_rf_wr,
 								RF_DIN			=> dec_rf_din,
 								RF_SPILL		=> RF_SPILL,
 								RF_FILL			=> RF_FILL,
@@ -319,11 +330,13 @@ begin
 							
 	-- Pipeline stage
 	EXE_EX_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, exe_ex_out, exe_ex_out_pipe);
+	EXE_R2_PIPELINE:     REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, exe_r2, exe_r2_pipe);
 	
 
 	-- MEMORY
 	-- Connect inputs to pipelines of other stages or other signals
-	mem_ex_in	<= exe_ex_out_pipe;
+	mem_addr_in	<= exe_ex_out_pipe;
+	mem_data_in <= exe_r2_pipe;
 	
 	MEM_STAGE: MEMORY		port map (
 								-- Control signals from CU.
@@ -342,14 +355,15 @@ begin
 								EXT_MEM_ENABLE	=> EXT_MEM_ENABLE,
 								EXT_MEM_DOUT	=> EXT_MEM_DOUT,
 								-- Signals from/to previous/next stage.
-								EX_IN			=> mem_ex_in,
+								ADDR_IN			=> mem_addr_in,
+								DATA_IN			=> mem_data_in,
 								MEM_OUT			=> mem_mem_out
 							);
 							
 	-- Pipeline stage
 	MEM_MEM_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, mem_mem_out, mem_mem_out_pipe);
 	-- Propagate PC in case of jump-and-link
-	MEM_PC_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, mem_ex_in, mem_pc_out_pipe);
+	MEM_PC_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, mem_addr_in, mem_pc_out_pipe);
 	
 	
 	-- WRITE BACK
@@ -358,13 +372,13 @@ begin
 	wrb_pc	<= mem_pc_out_pipe;
 	
 	WRB_STAGE: WRITE_BACK	port map (
-								DIN		=> wrb_din,
-								PC		=> wrb_pc,
-								DOUT	=> wrb_dout,
+								DIN			=> wrb_din,
+								PC			=> wrb_pc,
+								DOUT		=> wrb_dout,
 								-- CU signals
-								LINK_PC	=> LINK_PC,
-								RF_WR	=> RF_WR,
-								WR_OUT	=> WR_OUT
+								LINK_PC		=> LINK_PC,
+								RF_WR		=> RF_WR,
+								RF_WR_OUT	=> wrb_rf_wr_out
 							);
 
 end architecture;

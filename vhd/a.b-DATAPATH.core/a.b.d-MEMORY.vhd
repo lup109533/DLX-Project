@@ -20,7 +20,8 @@ entity MEMORY is
 		EXT_MEM_ENABLE	: out	std_logic;
 		EXT_MEM_DOUT	: in	DLX_oper_t;
 		-- Signals from/to previous/next stage.
-		EX_IN			: in	DLX_oper_t;
+		ADDR_IN			: in	DLX_oper_t;
+		DATA_IN			: in	DLX_oper_t;
 		MEM_OUT			: out	DLX_oper_t
 	);
 end entity;
@@ -43,17 +44,17 @@ architecture structural of MEMORY is
 begin
 
 	-- External memory inputs.
-	EXT_MEM_ADDR	<= EX_IN;
+	EXT_MEM_ADDR	<= ADDR_IN;
 	EXT_MEM_DIN		<= ext_mem_din_s;
 	EXT_MEM_RD		<= MEM_RD_SEL;
 	EXT_MEM_WR		<= MEM_WR_SEL;
 	EXT_MEM_ENABLE	<= MEM_EN;
 	
 	-- Extend input from memory
-	in_halfword				<= EX_IN(DLX_OPERAND_SIZE/2-1 downto 0);
-	in_byte					<= EX_IN(DLX_OPERAND_SIZE/4-1 downto 0);
-	in_halfword_extension	<= (others => EX_IN(DLX_OPERAND_SIZE/2-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
-	in_byte_extension		<= (others => EX_IN(DLX_OPERAND_SIZE/4-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
+	in_halfword				<= ADDR_IN(DLX_OPERAND_SIZE/2-1 downto 0);
+	in_byte					<= ADDR_IN(DLX_OPERAND_SIZE/4-1 downto 0);
+	in_halfword_extension	<= (others => ADDR_IN(DLX_OPERAND_SIZE/2-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
+	in_byte_extension		<= (others => ADDR_IN(DLX_OPERAND_SIZE/4-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	
 	out_halfword			<= EXT_MEM_DOUT(DLX_OPERAND_SIZE/2-1 downto 0);
 	out_byte				<= EXT_MEM_DOUT(DLX_OPERAND_SIZE/4-1 downto 0);
@@ -63,13 +64,13 @@ begin
 	EXT_MEM_DIN				<= ext_mem_din_s;
 	ext_mem_din_s			<= in_halfword_extension & in_halfword when (MEM_HALFWORD = '1') else
 							   in_byte_extension     & in_byte     when (MEM_BYTE = '1')     else
-							   EX_IN;
+							   DATA_IN;
 	
 	ext_mem_dout_s			<= out_halfword_extension & out_halfword when (MEM_HALFWORD = '1') else
 							   out_byte_extension     & out_byte     when (MEM_BYTE = '1')     else
 							   EXT_MEM_DOUT;
 	
 	-- External memory outputs.
-	MEM_OUT <= EX_IN when (MEMORY_OP_SEL = '0') else ext_mem_dout_s;
+	MEM_OUT <= ADDR_IN when (MEMORY_OP_SEL = '0') else ext_mem_dout_s;
 
 end architecture;
