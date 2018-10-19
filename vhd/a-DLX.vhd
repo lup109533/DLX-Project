@@ -332,8 +332,8 @@ begin
 	
 	-- Pipeline for CU signals
 	-- To EXECUTE stage
-	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	generic map (ALU_FUNCTION_SIZE) port map (CLK, RST, global_enable, alu_opcode_s, alu_opcode_s_exe);
-	FPU_OPCODE_PIPE1: 	FPU_OPCODE_REG	generic map (FPU_FUNCTION_SIZE) port map (CLK, RST, global_enable, fpu_opcode_s, fpu_opcode_s_exe);
+	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	port map (CLK, RST, global_enable, alu_opcode_s, alu_opcode_s_exe);
+	FPU_OPCODE_PIPE1: 	FPU_OPCODE_REG	port map (CLK, RST, global_enable, fpu_opcode_s, fpu_opcode_s_exe);
 	FPU_FUNC_SEL_PIPE1:	FF				port map (CLK, RST, global_enable, fpu_func_sel_s, fpu_func_sel_s_exe);
 	
 	-- To MEMORY stage
