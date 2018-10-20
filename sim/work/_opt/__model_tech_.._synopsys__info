@@ -1,0 +1,81 @@
+m255
+cModel Technology Builtin Library
+13
+dD:\qa\buildsites\6.2g\builds\win32\modeltech
+Parithmetic
+DP synopsys attributes oP@SNI848YZ9iazan5Mg_2
+DP synopsys types ]67VH@F;BdQ6dC]Q=VbBY0
+OL;C;6.2g;35
+30
+b1
+M2 synopsys types
+M1 synopsys attributes
+OP;C;6.2g;35
+d.
+8$MODEL_TECH/../vhdl_src/synopsys/syn_ari.vhd
+F$MODEL_TECH/../vhdl_src/synopsys/syn_ari.vhd
+l0
+L23
+V];6d`Q8BA[IDjo=JLijYI2
+OE;C;6.2g;35
+o-87 -work synopsys -path $MODEL_TECH/../vhdl_src/synopsys/syn_ari.vhd
+tExplicit 1
+Bbody
+DB work arithmetic ];6d`Q8BA[IDjo=JLijYI2
+DP synopsys attributes oP@SNI848YZ9iazan5Mg_2
+DP synopsys types ]67VH@F;BdQ6dC]Q=VbBY0
+OL;C;6.2g;35
+30
+M2 synopsys types
+M1 synopsys attributes
+OP;C;6.2g;35
+l0
+L23
+V7l4fVRRenPR_8YiC;HVTX3
+OE;C;6.2g;35
+o-87 -work synopsys -path $MODEL_TECH/../vhdl_src/synopsys/syn_ari.vhd
+tExplicit 1
+nbody
+Pattributes
+OL;C;6.2g;35
+30
+OP;C;6.2g;35
+d.
+8$MODEL_TECH/../vhdl_src/synopsys/syn_attributes.vhd
+F$MODEL_TECH/../vhdl_src/synopsys/syn_attributes.vhd
+l0
+L39
+VoP@SNI848YZ9iazan5Mg_2
+OE;C;6.2g;35
+o-87 -work synopsys -path $MODEL_TECH/../vhdl_src/synopsys/syn_attributes.vhd
+tExplicit 1
+Ptypes
+DP synopsys attributes oP@SNI848YZ9iazan5Mg_2
+OL;C;6.2g;35
+30
+b1
+M1 synopsys attributes
+OP;C;6.2g;35
+d.
+8$MODEL_TECH/../vhdl_src/synopsys/syn_type.vhd
+F$MODEL_TECH/../vhdl_src/synopsys/syn_type.vhd
+l0
+L36
+V]67VH@F;BdQ6dC]Q=VbBY0
+OE;C;6.2g;35
+o-87 -work synopsys -path $MODEL_TECH/../vhdl_src/synopsys/syn_type.vhd
+tExplicit 1
+Bbody
+DB work types ]67VH@F;BdQ6dC]Q=VbBY0
+DP synopsys attributes oP@SNI848YZ9iazan5Mg_2
+OL;C;6.2g;35
+30
+M1 synopsys attributes
+OP;C;6.2g;35
+l0
+L36
+VWZ<>l]]54jz>VLLz6=^JY2
+OE;C;6.2g;35
+o-87 -work synopsys -path $MODEL_TECH/../vhdl_src/synopsys/syn_type.vhd
+tExplicit 1
+nbody

@@ -1,6 +1,6 @@
 #@ # 
 #@ # Running dc_shell Version Z-2007.03-SP1 for linux -- Apr 19, 2007
-#@ # Date:   Sat Oct 20 01:38:34 2018
+#@ # Date:   Sat Oct 20 19:20:37 2018
 #@ # Run by: ms18.12@microelnsys
 #@ 
 
@@ -3656,3 +3656,97 @@ source /home/ms18.12/DLX-Project/syn/DLX/.synopsys_dc.setup
 #@ # -- End source /home/ms18.12/DLX-Project/syn/DLX/.synopsys_dc.setup
 
 gui_start
+source synthesize.script
+#@ # Reset working environment
+#@ #sh rm -rf work
+#@ #sh mkdir work
+#@ 
+#@ # Suppress useless warnings
+#@ suppress_message VHD-4
+#@ suppress_message ELAB-402
+#@ 
+#@ analyze -library WORK -format vhdl ../../vhd/000-globals.vhd
+#@ 
+#@ # RCA
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/00-HA.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/01-FA.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/02-RCA.vhd
+#@ 
+#@ # CLA
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/00-G_BLOCK.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/01-PG_BLOCK.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/02-SPARSE_TREE_CARRY_GENERATOR.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/03-CLA.vhd
+#@ 
+#@ # MULTIPLIER
+#@ analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/00-MUX51_GENERIC.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/01-BOOTH_ENCODER.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/02-BOOTH_MULTIPLIER.vhd
+#@ 
+#@ # OTHERS
+#@ analyze -library WORK -format vhdl ../../vhd/generics/MEMORY_ELEMENTS.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/ZERO_DETECTOR.vhd
+#@ 
+#@ # RF
+#@ analyze -library WORK -format vhdl ../../vhd/generics/REGISTER_FILE/00-CIRCULAR_BUFFER.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/generics/REGISTER_FILE/01-REGISTER_FILE.vhd
+#@ 
+#@ # ALU
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.core/a.b.c.a.a-LU_CTRL.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.core/a.b.c.a.b-LOGIC_UNIT.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.core/a.b.c.a.c-ADD_SUB.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.core/a.b.c.a.d-SHIFTER.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.core/a.b.c.a.e-COMPARATOR.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.vhd
+#@ 
+#@ # FPU
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.a-EXPONENT_ADDER.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.b-ROUNDING_UNIT.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.c-FP_MULTIPLICATION_MANAGER_UNIT.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.d-F2I_CONVERTER.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.e-I2F_CONVERTER.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.f-FP_ADD_SUB.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/a.b.c.b.g-FP_COMPARATOR.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.vhd
+#@ 
+#@ # DATAPATH
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.a-FETCH.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.b-DECODE.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.d-MEMORY.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.core/a.b.e-WRITE_BACK.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a.b-DATAPATH.vhd
+#@ 
+#@ # DLX
+#@ analyze -library WORK -format vhdl ../../vhd/a.a-CU.vhd
+#@ analyze -library WORK -format vhdl ../../vhd/a-DLX.vhd
+#@ 
+#@ # Elaborate
+#@ elaborate DLX
+#@ 
+#@ # Normal compilation
+#@ compile
+#@ 
+#@ report_area > DLX_noconstr_area.rpr
+#@ report_timing -nworst 10 > DLX_noconstr_timing.rpr
+#@ report_power > DLX_noconstr_power.rpr
+#@ 
+#@ write -hierarchy -format vhdl -output DLX.vhdl
+#@ write -hierarchy -format ddc -output DLX.ddc
+#@ 
+#@ # Set delay constraint and recompile
+#@ create_clock -name "CLK" -period 1 CLK
+#@ set_max_delay 0 -from [all_inputs] -to [all_outputs]
+#@ 
+#@ compile -map_effort high
+#@ 
+#@ report_area > DLX_constr_area.rpr
+#@ report_timing -nworst 10 > DLX_constr_timing.rpr
+#@ report_power > DLX_constr_power.rpr
+#@ 
+#@ write -hierarchy -format vhdl -output DLX_constr.vhdl
+#@ write -hierarchy -format ddc -output DLX_constr.ddc
+#@ # -- End source synthesize.script
+
+::cmenus::create_schematic
+exit

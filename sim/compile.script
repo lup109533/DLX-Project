@@ -1,0 +1,20 @@
+vcom ../vhd/000-globals.vhd
+vcom ../vhd/generics/MEMORY_ELEMENTS.vhd
+vcom ../vhd/generics/ZERO_DETECTOR.vhd
+vcom ../vhd/generics/ADDERS/RCA/*
+vcom ../vhd/generics/ADDERS/CLA/*
+vcom ../vhd/generics/BOOTH_MULTIPLIER/*
+vcom ../vhd/generics/REGISTER_FILE/*
+
+vcom ../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.core/*
+vcom ../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.a-ALU.vhd
+vcom ../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.core/*
+vcom ../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/a.b.c.b-FPU.vhd
+vcom ../vhd/a.b-DATAPATH.core/a.b.c-EXECUTE.core/*.vhd
+vcom ../vhd/a.b-DATAPATH.core/*.vhd
+vcom ../vhd/a.b-DATAPATH.vhd
+vcom ../vhd/a.a-CU.vhd
+vcom ../vhd/a-DLX.vhd
+
+vcom ../vhd/testbench/000-*
+vcom ../vhd/testbench/TB-*

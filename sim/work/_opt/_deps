@@ -1,0 +1,107 @@
+H 2141964 11 4 0 47 55 0 0 0 0
+L 4 ieee 19 $MODEL_TECH/../ieee
+L 3 std 18 $MODEL_TECH/../std
+L 8 synopsys 23 $MODEL_TECH/../synopsys
+L 4 work 6 ./work
+D 26 ./work.add_sub(structural) cZY8z`:?0Of`5n8<h[IHk1 26 1
+D 22 ./work.alu(structural) D0aE:j;:abDzNDhj?fB1N1 29 1
+D 34 ./work.alu_opcode_reg(behavioural) ?XJkW^>LdYATH4SnU^8hG3 9 1
+D 32 ./work.booth_encoder(behavioral) jdKEQSJW9n=7i<k5oCO=A3 30 1
+D 35 ./work.booth_multiplier(structural) Mc7?W4VQ]9?YVMCRaI<9Y0 32 1
+D 35 ./work.circular_buffer(behavioural) g:z@V5M5HjPSOHYz]?bSB1 21 1
+D 22 ./work.cla(structural) 5i>]b18FR7o5k;9BL8:gj1 19 1
+D 15 ./work.cmp_ctrl KhTBdh0@f[5?<14ZJWb@o2 1 1
+D 29 ./work.comparator(behavioral) B_=<dLD:R5cj]2hPO7?Y>3 27 1
+D 22 ./work.cu(behavioural) dH6jCCNXElD]YJNnMGMZV1 8 1
+D 27 ./work.datapath(structural) 2W1:h1B5ZOQJKGn6hfK@P1 44 1
+D 25 ./work.decode(behavioral) fKBnk<cNS`6_k6c8nIk1Z2 24 1
+D 22 ./work.dlx(structural) _eADo_TN1ZFE:0Z;Mk7Si0 45 1
+D 18 ./work.dlx_globals kha5]Kf2`ghPb?26?A1M>1 4 1
+D 26 ./work.execute(structural) ?LOc7G]e>?432m[FzBACS1 41 1
+D 33 ./work.exponent_adder(structural) Z@E1abmO4WYefeOW70Vfa1 33 1
+D 33 ./work.f2i_converter(behavioural) V2hkZKQgjbTmLFDC2=g271 37 1
+D 21 ./work.fa(structural) Ne9U^]jMon8CeAm_[5IWU3 17 1
+D 24 ./work.fetch(behavioral) Q[KcCllaFIP5c<aW?[YkQ2 20 1
+D 22 ./work.ff(behavioural) VF^9:dZMI65B;iWeA:6az1 11 1
+D 29 ./work.fp_add_sub(structural) cV4iAKVH?V;Nf]Qm?7g650 36 1
+D 18 ./work.fp_cmp_ctrl BNl:GX8L2^U1[7e`NBV0I2 0 1
+D 32 ./work.fp_comparator(structural) >0K05;ljGQigEKAKb=mJl0 39 1
+D 49 ./work.fp_multiplication_manager_unit(structural) S8M7T:2We?hVPQQ47fmg73 35 1
+D 22 ./work.fpu(structural) Y?OB<K4EJgg51k17aGkO<1 40 1
+D 33 ./work.fpu_opcode_reg(behavoural) ZX@W6h5E>gfLcA_SJz]^E0 10 1
+D 26 ./work.g_block(structural) ?=ThBYQh>T7cUEmDD_hkO3 13 1
+D 21 ./work.ha(structural) 3dGgETJ:YfUKNFoYYLS;K0 16 1
+D 33 ./work.i2f_converter(behavioural) `Y;aaIFh2[l5E1^_V?H>Q3 38 1
+D 16 ./work.instr_gen Q?P_PWOXP]WfikfdEEKaX2 5 1
+D 22 ./work.instr_gen(body) O68VA`0RaBk@`iIg30bn30 7 1
+D 29 ./work.logic_unit(structural) 4g`>U5lD3:7=M0leZTQZP3 28 1
+D 14 ./work.lu_ctrl HTW<f<eDoZ?4>BFdhi97g3 2 1
+D 25 ./work.memory(structural) PVZLJB`h6k;N5U>DF^Po13 42 1
+D 32 ./work.mux51_generic(behavioral) _F1oO`S7ZQEPePd`HMOS21 31 1
+D 27 ./work.pg_block(structural) eDbAYNhPHJPE5@BQQ_?072 14 1
+D 22 ./work.rca(structural) H<XBCM;oE@9FBIF^HCGA?0 18 1
+D 24 ./work.reg_n(structural) 1o=QCY]3bY:jD^e45@gz91 12 1
+D 32 ./work.register_file(behavioral) mzEFVO=H@IjSC8bO<HJBG2 22 1
+D 32 ./work.rounding_unit(structural) ^QhLUUSR@>FD^l:]HB>fg2 34 1
+D 24 ./work.shifter(behavior) WB_96<S`8[dkn9e=cFI2m0 25 1
+D 46 ./work.sparse_tree_carry_generator(structural) bhDhkVic_Yn><h3G7[mfH3 15 1
+D 19 ./work.tb_dlx(test) IXe8CLLFAU_dK=<SRUJ0G1 46 1
+D 12 ./work.utils :[_OzUID:4PVWdgl]ab2C0 3 1
+D 18 ./work.utils(body) iXO`Hj?LQ=CfQ=@ee[kc83 6 1
+D 29 ./work.write_back(structural) B>=Qo10J4@fkf1E3X4d3<2 43 1
+D 33 ./work.zero_detector(behavioural) ]XhSI<FS8Kd=WlT6A;CfE0 23 1
+2 0  0 _e]_>nTaKI=UNGgb3PSWZ2 16 16 1
+2 0  0 cA_Kg;fILn1W9nZM0Xzi=3 5 5 1
+2 0  0 iXO`Hj?LQ=CfQ=@ee[kc83 6 6 1
+2 0  1 Q09Z2MG<`S2kMS3H68?mi2 19 19 1
+2 0  2 V>MM2g8YLj`OA3BLJUF=z0 36 19 1
+2 0  3 9Q3LWiCV8IESJ>RgdPUOm3 39 19 1
+2 0  0 Bg9fN<^;dcj_T6Rhb<:^a3 14 14 1
+2 0  0 O68VA`0RaBk@`iIg30bn30 7 7 1
+2 0  0 1ZWaYQ19eAm?cNkjT4cLB2 31 30 1
+2 0  1 i6<:<ET]z^7jJfP?L=NGh3 22 21 1
+2 0  1 ^:5gf`zzeHUGO:eFnTG5]1 15 15 1
+2 0  2 UMei]30CdA>KHfaQG@>7j3 35 15 1
+2 0  3 W_O?n;0i3AkJgW]<Se?7X3 38 15 1
+2 0  1 h[3zA7knd`J4[X3ej8mfZ3 47 39 1
+2 0  1 ^NE[n9O_OQ?4c>UVRNMPB2 46 38 1
+2 0  0 TbZ]^n2C91KQPC>TV:bk]1 50 42 1
+2 0  1 OBQ0P4N69]PEzhjEVd]842 48 40 1
+2 0  0 nPnf8?Zk0BFRM>>GZ1CIT3 51 43 1
+2 0  1 GZ>_AZSbo9?aAE3SQS?[`1 53 45 1
+2 0  1 EG0:j@8c>oGAJU^b26D8@3 52 44 1
+2 0  1 h8cbElH8K]33jVYaB_ohP2 54 46 1
+2 0  0 0lEiV45I5k1CM?h]Ujb:l2 0 0 1
+2 0  0 hGS?nWHOW3kieFbU[M@Xh0 3 3 1
+2 0  0 hEi>eS1kE@`a_EAnaBn2f0 4 4 1
+2 0  0 MO>>HKTPe^zeOWiS;b>GD2 2 2 1
+2 0  0 fNm<Ve[bSeiVHmNb?NiGj1 1 1 1
+2 0  0 :l8=dPOnVWK?PO4:a`L8P0 9 9 1
+2 0  1 V7L[=bVGRB=DW>iXm@Zab2 26 25 1
+2 0  0 N66iWdIL^9jCoiVN`<Tgl1 11 11 1
+2 0  0 f6NgDHaATfnK0g=EZRW_?2 8 8 1
+2 0  1 AgZ;E=`_ILzF[zo7^dmbf3 12 12 1
+2 0  2 ed;i;39N`oYeOknU3`>jS2 21 12 1
+2 0  0 djB`OAZeoFI]9e4iOAZz^0 10 10 1
+2 0  0 W8`]38H8E1nO:ae@5[Cz90 13 13 1
+2 0  1 0eNXR2V`=NmTDciVL`NQ61 18 18 1
+2 0  2 =<LS:a8UFAN4ln;]_3ZA12 33 18 1
+2 0  3 hzlm1[oE0PVaLUhjfOE0S3 42 18 1
+2 0  4 ?NSX:11Z8z6;WR;KeACg41 43 18 1
+2 0  0 zKXNK^[eb]UmTOAYbX0C71 17 17 1
+2 0  1 Q9<^QmKZeB^<:85<8ez2_0 20 20 1
+2 0  1 WZZ7SdHkJ5^W1fzl]CaZj2 29 28 1
+2 0  0 5biGNWGV_zJB@5MLWd9D12 28 27 1
+2 0  1 JL]z__QU7lZS25=Q4fMJO1 25 24 1
+2 0  1 P3N66e:E?dFBRnMN_9lJO2 23 22 1
+2 0  1 z12iSL=OX2L@YfHl5ODh21 30 29 1
+2 0  1 2^OD^^aN;YNRA3Gd387K[2 24 23 1
+2 0  1 TPfILK:66:ME9OzQl7K8Z2 27 26 1
+2 0  1 @zJ]a][[6lkkZ0e[RCj^D2 40 34 1
+2 0  1 aDnkGXH1>G_B_OSPlbF[m3 34 32 1
+2 0  1 ]Tl=P4da5:GV?7m14jMaZ2 32 31 1
+2 0  1 almRnaK;4RS@^70XPQjP?3 49 41 1
+2 0  1 fniG[23NalDFc9gN8TTY21 44 36 1
+2 0  1 Y]gFVS`>RR72^Qg:YI9IM0 41 35 1
+2 0  1 53i<z24>9EXNnOE0MolGj0 45 37 1
+2 0  1 39FZDflGX=14bXMa^W23K1 37 33 1
