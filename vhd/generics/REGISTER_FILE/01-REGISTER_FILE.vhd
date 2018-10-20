@@ -242,7 +242,7 @@ begin
 		end if;
 	end process;
 	
-	swp_manager: process (CLK, RST, ENB) is
+	swp_manager: process (CLK, RST, ENB, HEAP_ADDR) is
 	begin
 		if (RST = '0') then
 			swp_reg <= HEAP_ADDR;

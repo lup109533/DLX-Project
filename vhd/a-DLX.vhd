@@ -196,6 +196,7 @@ architecture structural of DLX is
 	-- SIGNALS
 	-- FETCH
 	signal fetched_instr_s		: DLX_instr_t;
+	signal fetched_instr_s_pipe	: DLX_instr_t;
 	
 	-- DECODE
 	signal isr_en_s				: std_logic;
@@ -288,7 +289,7 @@ begin
 				CLK					=> CLK,
 				RST					=> RST,
 				ENB					=> global_enable,
-				INSTR				=> fetched_instr_s,
+				INSTR				=> fetched_instr_s_pipe,
 				
 				-- Special signals for TRAP instruction
 				ISR_EN				=> isr_en_s,
@@ -338,6 +339,9 @@ begin
 			);
 	
 	-- Pipeline for CU signals
+	-- To CU/DECODE stage
+	INSTR_PIPE:	REG_N	generic map (DLX_INSTRUCTION_SIZE)	port map (CLK, RST, global_enable, fetched_instr_s, fetched_instr_s_pipe);
+	
 	-- To EXECUTE stage
 	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	port map (CLK, RST, global_enable, alu_opcode_s, alu_opcode_s_exe);
 	FPU_OPCODE_PIPE1: 	FPU_OPCODE_REG	port map (CLK, RST, global_enable, fpu_opcode_s, fpu_opcode_s_exe);
