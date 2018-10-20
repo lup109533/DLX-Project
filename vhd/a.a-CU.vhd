@@ -41,6 +41,7 @@ entity CU is
 		MEM_SIGNED_EXT		: out	std_logic;
 		MEM_HALFWORD		: out	std_logic;
 		MEM_BYTE			: out	std_logic;
+		MEM_LOAD_HI			: out	std_logic;
 		
 		-- WRITE BACK
 		LINK_PC				: out	std_logic;
@@ -65,6 +66,7 @@ architecture behavioural of CU is
 	constant WRB 				: integer := 3;	-- WRITE BACK
 	
 	constant JUMP_AND_LINK_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(31, REGISTER_ADDR_SIZE));
+	constant R0_ADDR			: reg_addr_t := (others => '0');
 				
 	signal opcode_s				: opcode_t;
 	signal source1_addr_s		: reg_addr_t;
@@ -120,15 +122,15 @@ begin
 	-- CONTROL SIGNAL GENERATION
 	-- DECODE STAGE
 	RF_RD1_ADDR		<= source1_addr_s;
-	RF_RD2_ADDR		<= source2_addr_s;
+	RF_RD2_ADDR		<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_s = MOV) else source2_addr_s;
 	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else dest_addr_s;
-	RF_RD1			<= '1' when (op_type = R_TYPE) else '0';
-	RF_RD2			<= '1' when (op_type = R_TYPE) else '0';
+	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = F_TYPE) else '0';
+	RF_RD2			<= '1' when (op_type = R_TYPE or op_type = F_TYPE) else '0';
 	RF_CALL			<= '1' when (opcode_s = TRAP)  else '0';
 	RF_RETN			<= '1' when (opcode_s = RFE)   else '0';
 	ISR_EN			<= '1' when (opcode_s = TRAP)  else '0';
 	IMM_ARG			<= immediate_s;
-	IMM_SEL			<= '1' when (op_type = I_TYPE or opcode_s = LHI) else '0';
+	IMM_SEL			<= '1' when (op_type = I_TYPE) else '0';
 	PC_OFFSET		<= (others => '0') when (opcode_s = JAL or opcode_s = JALR) else pc_offset_s;
 	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE or
 					             opcode_s = BEQZ  or
@@ -158,9 +160,10 @@ begin
 	MEM_BYTE		<= '1' when (opcode_s = LB  or
 					             opcode_s = LBU or
 								 opcode_s = SB) else '0';
+	MEM_LOAD_HI		<= '1' when (opcode_s = LHI) else '0';
 								 
 	-- WRITE BACK STAGE
-	RF_WR			<= '1' when (op_type = R_TYPE or opcode_s = JAL or opcode_s = JALR) else '0';
+	RF_WR			<= '1' when (op_type = R_TYPE or op_type = F_TYPE or opcode_s = JAL or opcode_s = JALR) else '0';
 	LINK_PC			<= '1' when (opcode_s = JAL or opcode_s = JALR) else '0';
 								
 	

@@ -12,6 +12,7 @@ entity MEMORY is
 		MEM_SIGNED_EXT	: in	std_logic;
 		MEM_HALFWORD	: in	std_logic;
 		MEM_BYTE		: in	std_logic;
+		MEM_LOAD_HI		: in	std_logic;
 		-- Signals to/from external memory.
 		EXT_MEM_ADDR	: out	DLX_addr_t;
 		EXT_MEM_DIN		: out	DLX_oper_t;
@@ -37,6 +38,8 @@ architecture structural of MEMORY is
 	signal out_byte					: std_logic_vector(DLX_OPERAND_SIZE/4-1   downto 0);
 	signal out_halfword_extension	: std_logic_vector(DLX_OPERAND_SIZE/2-1   downto 0);
 	signal out_byte_extension		: std_logic_vector(3*DLX_OPERAND_SIZE/4-1 downto 0);
+	signal out_high_halfword		: std_logic_vector(DLX_OPERAND_SIZE/2-1   downto 0);
+	signal out_load_hi_extension	: std_logic_vector(DLX_OPERAND_SIZE/2-1   downto 0);
 	
 	signal ext_mem_din_s			: DLX_oper_t;
 	signal ext_mem_dout_s			: DLX_oper_t;
@@ -61,13 +64,17 @@ begin
 	out_halfword_extension	<= (others => EXT_MEM_DOUT(DLX_OPERAND_SIZE/2-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	out_byte_extension		<= (others => EXT_MEM_DOUT(DLX_OPERAND_SIZE/4-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	
+	out_high_halfword		<= EXT_MEM_DOUT(DLX_OPERAND_SIZE-1 downto DLX_OPERAND_SIZE/2);
+	out_load_hi_extension	<= (others => '0');
+	
 	EXT_MEM_DIN				<= ext_mem_din_s;
 	ext_mem_din_s			<= in_halfword_extension & in_halfword when (MEM_HALFWORD = '1') else
 							   in_byte_extension     & in_byte     when (MEM_BYTE = '1')     else
 							   DATA_IN;
 	
-	ext_mem_dout_s			<= out_halfword_extension & out_halfword when (MEM_HALFWORD = '1') else
-							   out_byte_extension     & out_byte     when (MEM_BYTE = '1')     else
+	ext_mem_dout_s			<= out_halfword_extension & out_halfword          when (MEM_HALFWORD = '1') else
+							   out_byte_extension     & out_byte              when (MEM_BYTE = '1')     else
+							   out_high_halfword      & out_load_hi_extension when (MEM_LOAD_HI = '1')  else
 							   EXT_MEM_DOUT;
 	
 	-- External memory outputs.

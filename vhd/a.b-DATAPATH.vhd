@@ -55,6 +55,7 @@ entity DATAPATH is
 		MEM_SIGNED_EXT		: in	std_logic;
 		MEM_HALFWORD		: in	std_logic;
 		MEM_BYTE			: in	std_logic;
+		MEM_LOAD_HI			: in	std_logic;
 		EXT_MEM_ADDR		: out	DLX_addr_t;
 		EXT_MEM_DIN			: out	DLX_oper_t;
 		EXT_MEM_RD			: out	std_logic;
@@ -80,6 +81,7 @@ architecture structural of DATAPATH is
 			PC				: out	DLX_addr_t;
 			-- Datapath signals
 			BRANCH_TAKEN	: in	std_logic;
+			BRANCH_ADDR_SEL	: in	std_logic;
 			BRANCH_ADDR		: in	DLX_addr_t
 		);
 	end component;
@@ -150,6 +152,7 @@ architecture structural of DATAPATH is
 			MEM_SIGNED_EXT	: in	std_logic;
 			MEM_HALFWORD	: in	std_logic;
 			MEM_BYTE		: in	std_logic;
+			MEM_LOAD_HI		: in	std_logic;
 			-- Signals to/from external memory.
 			EXT_MEM_ADDR	: out	DLX_addr_t;
 			EXT_MEM_DIN		: out	DLX_oper_t;
@@ -176,6 +179,16 @@ architecture structural of DATAPATH is
 		);
 	end component;
 	
+	component FF
+		port (
+			CLK		: in	std_logic;
+			RST		: in	std_logic;
+			ENB		: in	std_logic;
+			DIN		: in	std_logic;
+			DOUT	: out	std_logic
+		);
+	end component;
+	
 	component REG_N
 		generic (N : natural);
 		port (
@@ -188,48 +201,51 @@ architecture structural of DATAPATH is
 	end component;
 	
 	-- SIGNALS
-	signal fet_fout				: DLX_instr_t;
-	signal fet_pc				: DLX_addr_t;
-	signal fet_branch_taken		: std_logic;
-	signal fet_branch_addr		: DLX_addr_t;
-	signal fet_fout_pipe		: DLX_instr_t;
-	signal fet_pc_pipe			: DLX_addr_t;
+	signal fet_fout					: DLX_instr_t;
+	signal fet_pc					: DLX_addr_t;
+	signal fet_branch_taken			: std_logic;
+	signal fet_branch_addr			: DLX_addr_t;
+	signal fet_branch_addr_sel		: std_logic;
+	signal fet_fout_pipe			: DLX_instr_t;
+	signal fet_pc_pipe				: DLX_addr_t;
 	
-	signal dec_reg_a			: DLX_oper_t;
-	signal dec_reg_b			: DLX_oper_t;
-	signal dec_forward_r1_en	: std_logic;
-	signal dec_forward_r2_en	: std_logic;
-	signal dec_forward_value1	: DLX_oper_t;
-	signal dec_forward_value2	: DLX_oper_t;
-	signal dec_pc				: DLX_addr_t;
-	signal dec_rf_din			: DLX_oper_t;
-	signal dec_rf_wr			: std_logic;
-	signal dec_branch_taken		: std_logic;
-	signal dec_reg_a_pipe		: DLX_oper_t;
-	signal dec_reg_b_pipe		: DLX_oper_t;
+	signal dec_reg_a				: DLX_oper_t;
+	signal dec_reg_b				: DLX_oper_t;
+	signal dec_forward_r1_en		: std_logic;
+	signal dec_forward_r2_en		: std_logic;
+	signal dec_forward_value1		: DLX_oper_t;
+	signal dec_forward_value2		: DLX_oper_t;
+	signal dec_pc					: DLX_addr_t;
+	signal dec_rf_din				: DLX_oper_t;
+	signal dec_rf_wr				: std_logic;
+	signal dec_branch_taken			: std_logic;
+	signal dec_branch_taken_pipe	: std_logic;
+	signal dec_reg_a_pipe			: DLX_oper_t;
+	signal dec_reg_b_pipe			: DLX_oper_t;
 	
-	signal exe_r1				: DLX_oper_t;
-	signal exe_r2				: DLX_oper_t;
-	signal exe_ex_out			: DLX_oper_t;
-	signal exe_ex_out_pipe		: DLX_oper_t;
-	signal exe_r2_pipe			: DLX_oper_t;
+	signal exe_r1					: DLX_oper_t;
+	signal exe_r2					: DLX_oper_t;
+	signal exe_ex_out				: DLX_oper_t;
+	signal exe_ex_out_pipe			: DLX_oper_t;
+	signal exe_r2_pipe				: DLX_oper_t;
 	
-	signal mem_addr_in			: DLX_oper_t;
-	signal mem_data_in			: DLX_oper_t;
-	signal mem_mem_out			: DLX_oper_t;
-	signal mem_mem_out_pipe		: DLX_oper_t;
-	signal mem_pc_out_pipe		: DLX_oper_t;
+	signal mem_addr_in				: DLX_oper_t;
+	signal mem_data_in				: DLX_oper_t;
+	signal mem_mem_out				: DLX_oper_t;
+	signal mem_mem_out_pipe			: DLX_oper_t;
+	signal mem_pc_out_pipe			: DLX_oper_t;
 	
-	signal wrb_din				: DLX_oper_t;
-	signal wrb_pc				: DLX_oper_t;
-	signal wrb_dout				: DLX_oper_t;
-	signal wrb_rf_wr_out		: std_logic;
+	signal wrb_din					: DLX_oper_t;
+	signal wrb_pc					: DLX_oper_t;
+	signal wrb_dout					: DLX_oper_t;
+	signal wrb_rf_wr_out			: std_logic;
 
 begin
 
 	-- FETCH
 	-- Connect inputs to pipelines of other stages or other signals
-	fet_branch_taken	<= dec_branch_taken;
+	fet_branch_taken	<= dec_branch_taken or dec_branch_taken_pipe;
+	fet_branch_addr_sel	<= dec_branch_taken_pipe;
 	fet_branch_addr		<= exe_ex_out;
 	FETCHED_INSTR		<= fet_fout;
 	
@@ -241,6 +257,7 @@ begin
 								PC				=> fet_pc,
 								-- Datapath signals
 								BRANCH_TAKEN	=> fet_branch_taken,
+								BRANCH_ADDR_SEL	=> fet_branch_addr_sel,
 								BRANCH_ADDR		=> fet_branch_addr
 							);
 	
@@ -311,6 +328,8 @@ begin
 	DEC_REG_A_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, dec_reg_a, dec_reg_a_pipe);
 	DEC_REG_B_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, dec_reg_b, dec_reg_b_pipe);
 	
+	DEC_BRANCH_TAKEN_PIPELINE: FF port map (CLK, RST, ENB, dec_branch_taken, dec_branch_taken_pipe);
+	
 		
 	-- EXECUTE
 	-- Connect inputs to pipelines of other stages or other signals
@@ -347,6 +366,7 @@ begin
 								MEM_SIGNED_EXT	=> MEM_SIGNED_EXT,
 								MEM_HALFWORD	=> MEM_HALFWORD,
 								MEM_BYTE		=> MEM_BYTE,
+								MEM_LOAD_HI		=> MEM_LOAD_HI,
 								-- Signals to/from external memory.
 								EXT_MEM_ADDR	=> EXT_MEM_ADDR,
 								EXT_MEM_DIN		=> EXT_MEM_DIN,

@@ -22,7 +22,8 @@ entity DLX is
 		EXT_MEM_RD			: out	std_logic;
 		EXT_MEM_WR			: out	std_logic;
 		EXT_MEM_ENABLE		: out	std_logic;
-		EXT_MEM_DOUT		: in	DLX_oper_t
+		EXT_MEM_DOUT		: in	DLX_oper_t;
+		EXT_MEM_BUSY		: in	std_logic
 	);
 end entity;
 
@@ -67,6 +68,7 @@ architecture structural of DLX is
 			MEM_SIGNED_EXT		: out	std_logic;
 			MEM_HALFWORD		: out	std_logic;
 			MEM_BYTE			: out	std_logic;
+			MEM_LOAD_HI			: out	std_logic;
 			
 			-- WRITE BACK
 			LINK_PC				: out	std_logic;
@@ -136,6 +138,7 @@ architecture structural of DLX is
 			MEM_SIGNED_EXT		: in	std_logic;
 			MEM_HALFWORD		: in	std_logic;
 			MEM_BYTE			: in	std_logic;
+			MEM_LOAD_HI			: in	std_logic;
 			EXT_MEM_ADDR		: out	DLX_addr_t;
 			EXT_MEM_DIN			: out	DLX_oper_t;
 			EXT_MEM_RD			: out	std_logic;
@@ -229,6 +232,7 @@ architecture structural of DLX is
 	signal mem_signed_ext_s		: std_logic;
 	signal mem_halfword_s		: std_logic;
 	signal mem_byte_s			: std_logic;
+	signal mem_load_hi_s		: std_logic;
 	-- Pipeline 1
 	signal mem_rd_sel_s_exe		: std_logic;
 	signal mem_wr_sel_s_exe		: std_logic;
@@ -237,6 +241,7 @@ architecture structural of DLX is
 	signal mem_signed_ext_s_exe	: std_logic;
 	signal mem_halfword_s_exe	: std_logic;
 	signal mem_byte_s_exe		: std_logic;
+	signal mem_load_hi_s_exe	: std_logic;
 	-- Pipeline 2
 	signal mem_rd_sel_s_mem		: std_logic;
 	signal mem_wr_sel_s_mem		: std_logic;
@@ -245,6 +250,7 @@ architecture structural of DLX is
 	signal mem_signed_ext_s_mem	: std_logic;
 	signal mem_halfword_s_mem	: std_logic;
 	signal mem_byte_s_mem		: std_logic;
+	signal mem_load_hi_s_mem	: std_logic;
 	
 	-- WRITE BACK
 	signal link_pc_s			: std_logic;
@@ -276,7 +282,7 @@ architecture structural of DLX is
 begin
 
 	-- Global enable is active iff no stall and no RF spill/fill
-	global_enable	<= ENB and not stall_s and rf_ok_s;
+	global_enable	<= ENB and not stall_s and not EXT_MEM_BUSY and rf_ok_s;
 
 	CU0: CU	port map (
 				CLK					=> CLK,
@@ -315,6 +321,7 @@ begin
 				MEM_SIGNED_EXT		=> mem_signed_ext_s,
 				MEM_HALFWORD		=> mem_halfword_s,
 				MEM_BYTE			=> mem_byte_s,
+				MEM_LOAD_HI			=> mem_load_hi_s,
 				
 				-- WRITE BACK
 				LINK_PC				=> link_pc_s,
@@ -351,6 +358,8 @@ begin
 	HALFWORD_PIPE2:			FF	port map (CLK, RST, global_enable, mem_halfword_s_exe, mem_halfword_s_mem);
 	BYTE_PIPE1:				FF	port map (CLK, RST, global_enable, mem_byte_s, mem_byte_s_exe);
 	BYTE_PIPE2:				FF	port map (CLK, RST, global_enable, mem_byte_s_exe, mem_byte_s_mem);
+	LOAD_HI_PIPE1:			FF	port map (CLK, RST, global_enable, mem_load_hi_s, mem_load_hi_s_exe);
+	LOAD_HI_PIPE2:			FF	port map (CLK, RST, global_enable, mem_load_hi_s_exe, mem_load_hi_s_mem);
 	
 	-- To WRITE BACK stage
 	LINK_PC_PIPE1:		FF		port map (CLK, RST, global_enable, link_pc_s, link_pc_s_exe);
@@ -415,6 +424,7 @@ begin
 						MEM_SIGNED_EXT		=> mem_signed_ext_s_mem,
 						MEM_HALFWORD		=> mem_halfword_s_mem,
 						MEM_BYTE			=> mem_byte_s_mem,
+						MEM_LOAD_HI			=> mem_load_hi_s_mem,
 						EXT_MEM_ADDR		=> EXT_MEM_ADDR,
 						EXT_MEM_DIN			=> EXT_MEM_DIN,
 						EXT_MEM_RD			=> EXT_MEM_RD,

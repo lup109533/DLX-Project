@@ -112,19 +112,21 @@ begin
 				memory(addr_in_index) <= memory_in;
 			end if;
 			-- Read1 from memory
-			if (RD1 = '1') then
-				DOUT1 <= memory(addr_out1_index);
-			else
-				DOUT1 <= (others => '0');
-			end if;
+			--if (RD1 = '1') then
+			--	DOUT1 <= memory(addr_out1_index);
+			--else
+			--	DOUT1 <= (others => '0');
+			--end if;
 			-- Read2 from memory
-			if (RD2 = '1') then
-				DOUT2 <= memory(addr_out2_index);
-			else
-				DOUT2 <= (others => '0');
-			end if;
+			--if (RD2 = '1') then
+			--	DOUT2 <= memory(addr_out2_index);
+			--else
+			--	DOUT2 <= (others => '0');
+			--end if;
 		end if;
 	end process;
+	DOUT1	<= memory(addr_out1_index) when (RD1 = '1') else (others => '0');
+	DOUT2	<= memory(addr_out2_index) when (RD2 = '1') else (others => '0');
 	
 	has_not_fixed_r0: if not(FIXED_R0) generate
 		memory_in <= MBUS(WORD_SIZE-1 downto 0) when (state = RF_FILL) else DIN;

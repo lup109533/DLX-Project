@@ -79,9 +79,18 @@ architecture structural of ALU is
 
 begin
 	-- CHECK OPERATION TYPE
-	alu_function <=	SHIFT		when (FUNC = SHIFT_RA or FUNC = SHIFT_LA or FUNC = SHIFT_RL or FUNC = SHIFT_LL)	else
-					SUM_OR_SUB	when (FUNC = IADD or FUNC = ISUB or FUNC = BRANCH_IF_EQ or FUNC = BRANCH_IF_NE)	else
-					LOGIC		when (FUNC = LOGIC_AND or FUNC = LOGIC_OR or FUNC = LOGIC_XOR)					else
+	alu_function <=	SHIFT		when (FUNC = SHIFT_RA or
+								      FUNC = SHIFT_LA or
+									  FUNC = SHIFT_RL or
+									  FUNC = SHIFT_LL) else
+					SUM_OR_SUB	when (FUNC = IADD or
+								      FUNC = ISUB or
+									  FUNC = BRANCH_IF_EQ or
+									  FUNC = BRANCH_IF_NE or
+									  FUNC = MOV) else
+					LOGIC		when (FUNC = LOGIC_AND or
+								      FUNC = LOGIC_OR or
+									  FUNC = LOGIC_XOR) else
 					COMPARE;
 
 					

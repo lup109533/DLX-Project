@@ -47,6 +47,7 @@ architecture test of TB_CU is
 			MEM_SIGNED_EXT		: out	std_logic;
 			MEM_HALFWORD		: out	std_logic;
 			MEM_BYTE			: out	std_logic;
+			MEM_LOAD_HI			: out	std_logic;
 			
 			-- WRITE BACK
 			LINK_PC				: out	std_logic;
@@ -98,6 +99,7 @@ architecture test of TB_CU is
 	signal MEM_SIGNED_EXT_s		: std_logic;
 	signal MEM_HALFWORD_s		: std_logic;
 	signal MEM_BYTE_s			: std_logic;
+	signal MEM_LOAD_HI_s		: std_logic;
 	
 	-- WRITE BACK
 	signal LINK_PC_s			: std_logic;
@@ -160,6 +162,7 @@ begin
 					MEM_SIGNED_EXT_s,
 					MEM_HALFWORD_s,
 					MEM_BYTE_s,
+					MEM_LOAD_HI_s,
 					
 					-- WRITE BACK
 					LINK_PC_s,
@@ -193,11 +196,11 @@ begin
 		opc		<= (others => '0');
 		alu		<= (others => '0');
 		fpu		<= (others => '0');
-		reg1	<= (others => '0');
-		reg2	<= (others => '0');
-		dest	<= (others => '0');
-		imm		<= (others => '0');
-		pcoff	<= (others => '0');
+		reg1	<= "00010";
+		reg2	<= "01101";
+		dest	<= "00100";
+		imm		<= "0000000000000010";
+		pcoff	<= "10001001001011101010111111";
 		wait for 1.5 ns;
 	
 		RST_s	<= '1';

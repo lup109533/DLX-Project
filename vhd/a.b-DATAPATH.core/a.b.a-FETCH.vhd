@@ -12,6 +12,7 @@ entity FETCH is
 		PC				: out	DLX_addr_t;
 		-- Datapath signals
 		BRANCH_TAKEN	: in	std_logic;
+		BRANCH_ADDR_SEL	: in	std_logic;
 		BRANCH_ADDR		: in	DLX_addr_t
 	);
 end entity;
@@ -58,7 +59,7 @@ begin
 	instr_offset <= std_logic_vector(to_unsigned(DLX_ADDR_SIZE/8, instr_offset'length));
 	
 	-- Select next address (branch may have been calculated in EX stage)
-	next_pc <= pc_add_out when (BRANCH_TAKEN = '0') else BRANCH_ADDR;
+	next_pc <= pc_add_out when (BRANCH_ADDR_SEL = '0') else BRANCH_ADDR;
 	
 	-- PC output for memory/cache
 	PC <= pc_add_out;
