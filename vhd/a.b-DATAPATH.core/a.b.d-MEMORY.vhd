@@ -67,7 +67,6 @@ begin
 	out_high_halfword		<= EXT_MEM_DOUT(DLX_OPERAND_SIZE-1 downto DLX_OPERAND_SIZE/2);
 	out_load_hi_extension	<= (others => '0');
 	
-	EXT_MEM_DIN				<= ext_mem_din_s;
 	ext_mem_din_s			<= in_halfword_extension & in_halfword when (MEM_HALFWORD = '1') else
 							   in_byte_extension     & in_byte     when (MEM_BYTE = '1')     else
 							   DATA_IN;

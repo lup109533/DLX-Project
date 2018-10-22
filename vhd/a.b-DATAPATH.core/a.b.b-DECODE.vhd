@@ -140,8 +140,8 @@ begin
 	
 	-- Check branch taken
 	BRANCH_TAKEN	<= branch_taken_s;
-	branch_taken_s	<= '1' when (is_zero_s = '1' and OPCODE = BEQZ) or (is_zero_s = '0' and OPCODE = BNEZ) else -- when conditional branch matches
-					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) else               -- when operation is unconditional branch
+	branch_taken_s	<= '1' when (is_zero_s = '1' and (OPCODE = BEQZ or OPCODE = BFPF)) or (is_zero_s = '0' and OPCODE = BNEZ or OPCODE = BFPT)) else -- when conditional branch matches
+					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) 													else -- when operation is unconditional branch
 					   '0';
 						
 	-- Extend immediate arg

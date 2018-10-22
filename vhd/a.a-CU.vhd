@@ -67,6 +67,7 @@ architecture behavioural of CU is
 	
 	constant JUMP_AND_LINK_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(31, REGISTER_ADDR_SIZE));
 	constant R0_ADDR			: reg_addr_t := (others => '0');
+	constant FP_SPECIAL_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(30, REGISTER_ADDR_SIZE));
 				
 	signal opcode_s				: opcode_t;
 	signal source1_addr_s		: reg_addr_t;
@@ -119,54 +120,94 @@ begin
 	immediate_s		<= INSTR(IMMEDIATE_ARG_RANGE);
 	pc_offset_s		<= INSTR(PC_OFFSET_RANGE);
 	
+	
 	-- CONTROL SIGNAL GENERATION
 	-- DECODE STAGE
-	RF_RD1_ADDR		<= source1_addr_s;
+	-- Source 1 is fps in case of floating-point branch instruction.
+	RF_RD1_ADDR		<= FP_SPECIAL_ADDR when (opcode_s = BFPT or opcode_s = BFPF) else source1_addr_s;
+	-- Source 2 is R0 in case of mov instruction.
 	RF_RD2_ADDR		<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_s = MOV) else source2_addr_s;
-	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else dest_addr_s;
-	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = F_TYPE) else '0';
+	-- Destination is link register (R31) in case of jump-and-link or fps in case of FP comparison.
+	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
+					   FP_SPECIAL_ADDR    when (opcode_s = FPU_I and (
+					                                       fpu_func_s = EQF or
+					                                       fpu_func_s = NEF or
+					                                       fpu_func_s = GEF or
+					                                       fpu_func_s = LEF or
+					                                       fpu_func_s = GTF or
+					                                       fpu_func_s = LTF) else
+														   
+					   dest_addr_s;				   
+	-- Operation has operand 1 in case of R-type, F-TYPE or I-TYPE instructions.
+	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = F_TYPE or op_type = I_TYPE) else '0';			   
+	-- Operation has operand 2 in case of R-type, F-TYPE instructions (but not I-TYPE).
 	RF_RD2			<= '1' when (op_type = R_TYPE or op_type = F_TYPE) else '0';
+	-- Only call operation is TRAP.
 	RF_CALL			<= '1' when (opcode_s = TRAP)  else '0';
+	-- Only return operation is RFE.
 	RF_RETN			<= '1' when (opcode_s = RFE)   else '0';
+	-- Enable ISR for TRAP instruction.
 	ISR_EN			<= '1' when (opcode_s = TRAP)  else '0';
+	-- Pass immediate argument from instruction.
 	IMM_ARG			<= immediate_s;
+	-- Enable immediate only for I-TYPE instructions.
 	IMM_SEL			<= '1' when (op_type = I_TYPE) else '0';
-	PC_OFFSET		<= (others => '0') when (opcode_s = JAL or opcode_s = JALR) else pc_offset_s;
+	-- Extract PC offset
+	PC_OFFSET		<= pc_offset_s;
+	-- Enable PC offset as operand 2 in case of jump instruction
 	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE or
 					             opcode_s = BEQZ  or
 								 opcode_s = BNEZ  or
+								 opcode_s = BFPF  or
+								 opcode_s = BFPT  or
 								 opcode_s = JR    or
-								 opcode_s = JALR) else '0';
+								 opcode_s = JALR) else '0';							 
+	-- Extract opcode
 	OPCODE			<= opcode_s;
+	-- Signed extension in all cases except explicitly unsigned instructions
 	SIGNED_EXT		<= '1' when	((op_type = I_TYPE   and signed_immediate = '1') or
 							     (opcode_s = ALU_I   and signed_alu_op = '1')    or
 							     (opcode_s = FPU_I   and signed_fpu_op = '1'))   else '0';
 	
+	
 	-- EXCUTE STAGE
+	-- Select FPU output if FP operation
 	FPU_FUNC_SEL	<= '1' when (opcode_s = FPU_I) else '0';
 	
+	
 	-- MEMORY STAGE
+	-- Enable memory read if load instruction
 	MEM_RD_SEL		<= '1' when (op_type = L_TYPE) else '0';
+	-- Enable memory write if store instruction
 	MEM_WR_SEL		<= '1' when (op_type = S_TYPE) else '0';
+	-- Enable memory if memory operation
 	MEM_EN			<= '1' when (op_type = L_TYPE  or
-					             op_type = S_TYPE) else '0';
+					             op_type = S_TYPE) else '0';						 
+	-- Output from memory if memory operation
 	MEMORY_OP_SEL	<= '1' when (op_type = L_TYPE  or
-					             op_type = S_TYPE) else '0';
-	MEM_SIGNED_EXT	<= '1' when (opcode_s = LBU  or
-					             opcode_s = LHU) else '0';
+					             op_type = S_TYPE) else '0';						 
+	-- Extend as signed in all cases except for explicitly unsigned loads
+	MEM_SIGNED_EXT	<= '0' when (opcode_s = LBU  or
+					             opcode_s = LHU) else '1';						 
+	-- Enable halfword load/store
 	MEM_HALFWORD	<= '1' when (opcode_s = LH  or
 					             opcode_s = LHU or
-								 opcode_s = SH) else '0';
+								 opcode_s = SH) else '0';						 
+	-- Enable byte load/store
 	MEM_BYTE		<= '1' when (opcode_s = LB  or
 					             opcode_s = LBU or
-								 opcode_s = SB) else '0';
+								 opcode_s = SB) else '0';							 
+	-- Enable most significant halfword load
 	MEM_LOAD_HI		<= '1' when (opcode_s = LHI) else '0';
 								 
 	-- WRITE BACK STAGE
+	-- Enable write back to RF for operations with a destination or for return address linking
 	RF_WR			<= '1' when (op_type = R_TYPE or op_type = F_TYPE or opcode_s = JAL or opcode_s = JALR) else '0';
+	-- Select saved PC instead of memory/execute output
 	LINK_PC			<= '1' when (opcode_s = JAL or opcode_s = JALR) else '0';
 								
 	
+	-- Check if instruction requires signed operands (when not explicitly unsigned)
 	signed_immediate	<= '0' when (opcode_s = ADDUI or
 						             opcode_s = SUBUI or
 									 opcode_s = SLTUI or
@@ -180,7 +221,7 @@ begin
 									 func_s = SGTU or
 									 func_s = SLEU or
 									 func_s = SGEU) else '1';
-									 
+						 
 	signed_fpu_op		<= '0' when (fpu_func_s = MULU or fpu_func_s = DIVU) else '1';
 	
 	-- ALU OPCODE GENERATOR
@@ -293,22 +334,22 @@ begin
 		end if;
 	end process;
 	
-	-- FORWRDING CHECK
+	-- FORWARDING CHECK
 	-- Forwarding is checked at the earliest possible occasion (DECODE stage, if forwarding is not possible, stalling is employed).
 	-- The forwarding target instruction type is checked to see whether one or more source registers are employed, then the source register(s)
 	-- is/are checked against the destination register(s) of the following instructions, but only if the following instruction types
 	-- require a destination register (in most cases).
-	target_has_s1		<= '1' when (hazard_pipe_t(DEC) = R_TYPE or hazard_pipe_t(DEC) = I_TYPE)	else '0';
-	target_has_s2		<= '1' when (hazard_pipe_t(DEC) = R_TYPE)									else '0';
-	exe_source_has_d	<= '1' when not(hazard_pipe_t(EXE) = J_TYPE	or hazard_pipe_t(EXE) = S_TYPE)	else '0';
-	mem_source_has_d	<= '1' when not(hazard_pipe_t(MEM) = J_TYPE	or hazard_pipe_t(MEM) = S_TYPE)	else '0';
-	wrb_source_has_d	<= '1' when not(hazard_pipe_t(WRB) = J_TYPE	or hazard_pipe_t(WRB) = S_TYPE)	else '0';
-	exe_can_forward_s1	<= '1' when (hazard_pipe_s1(DEC) = hazard_pipe_d(EXE))						else '0';
-	mem_can_forward_s1	<= '1' when (hazard_pipe_s1(DEC) = hazard_pipe_d(MEM))						else '0';
-	wrb_can_forward_s1	<= '1' when (hazard_pipe_s1(DEC) = hazard_pipe_d(WRB))						else '0';
-	exe_can_forward_s2	<= '1' when (hazard_pipe_s2(DEC) = hazard_pipe_d(EXE))						else '0';
-	mem_can_forward_s2	<= '1' when (hazard_pipe_s2(DEC) = hazard_pipe_d(MEM))						else '0';
-	wrb_can_forward_s2	<= '1' when (hazard_pipe_s2(DEC) = hazard_pipe_d(WRB))						else '0';
+	target_has_s1		<= '1' when (hazard_pipe_t(DEC) = R_TYPE or hazard_pipe_t(DEC) = I_TYPE)									else '0';
+	target_has_s2		<= '1' when (hazard_pipe_t(DEC) = R_TYPE)																	else '0';
+	exe_source_has_d	<= '1' when not(hazard_pipe_t(EXE) = J_TYPE	or hazard_pipe_t(EXE) = S_TYPE or hazard_pipe_t(EXE) = NO_TYPE)	else '0';
+	mem_source_has_d	<= '1' when not(hazard_pipe_t(MEM) = J_TYPE	or hazard_pipe_t(MEM) = S_TYPE or hazard_pipe_t(MEM) = NO_TYPE)	else '0';
+	wrb_source_has_d	<= '1' when not(hazard_pipe_t(WRB) = J_TYPE	or hazard_pipe_t(WRB) = S_TYPE or hazard_pipe_t(WRB) = NO_TYPE)	else '0';
+	exe_can_forward_s1	<= '1' when (hazard_pipe_s1(DEC) = hazard_pipe_d(EXE))														else '0';
+	mem_can_forward_s1	<= '1' when (hazard_pipe_s1(DEC) = hazard_pipe_d(MEM))														else '0';
+	wrb_can_forward_s1	<= '1' when (hazard_pipe_s1(DEC) = hazard_pipe_d(WRB))														else '0';
+	exe_can_forward_s2	<= '1' when (hazard_pipe_s2(DEC) = hazard_pipe_d(EXE))														else '0';
+	mem_can_forward_s2	<= '1' when (hazard_pipe_s2(DEC) = hazard_pipe_d(MEM))														else '0';
+	wrb_can_forward_s2	<= '1' when (hazard_pipe_s2(DEC) = hazard_pipe_d(WRB))														else '0';
 	
 	---- S1
 	X2D_FORWARD_S1_EN	<= target_has_s1 and exe_source_has_d and exe_can_forward_s1;
@@ -324,7 +365,7 @@ begin
 	-- DECODE stage requires the destination of a load-type operation in the EXECUTION stage.
 	-- In this case, the previous stages are disabled (with the exception of the RF in the DECODE stage) for 1 clock cycle, after which forwarding is possible.
 	exe_source_is_load	<= '1' when (hazard_pipe_t(EXE) = L_TYPE) else '0';
-	stall_s				<= (target_has_s1 or target_has_s2) and exe_source_is_load and (exe_can_forward_s1 or exe_can_forward_s2);
+	stall_s				<= ((target_has_s1 and exe_can_forward_s1) or (exe_can_forward_s2 and target_has_s2)) and exe_source_is_load;
 	STALL				<= stall_s;
 	
 end architecture;

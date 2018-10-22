@@ -62,6 +62,11 @@ architecture test of TB_DLX is
 	signal imm					: immediate_t;
 	signal pcoff				: pc_offset_t;
 	
+	type instr_file is file of DLX_instr_t;
+	
+	constant test_all	: boolean := true;
+	constant file_name	: string(1 to 11) := "program.bin";
+	
 begin
 
 	UUT: DLX	port map(
@@ -113,33 +118,43 @@ begin
 		dest				<= "00100";
 		imm					<= "0000000000000010";
 		pcoff				<= "10001001001011101010111111";
-		wait for 1.5 ns;
+		wait for 2 ns;
 	
 		RST_s	<= '1';
-		for op in opcodes loop
-			opcodes_s <= op;
-			opc <= opcode_to_std_logic_v(op);
-			if (opc = ALU_I) then
-				for a in alu_codes loop
-					alu_codes_s	<= a;
-					alu		<= alu_to_std_logic_v(a);
-					INSTR_s	<= opc & reg1 & reg2 & dest & alu;
-					wait for 2 ns;
-				end loop;
-			elsif (opc = FPU_I) then
-				for f in fpu_codes loop
-					fpu_codes_s <= f;
-					fpu		<= fpu_to_std_logic_v(f);
-					INSTR_s	<= opc & reg1 & reg2 & dest & fpu;
-					wait for 2 ns;
-				end loop;
-			else
-				INSTR_s	<= opc & reg1 & dest & imm;
+		if (test_all) then
+			for op in opcodes loop
+				opcodes_s <= op;
+				opc <= opcode_to_std_logic_v(op);
+				if (opc = ALU_I) then
+					for a in alu_codes loop
+						alu_codes_s	<= a;
+						alu		<= alu_to_std_logic_v(a);
+						INSTR_s	<= opc & reg1 & reg2 & dest & alu;
+					end loop;
+				elsif (opc = FPU_I) then
+					for f in fpu_codes loop
+						fpu_codes_s <= f;
+						fpu		<= fpu_to_std_logic_v(f);
+						INSTR_s	<= opc & reg1 & reg2 & dest & fpu;
+					end loop;
+				elsif (opc /= TRAP and opc /= RFE) then
+					INSTR_s	<= opc & reg1 & dest & imm;
+				end if;
 				wait for 2 ns;
-			end if;
-		end loop;
-		
-		wait;
+			end loop;
+		else
+			wait for 2 ns;
+		end if;
 	end process;
+	
+--	read_program: process (CLK_s) is
+--		file program_file		: instr_file is file_name;
+--		variable current_instr	: DLX_instr_t;
+--	begin
+--		if (rising_edge(CLK_s)) then
+--			read(program_file, current_instr);
+--			INSTR_s <= current_instr;
+--		end if;
+--	end process;
 
 end architecture;
