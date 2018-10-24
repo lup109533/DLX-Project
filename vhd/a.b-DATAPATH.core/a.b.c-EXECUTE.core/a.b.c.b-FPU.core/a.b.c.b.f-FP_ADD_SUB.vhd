@@ -99,7 +99,7 @@ begin
 	-- Select biggest exponent
 	biggest_exp	<= EXPONENT1 when (diff_sel = '1') else EXPONENT2;
 	
-	-- Add 1 to exponent if nexessary (overflow on the mantissa)
+	-- Add 1 to exponent if necessary (overflow on the mantissa)
 	EXP_CORR_ADD: RCA generic map (EXPONENT_SIZE) port map (biggest_exp, (others => '0'), correct_exp, exp_out, open);
 	
 	-- MANTISSA

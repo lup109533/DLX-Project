@@ -7,14 +7,16 @@ entity DATAPATH is
 	port (
 		CLK					: in	std_logic;
 		RST					: in	std_logic;
-		ENB					: in	std_logic;
+		FETCH_ENB			: in	std_logic;
+		DECODE_ENB			: in	std_logic;
+		EXECUTE_ENB			: in	std_logic;
+		MEMORY_ENB			: in	std_logic;
 		-- FETCH
 		ICACHE_INSTR		: in	DLX_instr_t;
 		FETCHED_INSTR		: out	DLX_instr_t;
 		
 		-- DECODE
-		ISR_TABLE_ADDR		: in	DLX_addr_t;
-		ISR_EN				: in	std_logic;
+		PC_OUT_EN				: in	std_logic;
 		HEAP_ADDR			: in	DLX_addr_t;
 		RF_SWP				: out	DLX_addr_t;
 		MBUS				: inout	DLX_addr_t;
@@ -76,6 +78,7 @@ architecture structural of DATAPATH is
 		port (
 			CLK				: in	std_logic;
 			RST				: in	std_logic;
+			ENB				: in	std_logic;
 			INSTR			: in	DLX_instr_t;
 			FOUT			: out	DLX_instr_t;
 			PC				: out	DLX_addr_t;
@@ -93,14 +96,13 @@ architecture structural of DATAPATH is
 			ENB				: in	std_logic;
 			REG_A			: out	DLX_oper_t;
 			REG_B			: out	DLX_oper_t;
-			-- Special signals for TRAP instruction
-			ISR_TABLE_ADDR	: in	DLX_addr_t;
-			ISR_EN			: in	std_logic;
+			REG_C			: out	DLX_oper_t;
 			-- RF signals
 			HEAP_ADDR		: in	DLX_addr_t;
 			RF_SWP			: out	DLX_addr_t;
 			MBUS			: inout	DLX_oper_t;
 			-- CU signals
+			PC_OUT_EN		: in	std_logic;
 			RF_RD1_ADDR		: in	reg_addr_t;
 			RF_RD2_ADDR		: in	reg_addr_t;
 			RF_WR_ADDR		: in	reg_addr_t;
@@ -211,6 +213,7 @@ architecture structural of DATAPATH is
 	
 	signal dec_reg_a				: DLX_oper_t;
 	signal dec_reg_b				: DLX_oper_t;
+	signal dec_reg_c				: DLX_oper_t;
 	signal dec_forward_r1_en		: std_logic;
 	signal dec_forward_r2_en		: std_logic;
 	signal dec_forward_value1		: DLX_oper_t;
@@ -222,12 +225,14 @@ architecture structural of DATAPATH is
 	signal dec_branch_taken_pipe	: std_logic;
 	signal dec_reg_a_pipe			: DLX_oper_t;
 	signal dec_reg_b_pipe			: DLX_oper_t;
+	signal dec_reg_c_pipe			: DLX_oper_t;
 	
 	signal exe_r1					: DLX_oper_t;
 	signal exe_r2					: DLX_oper_t;
+	signal exe_rc					: DLX_oper_t;
 	signal exe_ex_out				: DLX_oper_t;
 	signal exe_ex_out_pipe			: DLX_oper_t;
-	signal exe_r2_pipe				: DLX_oper_t;
+	signal exe_rc_pipe				: DLX_oper_t;
 	
 	signal mem_addr_in				: DLX_oper_t;
 	signal mem_data_in				: DLX_oper_t;
@@ -252,6 +257,7 @@ begin
 	FET_STAGE: FETCH		port map (
 								CLK				=> CLK,
 								RST				=> RST,
+								ENB				=> FETCH_ENB,
 								INSTR			=> ICACHE_INSTR,
 								FOUT			=> fet_fout,
 								PC				=> fet_pc,
@@ -262,8 +268,8 @@ begin
 							);
 	
 	-- Pipeline stage
-	FET_FOUT_PIPELINE:	REG_N	generic map (DLX_INSTRUCTION_SIZE) port map (CLK, RST, ENB, fet_fout, fet_fout_pipe);
-	FET_PC_PIPELINE:	REG_N	generic map (DLX_ADDR_SIZE)        port map (CLK, RST, ENB, fet_pc, fet_pc_pipe);
+	FET_FOUT_PIPELINE:	REG_N	generic map (DLX_INSTRUCTION_SIZE) port map (CLK, RST, FETCH_ENB, fet_fout, fet_fout_pipe);
+	FET_PC_PIPELINE:	REG_N	generic map (DLX_ADDR_SIZE)        port map (CLK, RST, FETCH_ENB, fet_pc, fet_pc_pipe);
 		
 		
 	-- DECODE
@@ -285,17 +291,16 @@ begin
 	DEC_STAGE: DECODE		port map (
 								CLK				=> CLK,
 								RST				=> RST,
-								ENB				=> ENB,
+								ENB				=> DECODE_ENB,
 								REG_A			=> dec_reg_a,
 								REG_B			=> dec_reg_b,
-								-- Special signals for TRAP instruction
-								ISR_TABLE_ADDR	=> ISR_TABLE_ADDR,
-								ISR_EN			=> ISR_EN,
+								REG_C			=> dec_reg_c,
 								-- RF signals
 								HEAP_ADDR		=> HEAP_ADDR,
 								RF_SWP			=> RF_SWP,
 								MBUS			=> MBUS,
 								-- CU signals
+								PC_OUT_EN		=> PC_OUT_EN,
 								RF_RD1_ADDR		=> RF_RD1_ADDR,
 								RF_RD2_ADDR		=> RF_RD2_ADDR,
 								RF_WR_ADDR		=> RF_WR_ADDR,
@@ -325,16 +330,18 @@ begin
 							);
 	
 	-- Pipeline stage
-	DEC_REG_A_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, dec_reg_a, dec_reg_a_pipe);
-	DEC_REG_B_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, dec_reg_b, dec_reg_b_pipe);
+	DEC_REG_A_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, DECODE_ENB, dec_reg_a, dec_reg_a_pipe);
+	DEC_REG_B_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, DECODE_ENB, dec_reg_b, dec_reg_b_pipe);
+	DEC_REG_C_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, DECODE_ENB, dec_reg_c, dec_reg_c_pipe);
 	
-	DEC_BRANCH_TAKEN_PIPELINE: FF port map (CLK, RST, ENB, dec_branch_taken, dec_branch_taken_pipe);
+	DEC_BRANCH_TAKEN_PIPELINE: FF port map (CLK, RST, DECODE_ENB, dec_branch_taken, dec_branch_taken_pipe);
 	
 		
 	-- EXECUTE
 	-- Connect inputs to pipelines of other stages or other signals
 	exe_r1	<= dec_reg_a_pipe;
 	exe_r2	<= dec_reg_b_pipe;
+	exe_rc	<= dec_reg_c_pipe;
 	
 	EXE_STAGE: EXECUTE		port map (
 								-- Control signals from CU.
@@ -348,14 +355,14 @@ begin
 							);
 							
 	-- Pipeline stage
-	EXE_EX_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, exe_ex_out, exe_ex_out_pipe);
-	EXE_R2_PIPELINE:     REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, exe_r2, exe_r2_pipe);
+	EXE_EX_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, EXECUTE_ENB, exe_ex_out, exe_ex_out_pipe);
+	EXE_RC_PIPELINE:     REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, EXECUTE_ENB, exe_rc, exe_rc_pipe);
 	
 
 	-- MEMORY
 	-- Connect inputs to pipelines of other stages or other signals
 	mem_addr_in	<= exe_ex_out_pipe;
-	mem_data_in <= exe_r2_pipe;
+	mem_data_in <= exe_rc_pipe;
 	
 	MEM_STAGE: MEMORY		port map (
 								-- Control signals from CU.
@@ -381,9 +388,9 @@ begin
 							);
 							
 	-- Pipeline stage
-	MEM_MEM_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, mem_mem_out, mem_mem_out_pipe);
+	MEM_MEM_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, MEMORY_ENB, mem_mem_out, mem_mem_out_pipe);
 	-- Propagate PC in case of jump-and-link
-	MEM_PC_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, ENB, mem_addr_in, mem_pc_out_pipe);
+	MEM_PC_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, MEMORY_ENB, mem_addr_in, mem_pc_out_pipe);
 	
 	
 	-- WRITE BACK

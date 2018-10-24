@@ -17,10 +17,8 @@ architecture test of TB_CU is
 			ENB					: in	std_logic;
 			INSTR				: in	DLX_instr_t;
 			
-			-- Special signals for TRAP instruction
-			ISR_EN				: out	std_logic;
-			
 			-- DECODE
+			PC_OUT_EN			: out	std_logic;
 			RF_RD1_ADDR			: out	reg_addr_t;
 			RF_RD2_ADDR			: out	reg_addr_t;
 			RF_WR_ADDR			: out	reg_addr_t;
@@ -69,10 +67,8 @@ architecture test of TB_CU is
 	signal ENB_s				: std_logic;
 	signal INSTR_s				: DLX_instr_t;
 	
-	-- Special signals for TRAP instruction
-	signal ISR_EN_s				: std_logic;
-	
 	-- DECODE
+	signal PC_OUT_EN_s			: std_logic;
 	signal RF_RD1_ADDR_s		: reg_addr_t;
 	signal RF_RD2_ADDR_s		: reg_addr_t;
 	signal RF_WR_ADDR_s			: reg_addr_t;
@@ -132,10 +128,8 @@ begin
 					ENB_s,
 					INSTR_s,
 					
-					-- Special signals for TRAP instruction
-					ISR_EN_s,
-					
 					-- DECODE
+					PC_OUT_EN_s,
 					RF_RD1_ADDR_s,
 					RF_RD2_ADDR_s,
 					RF_WR_ADDR_s,

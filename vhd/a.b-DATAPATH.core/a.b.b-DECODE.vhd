@@ -12,14 +12,13 @@ entity DECODE is
 		ENB				: in	std_logic;
 		REG_A			: out	DLX_oper_t;
 		REG_B			: out	DLX_oper_t;
-		-- Special signals for TRAP instruction
-		ISR_TABLE_ADDR	: in	DLX_addr_t;
-		ISR_EN			: in	std_logic;
+		REG_C			: out	DLX_oper_t;
 		-- RF signals
 		HEAP_ADDR		: in	DLX_addr_t;
 		RF_SWP			: out	DLX_addr_t;
 		MBUS			: inout	DLX_oper_t;
 		-- CU signals
+		PC_OUT_EN		: in	std_logic;
 		RF_RD1_ADDR		: in	reg_addr_t;
 		RF_RD2_ADDR		: in	reg_addr_t;
 		RF_WR_ADDR		: in	reg_addr_t;
@@ -140,8 +139,10 @@ begin
 	
 	-- Check branch taken
 	BRANCH_TAKEN	<= branch_taken_s;
-	branch_taken_s	<= '1' when (is_zero_s = '1' and (OPCODE = BEQZ or OPCODE = BFPF)) or (is_zero_s = '0' and OPCODE = BNEZ or OPCODE = BFPT)) else -- when conditional branch matches
-					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) 													else -- when operation is unconditional branch
+	branch_taken_s	<= '1' when (is_zero_s = '1' and (OPCODE = BEQZ or OPCODE = BFPF))       else -- when conditional branch matches
+					   '1' when (is_zero_s = '0' and (OPCODE = BNEZ or OPCODE = BFPT))       else --
+					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) else -- when operation is unconditional branch
+					   '1' when (OPCODE = TRAP or OPCODE = RFE)                              else -- when exception call/return
 					   '0';
 						
 	-- Extend immediate arg
@@ -152,14 +153,16 @@ begin
 	pc_offset_s(DLX_OPERAND_SIZE-1    downto JUMP_PC_OFFSET_SIZE)	<= (others => PC_OFFSET(JUMP_PC_OFFSET_SIZE-1));
 	pc_offset_s(JUMP_PC_OFFSET_SIZE-1 downto                   0)	<= PC_OFFSET;
 	
-	-- Assign immediates
+	-- Assign outputs
 	REG_A	<= PC             when (branch_taken_s = '1') else -- Propagate pc in case of branch address calculation
-			   ISR_TABLE_ADDR when (ISR_EN = '1')         else -- Load ISR table pointer if TRAP instruction called
 			   FORWARD_VALUE1 when (FORWARD_R1_EN = '1')  else -- Receive value from further down the pipeline
-			   RF_dout2_s;
+			   RF_dout1_s;
+			   
 	REG_B	<= ext_imm_s      when (IMM_SEL = '1')        else -- Select immediate value if I-type
 			   pc_offset_s    when (PC_OFFSET_SEL = '1')  else -- Select PC offset if J-type
 			   FORWARD_VALUE2 when (FORWARD_R2_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout2_s;
+			   
+	REG_C	<= RF_dout2_s when (PC_OUT_EN = '0') else PC;
 
 end architecture;

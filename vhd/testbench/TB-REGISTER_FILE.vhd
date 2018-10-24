@@ -21,6 +21,7 @@ architecture test of TB_REGISTER_FILE is
 
 	component REGISTER_FILE
 		generic (
+			FIXED_R0			: boolean := false;
 			WORD_SIZE			: natural;
 			REGISTER_NUM		: natural;
 			WINDOWS_NUM			: natural;
@@ -30,7 +31,7 @@ architecture test of TB_REGISTER_FILE is
 			CLK			: in	std_logic;
 			RST			: in	std_logic;
 			ENB			: in	std_logic;
-			HEAP_ADDR	: in	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
+			HEAP_ADDR	: in	std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
 			RD1			: in	std_logic;
 			RD2			: in	std_logic;
 			WR			: in	std_logic;
@@ -44,8 +45,8 @@ architecture test of TB_REGISTER_FILE is
 			RETN		: in 	std_logic;
 			SPILL		: out 	std_logic;
 			FILL		: out	std_logic;
-			SWP			: out	std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0);
-			MBUS		: inout	std_logic_vector(max(log2(SYSTEM_ADDR_SIZE), WORD_SIZE)-1 downto 0);
+			SWP			: out	std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0);
+			MBUS		: inout	std_logic_vector(max(SYSTEM_ADDR_SIZE, WORD_SIZE)-1 downto 0);
 			ACK			: in	std_logic;
 			RF_OK		: out	std_logic
 		);
@@ -54,7 +55,7 @@ architecture test of TB_REGISTER_FILE is
 	constant WORD_SIZE			: natural := 8;
 	constant REGISTER_NUM		: natural := 8;
 	constant WINDOWS_NUM		: natural := 4;
-	constant SYSTEM_ADDR_SIZE	: natural := 32;
+	constant SYSTEM_ADDR_SIZE	: natural := 8;
 	
 	signal CLK			: std_logic;	
 	signal RST			: std_logic;
@@ -68,19 +69,19 @@ architecture test of TB_REGISTER_FILE is
 	signal FILL			: std_logic;
 	signal ACK			: std_logic;
 	signal RF_OK		: std_logic;
-	signal HEAP_ADDR	: std_logic_vector(log2(SYSTEM_ADDR_SIZE)-1 downto 0) := (others => '0');
+	signal HEAP_ADDR	: std_logic_vector(SYSTEM_ADDR_SIZE-1 downto 0) := (others => '0');
 	signal DIN			: std_logic_vector(WORD_SIZE-1 downto 0);
 	signal DOUT1		: std_logic_vector(WORD_SIZE-1 downto 0);
 	signal DOUT2		: std_logic_vector(WORD_SIZE-1 downto 0);
 	signal ADDR_IN		: std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
 	signal ADDR_OUT1	: std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
 	signal ADDR_OUT2	: std_logic_vector(log2(REGISTER_NUM)-1 downto 0);
-	signal MBUS			: std_logic_vector(max(log2(SYSTEM_ADDR_SIZE), WORD_SIZE)-1 downto 0);
+	signal MBUS			: std_logic_vector(max(SYSTEM_ADDR_SIZE, WORD_SIZE)-1 downto 0);
 	
 begin
 
 	-- UUT
-	UUT: REGISTER_FILE	generic map(WORD_SIZE, REGISTER_NUM, WINDOWS_NUM, SYSTEM_ADDR_SIZE)
+	UUT: REGISTER_FILE	generic map(true, WORD_SIZE, REGISTER_NUM, WINDOWS_NUM, SYSTEM_ADDR_SIZE)
 						port map(
 							CLK			=> CLK,
 							RST			=> RST,
@@ -125,9 +126,9 @@ begin
 		WR			<= '0';
 		CALL		<= '0';
 		RETN		<= '0';
-		ADDR_IN		<= (others => '0');
-		ADDR_OUT1	<= (others => '0');
-		ADDR_OUT2	<= (others => '0');
+		ADDR_IN		<= "001";
+		ADDR_OUT1	<= "010";
+		ADDR_OUT2	<= "011";
 		ACK			<= '0';
 		MBUS		<= "ZZZZZZZZ";
 		wait for 2 ns;
@@ -138,6 +139,12 @@ begin
 		
 		WR  <= '1';
 		DIN <= "00000001";
+		wait for 2 ns;
+		
+		WR		<= '1';
+		DIN		<= "01010101";
+		RETN	<= '0';
+		CALL	<= '1';
 		wait for 2 ns;
 		
 		WR   <= '0';
@@ -161,14 +168,16 @@ begin
 		DIN  <= "00000001";
 		wait for 2 ns;
 		
-		ADDR_IN	<= (0 => '1', others => '0');
-		CALL	<= '1';
+		ADDR_IN		<= (others => '0');
+		ADDR_IN(0)	<= '1';
+		CALL		<= '1';
 		wait for 2 ns;
 		
-		CALL		<= '0';
-		RD1			<= '1';
-		RD2			<= '1';
-		ADDR_OUT2	<= (0 => '1', others => '0');
+		CALL			<= '0';
+		RD1				<= '1';
+		RD2				<= '1';
+		ADDR_OUT2		<= (others => '0');
+		ADDR_OUT2(0)	<= '1';
 		wait for 2 ns;
 		
 		RD1		<= '0';

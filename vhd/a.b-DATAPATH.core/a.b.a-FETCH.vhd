@@ -7,6 +7,7 @@ entity FETCH is
 	port (
 		CLK				: in	std_logic;
 		RST				: in	std_logic;
+		ENB				: in	std_logic;
 		INSTR			: in	DLX_instr_t;
 		FOUT			: out	DLX_instr_t;
 		PC				: out	DLX_addr_t;
@@ -43,14 +44,12 @@ architecture behavioral of FETCH is
 begin
 	
 	-- PC register process
-	pc_register: process (CLK, RST, next_pc) is
+	pc_register: process (CLK, RST, ENB, next_pc) is
 	begin
-		if rising_edge(CLK) then
-			if (RST = '0') then
-				curr_pc <= (others => '0');
-			else
-				curr_pc <= next_pc;
-			end if;
+		if (RST = '0') then
+			curr_pc <= (others => '0');
+		elsif rising_edge(CLK) and (ENB = '1') then
+			curr_pc <= next_pc;
 		end if;
 	end process;
 	

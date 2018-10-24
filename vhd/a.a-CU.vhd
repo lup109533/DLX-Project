@@ -10,10 +10,8 @@ entity CU is
 		ENB					: in	std_logic;
 		INSTR				: in	DLX_instr_t;
 		
-		-- Special signals for TRAP instruction
-		ISR_EN				: out	std_logic;
-		
 		-- DECODE
+		PC_OUT_EN			: out	std_logic;
 		RF_RD1_ADDR			: out	reg_addr_t;
 		RF_RD2_ADDR			: out	reg_addr_t;
 		RF_WR_ADDR			: out	reg_addr_t;
@@ -126,28 +124,13 @@ begin
 	-- Source 1 is fps in case of floating-point branch instruction.
 	RF_RD1_ADDR		<= FP_SPECIAL_ADDR when (opcode_s = BFPT or opcode_s = BFPF) else source1_addr_s;
 	-- Source 2 is R0 in case of mov instruction.
-	RF_RD2_ADDR		<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_s = MOV) else source2_addr_s;
-	-- Destination is link register (R31) in case of jump-and-link or fps in case of FP comparison.
-	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
-					   FP_SPECIAL_ADDR    when (opcode_s = FPU_I and (
-					                                       fpu_func_s = EQF or
-					                                       fpu_func_s = NEF or
-					                                       fpu_func_s = GEF or
-					                                       fpu_func_s = LEF or
-					                                       fpu_func_s = GTF or
-					                                       fpu_func_s = LTF) else
-														   
-					   dest_addr_s;				   
+	RF_RD2_ADDR		<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_s = MOV) else source2_addr_s;			   
 	-- Operation has operand 1 in case of R-type, F-TYPE or I-TYPE instructions.
-	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = F_TYPE or op_type = I_TYPE) else '0';			   
+	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = I_TYPE) else '0';			   
 	-- Operation has operand 2 in case of R-type, F-TYPE instructions (but not I-TYPE).
-	RF_RD2			<= '1' when (op_type = R_TYPE or op_type = F_TYPE) else '0';
-	-- Only call operation is TRAP.
-	RF_CALL			<= '1' when (opcode_s = TRAP)  else '0';
-	-- Only return operation is RFE.
-	RF_RETN			<= '1' when (opcode_s = RFE)   else '0';
-	-- Enable ISR for TRAP instruction.
-	ISR_EN			<= '1' when (opcode_s = TRAP)  else '0';
+	RF_RD2			<= '1' when (op_type = R_TYPE) else '0';
+	-- Enable PC as third output for TRAP and jump-and-link instructions.
+	PC_OUT_EN		<= '1' when (opcode_s = TRAP or opcode_s = JAL or opcode_s = JALR) else '0';
 	-- Pass immediate argument from instruction.
 	IMM_ARG			<= immediate_s;
 	-- Enable immediate only for I-TYPE instructions.
@@ -159,9 +142,7 @@ begin
 					             opcode_s = BEQZ  or
 								 opcode_s = BNEZ  or
 								 opcode_s = BFPF  or
-								 opcode_s = BFPT  or
-								 opcode_s = JR    or
-								 opcode_s = JALR) else '0';							 
+								 opcode_s = BFPT) else '0';
 	-- Extract opcode
 	OPCODE			<= opcode_s;
 	-- Signed extension in all cases except explicitly unsigned instructions
@@ -199,10 +180,24 @@ begin
 								 opcode_s = SB) else '0';							 
 	-- Enable most significant halfword load
 	MEM_LOAD_HI		<= '1' when (opcode_s = LHI) else '0';
+	-- Only call operation is TRAP.
+	RF_CALL			<= '1' when (opcode_s = TRAP)  else '0';
+	-- Only return operation is RFE.
+	RF_RETN			<= '1' when (opcode_s = RFE)   else '0';
 								 
 	-- WRITE BACK STAGE
 	-- Enable write back to RF for operations with a destination or for return address linking
-	RF_WR			<= '1' when (op_type = R_TYPE or op_type = F_TYPE or opcode_s = JAL or opcode_s = JALR) else '0';
+	RF_WR			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or opcode_s = JAL) else '0';
+	-- Destination is link register (R31) in case of jump-and-link or fps in case of FP comparison.
+	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
+					   FP_SPECIAL_ADDR    when (opcode_s = FPU_I and (
+												fpu_func_s = EQF or
+												fpu_func_s = NEF or
+												fpu_func_s = GEF or
+												fpu_func_s = LEF or
+												fpu_func_s = GTF or
+												fpu_func_s = LTF)) else												
+					   dest_addr_s;	
 	-- Select saved PC instead of memory/execute output
 	LINK_PC			<= '1' when (opcode_s = JAL or opcode_s = JALR) else '0';
 								
@@ -274,7 +269,7 @@ begin
 	
 	-- INSTRUCTION TYPE DISCRIMINATOR
 	op_type	<= NO_TYPE	when (opcode_s = NOP) else
-			   J_TYPE	when (opcode_s = J     or opcode_s = JAL) else
+			   J_TYPE	when (opcode_s = J     or opcode_s = JAL)   else
 			   R_TYPE	when (opcode_s = ALU_I or opcode_s = FPU_I) else
 			   L_TYPE	when (opcode_s = LHI   or opcode_s = LB  or
 			                  opcode_s = LH    or opcode_s = LW  or

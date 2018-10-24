@@ -17,8 +17,8 @@ architecture test of TB_DLX is
 			ENB					: in	std_logic;
 			-- ICACHE interface
 			ICACHE_INSTR		: in	DLX_instr_t;
+			ICACHE_HIT			: in	std_logic;
 			-- External memory interface
-			ISR_TABLE_ADDR		: in	DLX_addr_t;
 			HEAP_ADDR			: in	DLX_addr_t;
 			RF_SWP				: out	DLX_addr_t;
 			MBUS				: inout	DLX_oper_t;
@@ -38,9 +38,9 @@ architecture test of TB_DLX is
 	signal ENB_s				: std_logic;
 	
 	signal INSTR_s				: DLX_instr_t;
+	signal ICACHE_HIT_s			: std_logic;
 	
 	signal HEAP_ADDR_s			: DLX_addr_t;
-	signal ISR_TABLE_ADDR_s		: DLX_addr_t;
 	signal RF_SWP_s				: DLX_addr_t;
 	signal MBUS_s				: DLX_oper_t;
 	signal RF_ACK_s				: std_logic;
@@ -75,8 +75,8 @@ begin
 					ENB_s,
 					-- ICACHE interface
 					INSTR_s,
+					ICACHE_HIT_s,
 					-- External memory interface
-					ISR_TABLE_ADDR_s,
 					HEAP_ADDR_s,
 					RF_SWP_s,
 					MBUS_s,
@@ -105,7 +105,7 @@ begin
 		RST_s				<= '0';
 		ENB_s				<= '1';
 		INSTR_s				<= (others => '0');
-		ISR_TABLE_ADDR_s	<= (others => '0');
+		ICACHE_HIT_s		<= '1';
 		HEAP_ADDR_s			<= (others => '0');
 		RF_ACK_s			<= '0';
 		EXT_MEM_DOUT_s		<= std_logic_vector(to_unsigned(8, EXT_MEM_DOUT_s'length));

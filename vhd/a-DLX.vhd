@@ -11,8 +11,8 @@ entity DLX is
 		ENB					: in	std_logic;
 		-- ICACHE interface
 		ICACHE_INSTR		: in	DLX_instr_t;
+		ICACHE_HIT			: in	std_logic;
 		-- External memory interface
-		ISR_TABLE_ADDR		: in	DLX_addr_t;
 		HEAP_ADDR			: in	DLX_addr_t;
 		RF_SWP				: out	DLX_addr_t;
 		MBUS				: inout	DLX_oper_t;
@@ -37,17 +37,13 @@ architecture structural of DLX is
 			ENB					: in	std_logic;
 			INSTR				: in	DLX_instr_t;
 			
-			-- Special signals for TRAP instruction
-			ISR_EN				: out	std_logic;
-			
 			-- DECODE
+			PC_OUT_EN			: out	std_logic;
 			RF_RD1_ADDR			: out	reg_addr_t;
 			RF_RD2_ADDR			: out	reg_addr_t;
 			RF_WR_ADDR			: out	reg_addr_t;
 			RF_RD1				: out	std_logic;
 			RF_RD2				: out	std_logic;
-			RF_CALL				: out	std_logic;
-			RF_RETN				: out	std_logic;
 			IMM_ARG				: out	immediate_t;
 			IMM_SEL				: out	std_logic;
 			PC_OFFSET			: out	pc_offset_t;
@@ -73,6 +69,8 @@ architecture structural of DLX is
 			-- WRITE BACK
 			LINK_PC				: out	std_logic;
 			RF_WR				: out	std_logic;
+			RF_CALL				: out	std_logic;
+			RF_RETN				: out	std_logic;
 			
 			-- OTHER
 			X2D_FORWARD_S1_EN	: out	std_logic;
@@ -89,15 +87,17 @@ architecture structural of DLX is
 		port (
 			CLK					: in	std_logic;
 			RST					: in	std_logic;
-			ENB					: in	std_logic;
+			FETCH_ENB			: in	std_logic;
+			DECODE_ENB			: in	std_logic;
+			EXECUTE_ENB			: in	std_logic;
+			MEMORY_ENB			: in	std_logic;
 			
 			-- FETCH
 			ICACHE_INSTR		: in	DLX_instr_t;
 			FETCHED_INSTR		: out	DLX_instr_t;
 			
 			-- DECODE
-			ISR_TABLE_ADDR		: in	DLX_addr_t;
-			ISR_EN				: in	std_logic;
+			PC_OUT_EN			: in	std_logic;
 			HEAP_ADDR			: in	DLX_addr_t;
 			RF_SWP				: out	DLX_addr_t;
 			MBUS				: inout	DLX_addr_t;
@@ -199,13 +199,11 @@ architecture structural of DLX is
 	signal fetched_instr_s_pipe	: DLX_instr_t;
 	
 	-- DECODE
-	signal isr_en_s				: std_logic;
+	signal pc_out_en_s			: std_logic;
 	signal rf_rd1_addr_s		: reg_addr_t;
 	signal rf_rd2_addr_s		: reg_addr_t;
 	signal rf_rd1_s				: std_logic;
 	signal rf_rd2_s				: std_logic;
-	signal rf_call_s			: std_logic;
-	signal rf_retn_s			: std_logic;
 	signal rf_spill_s			: std_logic;
 	signal rf_fill_s			: std_logic;
 	signal rf_ok_s				: std_logic;
@@ -234,6 +232,8 @@ architecture structural of DLX is
 	signal mem_halfword_s		: std_logic;
 	signal mem_byte_s			: std_logic;
 	signal mem_load_hi_s		: std_logic;
+	signal rf_call_s			: std_logic;
+	signal rf_retn_s			: std_logic;
 	-- Pipeline 1
 	signal mem_rd_sel_s_exe		: std_logic;
 	signal mem_wr_sel_s_exe		: std_logic;
@@ -243,6 +243,8 @@ architecture structural of DLX is
 	signal mem_halfword_s_exe	: std_logic;
 	signal mem_byte_s_exe		: std_logic;
 	signal mem_load_hi_s_exe	: std_logic;
+	signal rf_call_s_exe		: std_logic;
+	signal rf_retn_s_exe		: std_logic;
 	-- Pipeline 2
 	signal mem_rd_sel_s_mem		: std_logic;
 	signal mem_wr_sel_s_mem		: std_logic;
@@ -252,6 +254,8 @@ architecture structural of DLX is
 	signal mem_halfword_s_mem	: std_logic;
 	signal mem_byte_s_mem		: std_logic;
 	signal mem_load_hi_s_mem	: std_logic;
+	signal rf_call_s_mem		: std_logic;
+	signal rf_retn_s_mem		: std_logic;
 	
 	-- WRITE BACK
 	signal link_pc_s			: std_logic;
@@ -279,11 +283,15 @@ architecture structural of DLX is
 	signal stall_s				: std_logic;
 	
 	signal global_enable		: std_logic;
+	signal fetch_enable			: std_logic;
+	signal decode_enable		: std_logic;
 	
 begin
 
 	-- Global enable is active iff no stall and no RF spill/fill
-	global_enable	<= ENB and not stall_s and not EXT_MEM_BUSY and rf_ok_s;
+	global_enable	<= ENB and not EXT_MEM_BUSY and rf_ok_s and ICACHE_HIT;
+	fetch_enable	<= global_enable and not stall_s;
+	decode_enable	<= global_enable and not stall_s;
 
 	CU0: CU	port map (
 				CLK					=> CLK,
@@ -291,17 +299,13 @@ begin
 				ENB					=> global_enable,
 				INSTR				=> fetched_instr_s_pipe,
 				
-				-- Special signals for TRAP instruction
-				ISR_EN				=> isr_en_s,
-				
 				-- DECODE
+				PC_OUT_EN			=> pc_out_en_s,
 				RF_RD1_ADDR			=> rf_rd1_addr_s,
 				RF_RD2_ADDR			=> rf_rd2_addr_s,
 				RF_WR_ADDR			=> rf_wr_addr_s,
 				RF_RD1				=> rf_rd1_s,
 				RF_RD2				=> rf_rd2_s,
-				RF_CALL				=> rf_call_s,
-				RF_RETN				=> rf_retn_s,
 				IMM_ARG				=> imm_arg_s,
 				IMM_SEL				=> imm_sel_s,
 				PC_OFFSET			=> pc_offset_s,
@@ -327,6 +331,8 @@ begin
 				-- WRITE BACK
 				LINK_PC				=> link_pc_s,
 				RF_WR				=> rf_wr_s,
+				RF_CALL				=> rf_call_s,
+				RF_RETN				=> rf_retn_s,
 				
 				-- OTHER
 				X2D_FORWARD_S1_EN	=> x2d_forward_s1_en_s,
@@ -340,39 +346,43 @@ begin
 	
 	-- Pipeline for CU signals
 	-- To CU/DECODE stage
-	INSTR_PIPE:	REG_N	generic map (DLX_INSTRUCTION_SIZE)	port map (CLK, RST, global_enable, fetched_instr_s, fetched_instr_s_pipe);
+	INSTR_PIPE:	REG_N	generic map (DLX_INSTRUCTION_SIZE)	port map (CLK, RST, fetch_enable, fetched_instr_s, fetched_instr_s_pipe);
 	
 	-- To EXECUTE stage
-	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	port map (CLK, RST, global_enable, alu_opcode_s, alu_opcode_s_exe);
-	FPU_OPCODE_PIPE1: 	FPU_OPCODE_REG	port map (CLK, RST, global_enable, fpu_opcode_s, fpu_opcode_s_exe);
-	FPU_FUNC_SEL_PIPE1:	FF				port map (CLK, RST, global_enable, fpu_func_sel_s, fpu_func_sel_s_exe);
+	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	port map (CLK, RST, decode_enable, alu_opcode_s, alu_opcode_s_exe);
+	FPU_OPCODE_PIPE1: 	FPU_OPCODE_REG	port map (CLK, RST, decode_enable, fpu_opcode_s, fpu_opcode_s_exe);
+	FPU_FUNC_SEL_PIPE1:	FF				port map (CLK, RST, decode_enable, fpu_func_sel_s, fpu_func_sel_s_exe);
 	
 	-- To MEMORY stage
-	RD_SEL_PIPE1:			FF	port map (CLK, RST, global_enable, mem_rd_sel_s, mem_rd_sel_s_exe);
+	RD_SEL_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_rd_sel_s, mem_rd_sel_s_exe);
 	RD_SEL_PIPE2:			FF	port map (CLK, RST, global_enable, mem_rd_sel_s_exe, mem_rd_sel_s_mem);
-	WR_SEL_PIPE1:			FF	port map (CLK, RST, global_enable, mem_wr_sel_s, mem_wr_sel_s_exe);
+	WR_SEL_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_wr_sel_s, mem_wr_sel_s_exe);
 	WR_SEL_PIPE2:			FF	port map (CLK, RST, global_enable, mem_wr_sel_s_exe, mem_wr_sel_s_mem);
-	MEM_EN_PIPE1:			FF	port map (CLK, RST, global_enable, mem_en_s, mem_en_s_exe);
+	MEM_EN_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_en_s, mem_en_s_exe);
 	MEM_EN_PIPE2:			FF	port map (CLK, RST, global_enable, mem_en_s_exe, mem_en_s_mem);
-	MEMORY_OP_SEL_PIPE1:	FF	port map (CLK, RST, global_enable, memory_op_sel_s, memory_op_sel_s_exe);
+	MEMORY_OP_SEL_PIPE1:	FF	port map (CLK, RST, decode_enable, memory_op_sel_s, memory_op_sel_s_exe);
 	MEMORY_OP_SEL_PIPE2:	FF	port map (CLK, RST, global_enable, memory_op_sel_s_exe, memory_op_sel_s_mem);
-	SIGNED_EXT_PIPE1:		FF	port map (CLK, RST, global_enable, mem_signed_ext_s, mem_signed_ext_s_exe);
+	SIGNED_EXT_PIPE1:		FF	port map (CLK, RST, decode_enable, mem_signed_ext_s, mem_signed_ext_s_exe);
 	SIGNED_EXT_PIPE2:		FF	port map (CLK, RST, global_enable, mem_signed_ext_s_exe, mem_signed_ext_s_mem);
-	HALFWORD_PIPE1:			FF	port map (CLK, RST, global_enable, mem_halfword_s, mem_halfword_s_exe);
+	HALFWORD_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_halfword_s, mem_halfword_s_exe);
 	HALFWORD_PIPE2:			FF	port map (CLK, RST, global_enable, mem_halfword_s_exe, mem_halfword_s_mem);
-	BYTE_PIPE1:				FF	port map (CLK, RST, global_enable, mem_byte_s, mem_byte_s_exe);
+	BYTE_PIPE1:				FF	port map (CLK, RST, decode_enable, mem_byte_s, mem_byte_s_exe);
 	BYTE_PIPE2:				FF	port map (CLK, RST, global_enable, mem_byte_s_exe, mem_byte_s_mem);
-	LOAD_HI_PIPE1:			FF	port map (CLK, RST, global_enable, mem_load_hi_s, mem_load_hi_s_exe);
+	LOAD_HI_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_load_hi_s, mem_load_hi_s_exe);
 	LOAD_HI_PIPE2:			FF	port map (CLK, RST, global_enable, mem_load_hi_s_exe, mem_load_hi_s_mem);
+	RF_CALL_PIPE1:			FF	port map (CLK, RST, decode_enable, rf_call_s, rf_call_s_exe);
+	RF_CALL_PIPE2:			FF	port map (CLK, RST, global_enable, rf_call_s_exe, rf_call_s_mem);
+	RF_RETN_PIPE1:			FF	port map (CLK, RST, decode_enable, rf_retn_s, rf_retn_s_exe);
+	RF_RETN_PIPE2:			FF	port map (CLK, RST, global_enable, rf_retn_s_exe, rf_retn_s_mem);
 	
 	-- To WRITE BACK stage
-	LINK_PC_PIPE1:		FF		port map (CLK, RST, global_enable, link_pc_s, link_pc_s_exe);
+	LINK_PC_PIPE1:		FF		port map (CLK, RST, decode_enable, link_pc_s, link_pc_s_exe);
 	LINK_PC_PIPE2:		FF		port map (CLK, RST, global_enable, link_pc_s_exe, link_pc_s_mem);
 	LINK_PC_PIPE3:		FF		port map (CLK, RST, global_enable, link_pc_s_mem, link_pc_s_wrb);
-	RF_WR_PIPE1:		FF		port map (CLK, RST, global_enable, rf_wr_s, rf_wr_s_exe);
+	RF_WR_PIPE1:		FF		port map (CLK, RST, decode_enable, rf_wr_s, rf_wr_s_exe);
 	RF_WR_PIPE2:		FF		port map (CLK, RST, global_enable, rf_wr_s_exe, rf_wr_s_mem);
 	RF_WR_PIPE3:		FF		port map (CLK, RST, global_enable, rf_wr_s_mem, rf_wr_s_wrb);
-	RF_WR_ADDR_PIPE1:	REG_N	generic map (REGISTER_ADDR_SIZE) port map (CLK, RST, global_enable, rf_wr_addr_s, rf_wr_addr_s_exe);
+	RF_WR_ADDR_PIPE1:	REG_N	generic map (REGISTER_ADDR_SIZE) port map (CLK, RST, decode_enable, rf_wr_addr_s, rf_wr_addr_s_exe);
 	RF_WR_ADDR_PIPE2:	REG_N	generic map (REGISTER_ADDR_SIZE) port map (CLK, RST, global_enable, rf_wr_addr_s_exe, rf_wr_addr_s_mem);
 	RF_WR_ADDR_PIPE3:	REG_N	generic map (REGISTER_ADDR_SIZE) port map (CLK, RST, global_enable, rf_wr_addr_s_mem, rf_wr_addr_s_wrb);
 	
@@ -380,15 +390,17 @@ begin
 	DP0: DATAPATH	port map (
 						CLK					=> CLK,
 						RST					=> RST,
-						ENB					=> global_enable,
+						FETCH_ENB			=> fetch_enable,
+						DECODE_ENB			=> decode_enable,
+						EXECUTE_ENB			=> global_enable,
+						MEMORY_ENB			=> global_enable,
 						
 						-- FETCH
 						ICACHE_INSTR		=> ICACHE_INSTR,
 						FETCHED_INSTR		=> fetched_instr_s,
 						
 						-- DECODE
-						ISR_TABLE_ADDR		=> ISR_TABLE_ADDR,
-						ISR_EN				=> isr_en_s,
+						PC_OUT_EN			=> pc_out_en_s,
 						HEAP_ADDR			=> HEAP_ADDR,
 						RF_SWP				=> RF_SWP,
 						MBUS				=> MBUS,
@@ -396,8 +408,6 @@ begin
 						RF_RD2_ADDR			=> rf_rd2_addr_s,
 						RF_RD1				=> rf_rd1_s,
 						RF_RD2				=> rf_rd2_s,
-						RF_CALL				=> rf_call_s,
-						RF_RETN				=> rf_retn_s,
 						IMM_ARG				=> imm_arg_s,
 						IMM_SEL				=> imm_sel_s,
 						PC_OFFSET			=> pc_offset_s,
@@ -435,6 +445,8 @@ begin
 						EXT_MEM_WR			=> EXT_MEM_WR,
 						EXT_MEM_ENABLE		=> EXT_MEM_ENABLE,
 						EXT_MEM_DOUT		=> EXT_MEM_DOUT,
+						RF_CALL				=> rf_call_s_mem,
+						RF_RETN				=> rf_retn_s_mem,
 						
 						-- WRITE BACK
 						LINK_PC				=> link_pc_s_wrb,
