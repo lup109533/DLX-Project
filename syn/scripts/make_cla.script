@@ -1,9 +1,0 @@
-# RCA
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/00-HA.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/01-FA.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/RCA/02-RCA.vhd
-# CLA
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/00-G_BLOCK.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/01-PG_BLOCK.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/02-SPARSE_TREE_CARRY_GENERATOR.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/ADDERS/CLA/03-CLA.vhd

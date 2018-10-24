@@ -1,3 +1,0 @@
-analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/00-MUX51_GENERIC.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/01-BOOTH_ENCODER.vhd
-analyze -library WORK -format vhdl ../../vhd/generics/BOOTH_MULTIPLIER/02-BOOTH_MULTIPLIER.vhd
