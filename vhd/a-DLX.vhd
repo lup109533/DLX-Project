@@ -10,6 +10,7 @@ entity DLX is
 		RST					: in	std_logic;
 		ENB					: in	std_logic;
 		-- ICACHE interface
+		PC					: out	DLX_addr_t;
 		ICACHE_INSTR		: in	DLX_instr_t;
 		ICACHE_HIT			: in	std_logic;
 		-- External memory interface
@@ -93,6 +94,7 @@ architecture structural of DLX is
 			MEMORY_ENB			: in	std_logic;
 			
 			-- FETCH
+			PC					: out	DLX_addr_t;
 			ICACHE_INSTR		: in	DLX_instr_t;
 			FETCHED_INSTR		: out	DLX_instr_t;
 			
@@ -396,6 +398,7 @@ begin
 						MEMORY_ENB			=> global_enable,
 						
 						-- FETCH
+						PC					=> PC,
 						ICACHE_INSTR		=> ICACHE_INSTR,
 						FETCHED_INSTR		=> fetched_instr_s,
 						

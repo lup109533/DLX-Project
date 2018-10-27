@@ -11,7 +11,9 @@ entity DATAPATH is
 		DECODE_ENB			: in	std_logic;
 		EXECUTE_ENB			: in	std_logic;
 		MEMORY_ENB			: in	std_logic;
+		
 		-- FETCH
+		PC					: out	DLX_addr_t;
 		ICACHE_INSTR		: in	DLX_instr_t;
 		FETCHED_INSTR		: out	DLX_instr_t;
 		
@@ -252,6 +254,7 @@ begin
 	fet_branch_taken	<= dec_branch_taken or dec_branch_taken_pipe;
 	fet_branch_addr_sel	<= dec_branch_taken_pipe;
 	fet_branch_addr		<= exe_ex_out;
+	PC					<= fet_pc;
 	FETCHED_INSTR		<= fet_fout;
 	
 	FET_STAGE: FETCH		port map (
