@@ -334,10 +334,25 @@ begin
 			   I_TYPE;
 	
 	-- HAZARD CHECK PIPELINE
-	hazard_pipeline: process (CLK, RST, ENB, op_type, source1_addr_s, source2_addr_s, dest_addr_s, stall_s) is
+	hazard_pipeline_input: process (RST, op_type, rf_rd1_addr_s, rf_rd2_addr_s, rf_wr_addr_s, stall_s) is
 	begin
 		if (RST = '0') then
-			for i in DEC to WRB loop
+				hazard_pipe_t(DEC)	<= NO_TYPE;
+				hazard_pipe_s1(DEC)	<= (others => '0');
+				hazard_pipe_s2(DEC)	<= (others => '0');
+				hazard_pipe_d(DEC)	<= (others => '0');
+		else
+			hazard_pipe_t(DEC)	<= op_type;
+			hazard_pipe_s1(DEC)	<= rf_rd1_addr_s;
+			hazard_pipe_s2(DEC)	<= rf_rd2_addr_s;
+			hazard_pipe_d(DEC)	<= rf_wr_addr_s;
+		end if;
+	end process;
+	
+	hazard_pipeline: process (CLK, RST, ENB) is
+	begin
+		if (RST = '0') then
+			for i in EXE to WRB loop
 				hazard_pipe_t(i)	<= NO_TYPE;
 				hazard_pipe_s1(i)	<= (others => '0');
 				hazard_pipe_s2(i)	<= (others => '0');
@@ -345,11 +360,6 @@ begin
 			end loop;
 				
 		else
-			hazard_pipe_t(DEC)	<= op_type;
-			hazard_pipe_s1(DEC)	<= rf_rd1_addr_s;
-			hazard_pipe_s2(DEC)	<= rf_rd2_addr_s;
-			hazard_pipe_d(DEC)	<= rf_wr_addr_s;
-			
 			if (rising_edge(CLK)) then
 				if (stall_s = '1') then
 					hazard_pipe_t(EXE)	<= NO_TYPE;
