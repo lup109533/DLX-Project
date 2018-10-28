@@ -5,6 +5,9 @@ use ieee.math_real.all;
 use work.DLX_globals.all;
 use work.instr_gen.all;
 
+library std;
+use std.textio.all;
+
 entity TB_DLX is
 end entity;
 
@@ -54,31 +57,19 @@ architecture test of TB_DLX is
 	signal EXT_MEM_DOUT_s		: DLX_oper_t;
 	signal EXT_MEM_BUSY_s		: std_logic;
 	
-	signal opcodes_s			: opcodes;
-	signal alu_codes_s			: alu_codes;
-	signal fpu_codes_s			: fpu_codes;
-	signal opc					: opcode_t;
-	signal alu					: func_t;
-	signal fpu					: fp_func_t;
-	signal reg1, reg2, dest		: reg_addr_t;
-	signal imm					: immediate_t;
-	signal pcoff				: pc_offset_t;
-	
-	type instr_file is file of DLX_instr_t;
-	
-	constant test_all	: boolean := true;
-	constant file_name	: string(1 to 11) := "program.bin";
-	
-	signal loaded		: boolean := false;
-	
-	constant ICACHE_SIZE	: natural := 1024;
+	constant ICACHE_SIZE	: natural := 256;
 	type icache_t is array (0 to ICACHE_SIZE-1) of DLX_instr_t;
 	signal icache_s			: icache_t;
+	signal cache_addr		: integer := 0;
 	
-	constant MEMORY_SIZE	: natural := 2**16;
+	constant MEMORY_SIZE	: natural := 2**8;
 	subtype byte is std_logic_vector(7 downto 0);
 	type memory_t is array (0 to MEMORY_SIZE-1) of byte;
 	signal memory_s			: memory_t;
+	
+	type char_file_t is file of character;
+	file program_file	: char_file_t open read_mode is "program.bin";
+	signal loaded		: boolean := false;
 	
 begin
 
@@ -118,80 +109,54 @@ begin
 	begin
 		RST_s				<= '0';
 		ENB_s				<= '1';
-		INSTR_s				<= (others => '0');
 		ICACHE_HIT_s		<= '1';
 		HEAP_ADDR_s			<= (others => '0');
 		RF_ACK_s			<= '0';
 		EXT_MEM_BUSY_s		<= '0';
-		opc					<= (others => '0');
-		alu					<= (others => '0');
-		fpu					<= (others => '0');
-		reg1				<= "00010";
-		reg2				<= "01101";
-		dest				<= "00100";
-		imm					<= "0000000000000010";
-		pcoff				<= "10001001001011101010111111";
 		wait for 2 ns;
 	
 		RST_s	<= '1';
-		if (test_all) then
-			for op in opcodes loop
-				opcodes_s <= op;
-				opc <= opcode_to_std_logic_v(op);
-				if (opc = ALU_I) then
-					for a in alu_codes loop
-						alu_codes_s	<= a;
-						alu		<= alu_to_std_logic_v(a);
-						INSTR_s	<= opc & reg1 & reg2 & dest & alu;
-						wait for 2 ns;
-					end loop;
-				elsif (opc = FPU_I) then
-					for f in fpu_codes loop
-						fpu_codes_s <= f;
-						fpu		<= fpu_to_std_logic_v(f);
-						INSTR_s	<= opc & reg1 & reg2 & dest & fpu;
-						wait for 2 ns;
-					end loop;
-				elsif (opc /= TRAP and opc /= RFE) then
-					INSTR_s	<= opc & reg1 & dest & imm;
-					wait for 2 ns;
-				end if;
-			end loop;
-		else
-			wait for 2 ns;
-		end if;
+		wait;
 	end process;
 	
 	read_program: process (CLK_s, RST_s) is
-		file program_file		: instr_file is file_name;
-		variable current_instr	: DLX_instr_t;
-		variable i				: integer := 0;
-		variable cache_addr		: integer;
+		variable curr_char		: character;
+		variable i				: natural := 0;
 	begin
 		if (RST_s = '0') then
+			for i in 0 to ICACHE_SIZE-1 loop
+				icache_s(i)					<= (others => '0');
+				icache_s(i)(OPCODE_RANGE)	<= NOP;
+			end loop;
+		elsif (rising_edge(RST_s) and not loaded) then
 			while not ENDFILE(program_file) loop
-				read(program_file, current_instr);
-				icache_s(i)	<= current_instr;
+				read(program_file, curr_char);
+				icache_s(i)(31 downto 24) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
+				read(program_file, curr_char);
+				icache_s(i)(23 downto 16) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
+				read(program_file, curr_char);
+				icache_s(i)(15 downto  8) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
+				read(program_file, curr_char);
+				icache_s(i)( 7 downto  0) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
 				i := i + 1;
 			end loop;
 			loaded <= true;
-		elsif (rising_edge(CLK_s)) then
-			cache_addr	:= to_integer(unsigned(PC_s));
-			INSTR_s		<= icache_s(cache_addr);
 		end if;
 	end process;
+	cache_addr	<= to_integer(unsigned(PC_s))/4;
+	INSTR_s		<= icache_s(cache_addr);
 	
 	memory_proc: process (CLK_s, RST_s) is
 		variable addr	: integer;
 	begin
 		if (RST_s = '0') then
 			for i in 0 to MEMORY_SIZE-1 loop
-				memory_s(i)	<= "00000000";
+				memory_s(i)	<= std_logic_vector(to_unsigned(i, 8));
 			end loop;
 		elsif (rising_edge(CLK_s) and EXT_MEM_ENABLE_s = '1') then
 			addr := to_integer(unsigned(EXT_MEM_ADDR_s));
 			if (addr > MEMORY_SIZE-1) then
-				addr := addr mod MEMORY_SIZE-1;
+				addr := abs(addr mod MEMORY_SIZE-1);
 			end if;
 			if (EXT_MEM_RD_s = '1') then
 				EXT_MEM_DOUT_s(31 downto 24)	<= memory_s(addr);
@@ -204,6 +169,8 @@ begin
 				memory_s(addr+2)	<= EXT_MEM_DIN_s(15 downto  8);
 				memory_s(addr+3)	<= EXT_MEM_DIN_s( 7 downto  0);
 			end if;
+		else
+			EXT_MEM_DOUT_s		<= (others => 'Z');
 		end if;
 	end process;
 

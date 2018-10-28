@@ -11,6 +11,7 @@ entity FETCH is
 		INSTR			: in	DLX_instr_t;
 		FOUT			: out	DLX_instr_t;
 		PC				: out	DLX_addr_t;
+		PC_INC			: out	DLX_addr_t;
 		-- Datapath signals
 		BRANCH_TAKEN	: in	std_logic;
 		BRANCH_ADDR_SEL	: in	std_logic;
@@ -35,7 +36,6 @@ architecture behavioral of FETCH is
 	end component;
 
 	-- SIGNALS
-	signal pc_offset		: pc_offset_t;
 	signal curr_pc			: DLX_addr_t;
 	signal next_pc			: DLX_addr_t;
 	signal instr_offset		: DLX_addr_t;
@@ -61,7 +61,8 @@ begin
 	next_pc <= pc_add_out when (BRANCH_ADDR_SEL = '0') else BRANCH_ADDR;
 	
 	-- PC output for memory/cache
-	PC <= pc_add_out;
+	PC		<= curr_pc;
+	PC_INC	<= pc_add_out;
 	
 	-- Forward instruction, or push bubble (NOP) if branch
 	FOUT <= INSTR when (BRANCH_TAKEN = '0') else NOP & INSTR((DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto 0);

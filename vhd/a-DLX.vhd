@@ -51,6 +51,7 @@ architecture structural of DLX is
 			PC_OFFSET_SEL		: out	std_logic;
 			OPCODE				: out	opcode_t;
 			SIGNED_EXT			: out	std_logic;
+			LHI_EXT				: out	std_logic;
 			
 			-- EXECUTE
 			ALU_OPCODE			: out	ALU_opcode_t;
@@ -65,7 +66,6 @@ architecture structural of DLX is
 			MEM_SIGNED_EXT		: out	std_logic;
 			MEM_HALFWORD		: out	std_logic;
 			MEM_BYTE			: out	std_logic;
-			MEM_LOAD_HI			: out	std_logic;
 			
 			-- WRITE BACK
 			LINK_PC				: out	std_logic;
@@ -115,6 +115,7 @@ architecture structural of DLX is
 			PC_OFFSET			: in	pc_offset_t;
 			PC_OFFSET_SEL		: in	std_logic;
 			SIGNED_EXT			: in	std_logic;
+			LHI_EXT				: in	std_logic;
 			OPCODE				: in	opcode_t;
 			X2D_FORWARD_S1_EN	: in	std_logic;
 			M2D_FORWARD_S1_EN	: in	std_logic;
@@ -140,7 +141,6 @@ architecture structural of DLX is
 			MEM_SIGNED_EXT		: in	std_logic;
 			MEM_HALFWORD		: in	std_logic;
 			MEM_BYTE			: in	std_logic;
-			MEM_LOAD_HI			: in	std_logic;
 			EXT_MEM_ADDR		: out	DLX_addr_t;
 			EXT_MEM_DIN			: out	DLX_oper_t;
 			EXT_MEM_RD			: out	std_logic;
@@ -215,6 +215,7 @@ architecture structural of DLX is
 	signal pc_offset_sel_s		: std_logic;
 	signal opcode_s				: opcode_t;
 	signal signed_ext_s			: std_logic;
+	signal lhi_ext_s			: std_logic;
 	
 	-- EXECUTE
 	signal alu_opcode_s			: ALU_opcode_t;
@@ -233,7 +234,6 @@ architecture structural of DLX is
 	signal mem_signed_ext_s		: std_logic;
 	signal mem_halfword_s		: std_logic;
 	signal mem_byte_s			: std_logic;
-	signal mem_load_hi_s		: std_logic;
 	signal rf_call_s			: std_logic;
 	signal rf_retn_s			: std_logic;
 	-- Pipeline 1
@@ -244,7 +244,6 @@ architecture structural of DLX is
 	signal mem_signed_ext_s_exe	: std_logic;
 	signal mem_halfword_s_exe	: std_logic;
 	signal mem_byte_s_exe		: std_logic;
-	signal mem_load_hi_s_exe	: std_logic;
 	signal rf_call_s_exe		: std_logic;
 	signal rf_retn_s_exe		: std_logic;
 	-- Pipeline 2
@@ -255,7 +254,6 @@ architecture structural of DLX is
 	signal mem_signed_ext_s_mem	: std_logic;
 	signal mem_halfword_s_mem	: std_logic;
 	signal mem_byte_s_mem		: std_logic;
-	signal mem_load_hi_s_mem	: std_logic;
 	signal rf_call_s_mem		: std_logic;
 	signal rf_retn_s_mem		: std_logic;
 	
@@ -314,6 +312,7 @@ begin
 				PC_OFFSET_SEL		=> pc_offset_sel_s,
 				OPCODE				=> opcode_s,
 				SIGNED_EXT			=> signed_ext_s,
+				LHI_EXT				=> lhi_ext_s,
 				
 				-- EXECUTE
 				ALU_OPCODE			=> alu_opcode_s,
@@ -328,7 +327,6 @@ begin
 				MEM_SIGNED_EXT		=> mem_signed_ext_s,
 				MEM_HALFWORD		=> mem_halfword_s,
 				MEM_BYTE			=> mem_byte_s,
-				MEM_LOAD_HI			=> mem_load_hi_s,
 				
 				-- WRITE BACK
 				LINK_PC				=> link_pc_s,
@@ -370,8 +368,6 @@ begin
 	HALFWORD_PIPE2:			FF	port map (CLK, RST, global_enable, mem_halfword_s_exe, mem_halfword_s_mem);
 	BYTE_PIPE1:				FF	port map (CLK, RST, decode_enable, mem_byte_s, mem_byte_s_exe);
 	BYTE_PIPE2:				FF	port map (CLK, RST, global_enable, mem_byte_s_exe, mem_byte_s_mem);
-	LOAD_HI_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_load_hi_s, mem_load_hi_s_exe);
-	LOAD_HI_PIPE2:			FF	port map (CLK, RST, global_enable, mem_load_hi_s_exe, mem_load_hi_s_mem);
 	RF_CALL_PIPE1:			FF	port map (CLK, RST, decode_enable, rf_call_s, rf_call_s_exe);
 	RF_CALL_PIPE2:			FF	port map (CLK, RST, global_enable, rf_call_s_exe, rf_call_s_mem);
 	RF_RETN_PIPE1:			FF	port map (CLK, RST, decode_enable, rf_retn_s, rf_retn_s_exe);
@@ -416,6 +412,7 @@ begin
 						PC_OFFSET			=> pc_offset_s,
 						PC_OFFSET_SEL		=> pc_offset_sel_s,
 						SIGNED_EXT			=> signed_ext_s,
+						LHI_EXT				=> lhi_ext_s,
 						OPCODE				=> opcode_s,
 						X2D_FORWARD_S1_EN	=> x2d_forward_s1_en_s,
 						M2D_FORWARD_S1_EN	=> m2d_forward_s1_en_s,
@@ -441,7 +438,6 @@ begin
 						MEM_SIGNED_EXT		=> mem_signed_ext_s_mem,
 						MEM_HALFWORD		=> mem_halfword_s_mem,
 						MEM_BYTE			=> mem_byte_s_mem,
-						MEM_LOAD_HI			=> mem_load_hi_s_mem,
 						EXT_MEM_ADDR		=> EXT_MEM_ADDR,
 						EXT_MEM_DIN			=> EXT_MEM_DIN,
 						EXT_MEM_RD			=> EXT_MEM_RD,

@@ -32,6 +32,7 @@ architecture test of TB_CU is
 			PC_OFFSET_SEL		: out	std_logic;
 			OPCODE				: out	opcode_t;
 			SIGNED_EXT			: out	std_logic;
+			LHI_EXT				: out	std_logic;
 			
 			-- EXECUTE
 			ALU_OPCODE			: out	ALU_opcode_t;
@@ -45,7 +46,6 @@ architecture test of TB_CU is
 			MEM_SIGNED_EXT		: out	std_logic;
 			MEM_HALFWORD		: out	std_logic;
 			MEM_BYTE			: out	std_logic;
-			MEM_LOAD_HI			: out	std_logic;
 			
 			-- WRITE BACK
 			LINK_PC				: out	std_logic;
@@ -82,6 +82,7 @@ architecture test of TB_CU is
 	signal PC_OFFSET_SEL_s		: std_logic;
 	signal OPCODE_s				: opcode_t;
 	signal SIGNED_EXT_s			: std_logic;
+	signal LHI_EXT_s			: std_logic;
 	
 	-- EXECUTE
 	signal ALU_OPCODE_s			: ALU_opcode_t;
@@ -95,7 +96,6 @@ architecture test of TB_CU is
 	signal MEM_SIGNED_EXT_s		: std_logic;
 	signal MEM_HALFWORD_s		: std_logic;
 	signal MEM_BYTE_s			: std_logic;
-	signal MEM_LOAD_HI_s		: std_logic;
 	
 	-- WRITE BACK
 	signal LINK_PC_s			: std_logic;
@@ -143,6 +143,7 @@ begin
 					PC_OFFSET_SEL_s,
 					OPCODE_s,
 					SIGNED_EXT_s,
+					LHI_EXT_s,
 					
 					-- EXECUTE
 					ALU_OPCODE_s,
@@ -156,7 +157,6 @@ begin
 					MEM_SIGNED_EXT_s,
 					MEM_HALFWORD_s,
 					MEM_BYTE_s,
-					MEM_LOAD_HI_s,
 					
 					-- WRITE BACK
 					LINK_PC_s,

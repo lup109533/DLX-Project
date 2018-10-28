@@ -25,6 +25,7 @@ entity CU is
 		PC_OFFSET_SEL		: out	std_logic;
 		OPCODE				: out	opcode_t;
 		SIGNED_EXT			: out	std_logic;
+		LHI_EXT				: out	std_logic;
 		
 		-- EXECUTE
 		ALU_OPCODE			: out	ALU_opcode_t;
@@ -39,7 +40,6 @@ entity CU is
 		MEM_SIGNED_EXT		: out	std_logic;
 		MEM_HALFWORD		: out	std_logic;
 		MEM_BYTE			: out	std_logic;
-		MEM_LOAD_HI			: out	std_logic;
 		
 		-- WRITE BACK
 		LINK_PC				: out	std_logic;
@@ -122,11 +122,13 @@ begin
 	-- CONTROL SIGNAL GENERATION
 	-- DECODE STAGE
 	-- Source 1 is fps in case of floating-point branch instruction.
-	RF_RD1_ADDR		<= FP_SPECIAL_ADDR when (opcode_s = BFPT or opcode_s = BFPF) else source1_addr_s;
+	RF_RD1_ADDR		<= FP_SPECIAL_ADDR when (opcode_s = BFPT or opcode_s = BFPF) else 
+					   R0_ADDR         when (opcode_s = LHI)                     else
+					   source1_addr_s;
 	-- Source 2 is R0 in case of mov instruction.
 	RF_RD2_ADDR		<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_s = MOV) else source2_addr_s;			   
 	-- Operation has operand 1 in case of R-type, F-TYPE or I-TYPE instructions.
-	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = I_TYPE) else '0';			   
+	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) else '0';			   
 	-- Operation has operand 2 in case of R-type, F-TYPE instructions (but not I-TYPE).
 	RF_RD2			<= '1' when (op_type = R_TYPE) else '0';
 	-- Enable PC as third output for TRAP and jump-and-link instructions.
@@ -134,7 +136,7 @@ begin
 	-- Pass immediate argument from instruction.
 	IMM_ARG			<= immediate_s;
 	-- Enable immediate only for I-TYPE instructions.
-	IMM_SEL			<= '1' when (op_type = I_TYPE) else '0';
+	IMM_SEL			<= '1' when (op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) else '0';
 	-- Extract PC offset
 	PC_OFFSET		<= pc_offset_s;
 	-- Enable PC offset as operand 2 in case of jump instruction
@@ -146,10 +148,12 @@ begin
 	-- Extract opcode
 	OPCODE			<= opcode_s;
 	-- Signed extension in all cases except explicitly unsigned instructions
-	SIGNED_EXT		<= '1' when	((op_type = I_TYPE   and signed_immediate = '1') or
-							     (opcode_s = ALU_I   and signed_alu_op = '1')    or
-							     (opcode_s = FPU_I   and signed_fpu_op = '1'))   else '0';
+	SIGNED_EXT		<= '1' when	(((op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) and signed_immediate = '1') or
+							      (opcode_s = ALU_I   and signed_alu_op = '1')                                           or
+							      (opcode_s = FPU_I   and signed_fpu_op = '1'))                                          else '0';
 	
+	-- Set immediate as most significand halfword if operation is LHI
+	LHI_EXT			<= '1' when (opcode_s = LHI) else '0';
 	
 	-- EXCUTE STAGE
 	-- Select FPU output if FP operation
@@ -177,9 +181,7 @@ begin
 	-- Enable byte load/store
 	MEM_BYTE		<= '1' when (opcode_s = LB  or
 					             opcode_s = LBU or
-								 opcode_s = SB) else '0';							 
-	-- Enable most significant halfword load
-	MEM_LOAD_HI		<= '1' when (opcode_s = LHI) else '0';
+								 opcode_s = SB) else '0';
 	-- Only call operation is TRAP.
 	RF_CALL			<= '1' when (opcode_s = TRAP)  else '0';
 	-- Only return operation is RFE.
@@ -187,7 +189,7 @@ begin
 								 
 	-- WRITE BACK STAGE
 	-- Enable write back to RF for operations with a destination or for return address linking
-	RF_WR			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or opcode_s = JAL) else '0';
+	RF_WR			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or opcode_s = JAL) else '0';
 	-- Destination is link register (R31) in case of jump-and-link or fps in case of FP comparison.
 	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
 					   FP_SPECIAL_ADDR    when (opcode_s = FPU_I and (
@@ -220,7 +222,22 @@ begin
 	signed_fpu_op		<= '0' when (fpu_func_s = MULU or fpu_func_s = DIVU) else '1';
 	
 	-- ALU OPCODE GENERATOR
-	alu_opcode_s	<= SHIFT_LL		when (func_s = SHLL) else
+	alu_opcode_s	<= IADD			when (opcode_s = ADDI or opcode_s = ADDUI) else
+					   IADD			when (opcode_s = J    or opcode_s = JAL    or opcode_s = JR or opcode_s = JALR) else
+					   IADD			when (opcode_s = LHI) else
+					   IADD			when (op_type = L_TYPE or op_type = S_TYPE) else
+					   ISUB			when (opcode_s = SUBI or opcode_s = SUBUI) else
+					   LOGIC_AND	when (opcode_s = ANDI)  else
+					   LOGIC_OR		when (opcode_s = ORI)   else
+					   LOGIC_XOR	when (opcode_s = XORI)  else
+					   COMPARE_EQ	when (opcode_s = SEQI)  else
+					   COMPARE_NE	when (opcode_s = SNEI)  else
+					   COMPARE_LT	when (opcode_s = SLTI or opcode_s = SLTUI) else
+					   COMPARE_GT	when (opcode_s = SGTI or opcode_s = SGTUI) else
+					   COMPARE_LE	when (opcode_s = SLEI or opcode_s = SLEUI) else
+					   COMPARE_GE	when (opcode_s = SGEI or opcode_s = SGEUI) else
+	
+					   SHIFT_LL		when (func_s = SHLL) else
 					   SHIFT_RL		when (func_s = SHRL) else
 					   SHIFT_RA		when (func_s = SHRA) else
 					   IADD			when (func_s = ADD  or func_s = ADDU) else
@@ -235,18 +252,6 @@ begin
 					   COMPARE_LE	when (func_s = SLE or func_s = SLEU) else
 					   COMPARE_GE	when (func_s = SGE or func_s = SGEU) else
 					   
-					   IADD			when (opcode_s = ADDI or opcode_s = ADDUI) else
-					   IADD			when (opcode_s = J    or opcode_s = JAL    or opcode_s = JR or opcode_s = JALR) else
-					   ISUB			when (opcode_s = SUBI or opcode_s = SUBUI) else
-					   LOGIC_AND	when (opcode_s = ANDI)  else
-					   LOGIC_OR		when (opcode_s = ORI)   else
-					   LOGIC_XOR	when (opcode_s = XORI)  else
-					   COMPARE_EQ	when (opcode_s = SEQI)  else
-					   COMPARE_NE	when (opcode_s = SNEI)  else
-					   COMPARE_LT	when (opcode_s = SLTI or opcode_s = SLTUI) else
-					   COMPARE_GT	when (opcode_s = SGTI or opcode_s = SGTUI) else
-					   COMPARE_LE	when (opcode_s = SLEI or opcode_s = SLEUI) else
-					   COMPARE_GE	when (opcode_s = SGEI or opcode_s = SGEUI) else
 					   MOV;
 					   
 	ALU_OPCODE <= alu_opcode_s;
@@ -271,10 +276,10 @@ begin
 	op_type	<= NO_TYPE	when (opcode_s = NOP) else
 			   J_TYPE	when (opcode_s = J     or opcode_s = JAL)   else
 			   R_TYPE	when (opcode_s = ALU_I or opcode_s = FPU_I) else
-			   L_TYPE	when (opcode_s = LHI   or opcode_s = LB  or
+			   L_TYPE	when (opcode_s = LD    or opcode_s = LB  or
 			                  opcode_s = LH    or opcode_s = LW  or
 							  opcode_s = LBU   or opcode_s = LHU or
-							  opcode_s = LF0   or opcode_s = LD) else
+							  opcode_s = LF0)                    else
 			   S_TYPE	when (opcode_s = SB    or opcode_s = SH  or
 			                  opcode_s = SW    or opcode_s = SF  or
 							  opcode_s = SD)                     else
@@ -283,24 +288,22 @@ begin
 	-- HAZARD CHECK PIPELINE
 	hazard_pipeline: process (CLK, RST, ENB, op_type, source1_addr_s, source2_addr_s, dest_addr_s, stall_s) is
 	begin
-		if rising_edge(CLK) then
-			if (RST = '0') then
-				for i in DEC to WRB loop
-					hazard_pipe_t(i)	<= NO_TYPE;
-					hazard_pipe_s1(i)	<= (others => '0');
-					hazard_pipe_s2(i)	<= (others => '0');
-					hazard_pipe_d(i)	<= (others => '0');
-				end loop;
+		if (RST = '0') then
+			for i in DEC to WRB loop
+				hazard_pipe_t(i)	<= NO_TYPE;
+				hazard_pipe_s1(i)	<= (others => '0');
+				hazard_pipe_s2(i)	<= (others => '0');
+				hazard_pipe_d(i)	<= (others => '0');
+			end loop;
 				
-			elsif (ENB = '1') then
+		else
+			hazard_pipe_t(DEC)	<= op_type;
+			hazard_pipe_s1(DEC)	<= source1_addr_s;
+			hazard_pipe_s2(DEC)	<= source2_addr_s;
+			hazard_pipe_d(DEC)	<= dest_addr_s;
+			
+			if (rising_edge(CLK)) then
 				if (stall_s = '1') then
-					for i in DEC to DEC loop
-						hazard_pipe_t(i)	<= hazard_pipe_t(i);
-						hazard_pipe_s1(i)	<= hazard_pipe_s1(i);
-						hazard_pipe_s2(i)	<= hazard_pipe_s2(i);
-						hazard_pipe_d(i)	<= hazard_pipe_d(i);
-					end loop;
-					
 					hazard_pipe_t(EXE)	<= NO_TYPE;
 					hazard_pipe_s1(EXE)	<= (others => '0');
 					hazard_pipe_s2(EXE)	<= (others => '0');
@@ -312,12 +315,7 @@ begin
 						hazard_pipe_s2(i)	<= hazard_pipe_s2(i-1);
 						hazard_pipe_d(i)	<= hazard_pipe_d(i-1);
 					end loop;
-					
-				else
-					hazard_pipe_t(DEC)	<= op_type;
-					hazard_pipe_s1(DEC)	<= source1_addr_s;
-					hazard_pipe_s2(DEC)	<= source2_addr_s;
-					hazard_pipe_d(DEC)	<= dest_addr_s;
+				elsif (ENB = '1') then
 					for i in EXE to WRB loop
 						hazard_pipe_t(i)	<= hazard_pipe_t(i-1);
 						hazard_pipe_s1(i)	<= hazard_pipe_s1(i-1);
@@ -334,7 +332,10 @@ begin
 	-- The forwarding target instruction type is checked to see whether one or more source registers are employed, then the source register(s)
 	-- is/are checked against the destination register(s) of the following instructions, but only if the following instruction types
 	-- require a destination register (in most cases).
-	target_has_s1		<= '1' when (hazard_pipe_t(DEC) = R_TYPE or hazard_pipe_t(DEC) = I_TYPE)									else '0';
+	target_has_s1		<= '1' when (hazard_pipe_t(DEC) = R_TYPE  or
+						             hazard_pipe_t(DEC) = I_TYPE  or
+									 hazard_pipe_t(DEC) = L_TYPE  or
+									 hazard_pipe_t(DEC) = S_TYPE)																	else '0';
 	target_has_s2		<= '1' when (hazard_pipe_t(DEC) = R_TYPE)																	else '0';
 	exe_source_has_d	<= '1' when not(hazard_pipe_t(EXE) = J_TYPE	or hazard_pipe_t(EXE) = S_TYPE or hazard_pipe_t(EXE) = NO_TYPE)	else '0';
 	mem_source_has_d	<= '1' when not(hazard_pipe_t(MEM) = J_TYPE	or hazard_pipe_t(MEM) = S_TYPE or hazard_pipe_t(MEM) = NO_TYPE)	else '0';
@@ -360,7 +361,7 @@ begin
 	-- DECODE stage requires the destination of a load-type operation in the EXECUTION stage.
 	-- In this case, the previous stages are disabled (with the exception of the RF in the DECODE stage) for 1 clock cycle, after which forwarding is possible.
 	exe_source_is_load	<= '1' when (hazard_pipe_t(EXE) = L_TYPE) else '0';
-	stall_s				<= ((target_has_s1 and exe_can_forward_s1) or (exe_can_forward_s2 and target_has_s2)) and exe_source_is_load;
+	stall_s				<= ((target_has_s1 and exe_can_forward_s1) or (target_has_s2 and exe_can_forward_s2)) and exe_source_is_load;
 	STALL				<= stall_s;
 	
 end architecture;

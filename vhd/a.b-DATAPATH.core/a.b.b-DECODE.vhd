@@ -31,6 +31,7 @@ entity DECODE is
 		PC_OFFSET		: in	pc_offset_t;
 		PC_OFFSET_SEL	: in	std_logic;
 		SIGNED_EXT		: in	std_logic;
+		LHI_EXT			: in	std_logic;
 		OPCODE			: in	opcode_t;
 		-- Datapath signals
 		FORWARD_R1_EN	: in	std_logic;
@@ -93,6 +94,7 @@ architecture behavioral of DECODE is
 	end component;
 
 	-- SIGNALS
+	signal reg_a_s			: DLX_oper_t;
 	signal RF_dout1_s		: DLX_oper_t;
 	signal RF_dout2_s		: DLX_oper_t;
 	signal is_zero_s		: std_logic;
@@ -113,7 +115,7 @@ begin
 						port map (
 							CLK			=> CLK,
 							RST			=> RST,
-							ENB			=> ENB,
+							ENB			=> '1',
 							HEAP_ADDR	=> HEAP_ADDR,
 							RD1			=> RF_RD1,
 							RD2			=> RF_RD2,
@@ -135,7 +137,7 @@ begin
 						);
 						
 	-- Instantiate zero detector to check if branch taken
-	ZD: ZERO_DETECTOR generic map (DLX_OPERAND_SIZE) port map (RF_dout1_s, is_zero_s);
+	ZD: ZERO_DETECTOR generic map (DLX_OPERAND_SIZE) port map (reg_a_s, is_zero_s);
 	
 	-- Check branch taken
 	BRANCH_TAKEN	<= branch_taken_s;
@@ -146,8 +148,10 @@ begin
 					   '0';
 						
 	-- Extend immediate arg
-	ext_imm_s(DLX_OPERAND_SIZE-1   downto IMMEDIATE_ARG_SIZE)	<= (others => IMM_ARG(IMMEDIATE_ARG_SIZE-1)) when (SIGNED_EXT = '1') else (others => '0');
-	ext_imm_s(IMMEDIATE_ARG_SIZE-1 downto                  0)	<= IMM_ARG;
+	ext_imm_s(DLX_OPERAND_SIZE-1   downto IMMEDIATE_ARG_SIZE)	<= IMM_ARG                                   when (LHI_EXT = '1')    else
+																   (others => IMM_ARG(IMMEDIATE_ARG_SIZE-1)) when (SIGNED_EXT = '1') else
+																   (others => '0');
+	ext_imm_s(IMMEDIATE_ARG_SIZE-1 downto                  0)	<= (others => '0') when (LHI_EXT = '1') else IMM_ARG;
 	
 	-- Extend pc offset
 	pc_offset_s(DLX_OPERAND_SIZE-1    downto JUMP_PC_OFFSET_SIZE)	<= (others => PC_OFFSET(JUMP_PC_OFFSET_SIZE-1));
@@ -155,7 +159,9 @@ begin
 	
 	-- Assign outputs
 	REG_A	<= PC             when (branch_taken_s = '1') else -- Propagate pc in case of branch address calculation
-			   FORWARD_VALUE1 when (FORWARD_R1_EN = '1')  else -- Receive value from further down the pipeline
+			   reg_a_s;
+			   
+	reg_a_s	<= FORWARD_VALUE1 when (FORWARD_R1_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout1_s;
 			   
 	REG_B	<= ext_imm_s      when (IMM_SEL = '1')        else -- Select immediate value if I-type
@@ -163,6 +169,6 @@ begin
 			   FORWARD_VALUE2 when (FORWARD_R2_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout2_s;
 			   
-	REG_C	<= RF_dout2_s when (PC_OUT_EN = '0') else PC;
+	REG_C	<= RF_dout1_s when (PC_OUT_EN = '0') else PC;
 
 end architecture;

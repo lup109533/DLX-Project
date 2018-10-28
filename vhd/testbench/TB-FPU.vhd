@@ -20,8 +20,8 @@ architecture test of TB_FPU is
 	component FPU
 		generic (OPERAND_SIZE : natural);
 		port (
+			FUNC	: in	fpu_opcode_t;
 			F1, F2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-			OPCODE	: in	FPU_opcode_t;
 			O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
 		);
 	end component;
@@ -30,7 +30,7 @@ architecture test of TB_FPU is
 	constant MAX_F1			: natural := 2**(OPERAND_SIZE/7)-1;
 	constant MAX_F2			: natural := 2**(OPERAND_SIZE/7)-1;
 	
-	signal OPCODE_s		: FPU_opcode_t := INT_MULTIPLY;
+	signal FUNC_s		: FPU_opcode_t := INT_MULTIPLY;
 	signal F1_s, F2_s	: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal O_s			: std_logic_vector(OPERAND_SIZE-1 downto 0);
 	signal OK			: boolean;
@@ -38,7 +38,7 @@ architecture test of TB_FPU is
 begin
 
 	-- UUT
-	UUT: FPU generic map(OPERAND_SIZE) port map(F1_s, F2_s, OPCODE_s, O_s);
+	UUT: FPU generic map(OPERAND_SIZE) port map(FUNC_s, F1_s, F2_s, O_s);
 	OK <= to_integer(unsigned(F1_s))*to_integer(unsigned(F2_s)) = to_integer(unsigned(O_s));
 
 	-- STIMULUS
@@ -49,58 +49,50 @@ begin
 		variable exp_range		: real := real(2**8-1);
 		variable mant_range		: real := real(2**23-1);
 	begin
-	
---		for F1_v in -MAX_F1 to MAX_F1 loop
---			for F2_v in -MAX_F2 to MAX_F2 loop
---				F1_s	<= std_logic_vector(to_signed(F1_v, F1_s'length));
---				F2_s	<= std_logic_vector(to_signed(F2_v, F2_s'length));
---				wait for 1 ns;
---			end loop;
---		end loop;
 		
---		OPCODE_s <= FP_ADD;
---		
---		for i in 0 to 10 loop
---			-- F1
---			uniform(seed1, seed2, rand);
---			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
---			uniform(seed1, seed2, rand);
---			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
---			uniform(seed1, seed2, rand);
---			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
---			-- F2
---			uniform(seed1, seed2, rand);
---			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
---			uniform(seed1, seed2, rand);
---			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
---			uniform(seed1, seed2, rand);
---			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
---			
---			wait for 1 ns;
---		end loop;
+		FUNC_s <= FP_ADD;
 		
---		OPCODE_s <= FP_SUB;
---		
---		for i in 0 to 10 loop
---			-- F1
---			uniform(seed1, seed2, rand);
---			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
---			uniform(seed1, seed2, rand);
---			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
---			uniform(seed1, seed2, rand);
---			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
---			-- F2
---			uniform(seed1, seed2, rand);
---			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
---			uniform(seed1, seed2, rand);
---			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
---			uniform(seed1, seed2, rand);
---			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
---			
---			wait for 1 ns;
---		end loop;
+		for i in 0 to 10 loop
+			-- F1
+			uniform(seed1, seed2, rand);
+			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+			uniform(seed1, seed2, rand);
+			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+			uniform(seed1, seed2, rand);
+			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+			-- F2
+			uniform(seed1, seed2, rand);
+			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+			uniform(seed1, seed2, rand);
+			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+			uniform(seed1, seed2, rand);
+			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+			
+			wait for 1 ns;
+		end loop;
 		
-		OPCODE_s <= FP_COMPARE_GE;
+		FUNC_s <= FP_SUB;
+		
+		for i in 0 to 10 loop
+			-- F1
+			uniform(seed1, seed2, rand);
+			F1_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+			uniform(seed1, seed2, rand);
+			F1_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+			uniform(seed1, seed2, rand);
+			F1_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+			-- F2
+			uniform(seed1, seed2, rand);
+			F2_s(OPERAND_SIZE-1)	<= to_std_logic(integer(rand));
+			uniform(seed1, seed2, rand);
+			F2_s(EXPONENT_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*exp_range), 8));
+			uniform(seed1, seed2, rand);
+			F2_s(MANTISSA_RANGE)	<= std_logic_vector(to_unsigned(integer(rand*mant_range), 23));
+			
+			wait for 1 ns;
+		end loop;
+		
+		FUNC_s <= FP_MULTIPLY;
 		
 		for i in 0 to 10 loop
 			-- F1

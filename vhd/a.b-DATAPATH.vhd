@@ -34,6 +34,7 @@ entity DATAPATH is
 		PC_OFFSET			: in	pc_offset_t;
 		PC_OFFSET_SEL		: in	std_logic;
 		SIGNED_EXT			: in	std_logic;
+		LHI_EXT				: in	std_logic;
 		OPCODE				: in	opcode_t;
 		X2D_FORWARD_S1_EN	: in	std_logic;
 		M2D_FORWARD_S1_EN	: in	std_logic;
@@ -59,7 +60,6 @@ entity DATAPATH is
 		MEM_SIGNED_EXT		: in	std_logic;
 		MEM_HALFWORD		: in	std_logic;
 		MEM_BYTE			: in	std_logic;
-		MEM_LOAD_HI			: in	std_logic;
 		EXT_MEM_ADDR		: out	DLX_addr_t;
 		EXT_MEM_DIN			: out	DLX_oper_t;
 		EXT_MEM_RD			: out	std_logic;
@@ -84,6 +84,7 @@ architecture structural of DATAPATH is
 			INSTR			: in	DLX_instr_t;
 			FOUT			: out	DLX_instr_t;
 			PC				: out	DLX_addr_t;
+			PC_INC			: out	DLX_addr_t;
 			-- Datapath signals
 			BRANCH_TAKEN	: in	std_logic;
 			BRANCH_ADDR_SEL	: in	std_logic;
@@ -117,6 +118,7 @@ architecture structural of DATAPATH is
 			PC_OFFSET		: in	pc_offset_t;
 			PC_OFFSET_SEL	: in	std_logic;
 			SIGNED_EXT		: in	std_logic;
+			LHI_EXT			: in	std_logic;
 			OPCODE			: in	opcode_t;
 			-- Datapath signals
 			FORWARD_R1_EN	: in	std_logic;
@@ -156,7 +158,6 @@ architecture structural of DATAPATH is
 			MEM_SIGNED_EXT	: in	std_logic;
 			MEM_HALFWORD	: in	std_logic;
 			MEM_BYTE		: in	std_logic;
-			MEM_LOAD_HI		: in	std_logic;
 			-- Signals to/from external memory.
 			EXT_MEM_ADDR	: out	DLX_addr_t;
 			EXT_MEM_DIN		: out	DLX_oper_t;
@@ -207,6 +208,7 @@ architecture structural of DATAPATH is
 	-- SIGNALS
 	signal fet_fout					: DLX_instr_t;
 	signal fet_pc					: DLX_addr_t;
+	signal fet_pc_inc				: DLX_addr_t;
 	signal fet_branch_taken			: std_logic;
 	signal fet_branch_addr			: DLX_addr_t;
 	signal fet_branch_addr_sel		: std_logic;
@@ -264,6 +266,7 @@ begin
 								INSTR			=> ICACHE_INSTR,
 								FOUT			=> fet_fout,
 								PC				=> fet_pc,
+								PC_INC			=> fet_pc_inc,
 								-- Datapath signals
 								BRANCH_TAKEN	=> fet_branch_taken,
 								BRANCH_ADDR_SEL	=> fet_branch_addr_sel,
@@ -272,7 +275,7 @@ begin
 	
 	-- Pipeline stage
 	FET_FOUT_PIPELINE:	REG_N	generic map (DLX_INSTRUCTION_SIZE) port map (CLK, RST, FETCH_ENB, fet_fout, fet_fout_pipe);
-	FET_PC_PIPELINE:	REG_N	generic map (DLX_ADDR_SIZE)        port map (CLK, RST, FETCH_ENB, fet_pc, fet_pc_pipe);
+	FET_PC_PIPELINE:	REG_N	generic map (DLX_ADDR_SIZE)        port map (CLK, RST, FETCH_ENB, fet_pc_inc, fet_pc_pipe);
 		
 		
 	-- DECODE
@@ -316,6 +319,7 @@ begin
 								PC_OFFSET		=> PC_OFFSET,
 								PC_OFFSET_SEL	=> PC_OFFSET_SEL,
 								SIGNED_EXT		=> SIGNED_EXT,
+								LHI_EXT			=> LHI_EXT,
 								OPCODE			=> OPCODE,
 								-- Datapath signals
 								FORWARD_R1_EN	=> dec_forward_r1_en,
@@ -376,7 +380,6 @@ begin
 								MEM_SIGNED_EXT	=> MEM_SIGNED_EXT,
 								MEM_HALFWORD	=> MEM_HALFWORD,
 								MEM_BYTE		=> MEM_BYTE,
-								MEM_LOAD_HI		=> MEM_LOAD_HI,
 								-- Signals to/from external memory.
 								EXT_MEM_ADDR	=> EXT_MEM_ADDR,
 								EXT_MEM_DIN		=> EXT_MEM_DIN,
@@ -393,7 +396,7 @@ begin
 	-- Pipeline stage
 	MEM_MEM_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, MEMORY_ENB, mem_mem_out, mem_mem_out_pipe);
 	-- Propagate PC in case of jump-and-link
-	MEM_PC_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, MEMORY_ENB, mem_addr_in, mem_pc_out_pipe);
+	MEM_PC_OUT_PIPELINE: REG_N	generic map (DLX_OPERAND_SIZE) port map (CLK, RST, MEMORY_ENB, mem_data_in, mem_pc_out_pipe);
 	
 	
 	-- WRITE BACK
