@@ -142,7 +142,7 @@ begin
 	-- Check branch taken
 	BRANCH_TAKEN	<= branch_taken_s;
 	branch_taken_s	<= '1' when (is_zero_s = '1' and (OPCODE = BEQZ or OPCODE = BFPF))       else -- when conditional branch matches
-					   '1' when (is_zero_s = '0' and (OPCODE = BNEZ or OPCODE = BFPT))       else --
+					   '1' when (is_zero_s = '0' and (OPCODE = BNEZ or OPCODE = BFPT))       else -- **
 					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) else -- when operation is unconditional branch
 					   '1' when (OPCODE = TRAP or OPCODE = RFE)                              else -- when exception call/return
 					   '0';
@@ -158,7 +158,8 @@ begin
 	pc_offset_s(JUMP_PC_OFFSET_SIZE-1 downto                   0)	<= PC_OFFSET;
 	
 	-- Assign outputs
-	REG_A	<= PC             when (branch_taken_s = '1') else -- Propagate pc in case of branch address calculation
+	REG_A	<= reg_a_s	when (OPCODE = RET)			else -- Use r31 if RET
+			   PC		when (branch_taken_s = '1')	else -- Propagate pc in case of branch address calculation
 			   reg_a_s;
 			   
 	reg_a_s	<= FORWARD_VALUE1 when (FORWARD_R1_EN = '1')  else -- Receive value from further down the pipeline

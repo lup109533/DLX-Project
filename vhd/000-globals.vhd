@@ -90,7 +90,10 @@ package DLX_globals is
 	
 	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, S_TYPE, L_TYPE);
 	type ALU_opcode_t		is (SHIFT_RL, SHIFT_LL, SHIFT_RA, SHIFT_LA,
-								IADD, ISUB, LOGIC_AND, LOGIC_OR, LOGIC_XOR,
+								IADD, ISUB,
+								LOGIC_AND, LOGIC_OR, LOGIC_XOR,
+								LOGIC_NAND, LOGIC_NOR, LOGIC_XNOR, LOGIC_NOT,
+								LOGIC_ANDN, LOGIC_ORN,
 							    COMPARE_EQ, COMPARE_NE, COMPARE_LT, COMPARE_GT, COMPARE_LE, COMPARE_GE,
 								BRANCH_IF_EQ, BRANCH_IF_NE,
 								MOV);
@@ -132,6 +135,7 @@ package DLX_globals is
 	constant SGTI		: opcode_t	:= std_logic_vector(to_unsigned(16#1B#, OPCODE_SIZE));
 	constant SLEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1C#, OPCODE_SIZE));
 	constant SGEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1D#, OPCODE_SIZE));
+	constant RET		: opcode_t	:= std_logic_vector(to_unsigned(16#1E#, OPCODE_SIZE));
 	constant LB			: opcode_t	:= std_logic_vector(to_unsigned(16#20#, OPCODE_SIZE));
 	constant LH			: opcode_t	:= std_logic_vector(to_unsigned(16#21#, OPCODE_SIZE));
 	constant LW			: opcode_t	:= std_logic_vector(to_unsigned(16#23#, OPCODE_SIZE));
@@ -149,6 +153,12 @@ package DLX_globals is
 	constant SGTUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3B#, OPCODE_SIZE));
 	constant SLEUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3C#, OPCODE_SIZE));
 	constant SGEUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3D#, OPCODE_SIZE));
+	constant NANDI		: opcode_t	:= std_logic_vector(to_unsigned(16#40#, OPCODE_SIZE));
+	constant NORI		: opcode_t	:= std_logic_vector(to_unsigned(16#41#, OPCODE_SIZE));
+	constant XNORI		: opcode_t	:= std_logic_vector(to_unsigned(16#42#, OPCODE_SIZE));
+	constant NOTI		: opcode_t	:= std_logic_vector(to_unsigned(16#43#, OPCODE_SIZE));
+	constant ANDNI		: opcode_t	:= std_logic_vector(to_unsigned(16#44#, OPCODE_SIZE));
+	constant ORNI		: opcode_t	:= std_logic_vector(to_unsigned(16#45#, OPCODE_SIZE));
 
 	-- DLX ALU FUNCTIONS
 	constant SHLL		: func_t	:= std_logic_vector(to_unsigned(16#04#, ALU_FUNCTION_SIZE));	-- Disambiguation from VHDL keyword SLL
@@ -179,7 +189,13 @@ package DLX_globals is
 	constant SGTU		: func_t	:= std_logic_vector(to_unsigned(16#3B#, ALU_FUNCTION_SIZE));
 	constant SLEU		: func_t	:= std_logic_vector(to_unsigned(16#3C#, ALU_FUNCTION_SIZE));
 	constant SGEU		: func_t	:= std_logic_vector(to_unsigned(16#3D#, ALU_FUNCTION_SIZE));
-
+	constant LNAND		: func_t	:= std_logic_vector(to_unsigned(16#40#, ALU_FUNCTION_SIZE)); -- Disambiguation from VHDL keyword NAND
+	constant LNOR		: func_t	:= std_logic_vector(to_unsigned(16#41#, ALU_FUNCTION_SIZE)); -- Disambiguation from VHDL keyword NOR
+	constant LXNOR		: func_t	:= std_logic_vector(to_unsigned(16#42#, ALU_FUNCTION_SIZE)); -- Disambiguation from VHDL keyword XNOR
+	constant LNOT		: func_t	:= std_logic_vector(to_unsigned(16#43#, ALU_FUNCTION_SIZE)); -- Disambiguation from VHDL keyword NOT
+	constant ANDN		: func_t	:= std_logic_vector(to_unsigned(16#44#, ALU_FUNCTION_SIZE));
+	constant ORN		: func_t	:= std_logic_vector(to_unsigned(16#45#, ALU_FUNCTION_SIZE));
+	
 	-- DLX FP FUNCTIONS
 	constant ADDF		: fp_func_t	:= std_logic_vector(to_unsigned(16#00#, FPU_FUNCTION_SIZE));
 	constant SUBF		: fp_func_t	:= std_logic_vector(to_unsigned(16#01#, FPU_FUNCTION_SIZE));

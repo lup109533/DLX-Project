@@ -81,7 +81,8 @@ architecture behavioural of CU is
 	signal signed_alu_op		: std_logic;
 	signal signed_fpu_op		: std_logic;
 	
-	signal alu_opcode_s			: ALU_opcode_t;
+	signal alu_opcode_i_s		: ALU_opcode_t;
+	signal alu_opcode_r_s		: ALU_opcode_t;
 	signal fpu_opcode_s			: FPU_opcode_t;
 	
 	type hazard_pipe_op_type_t  is array (DEC to WRB) of DLX_instr_type_t;
@@ -91,6 +92,10 @@ architecture behavioural of CU is
 	signal hazard_pipe_s1		: hazard_pipe_reg_addr_t;
 	signal hazard_pipe_s2		: hazard_pipe_reg_addr_t;
 	signal hazard_pipe_d		: hazard_pipe_reg_addr_t;
+	
+	signal rf_rd1_addr_s		: reg_addr_t;
+	signal rf_rd2_addr_s		: reg_addr_t;
+	signal rf_wr_addr_s			: reg_addr_t;
 	
 	signal target_has_s1		: std_logic;
 	signal target_has_s2		: std_logic;
@@ -122,11 +127,14 @@ begin
 	-- CONTROL SIGNAL GENERATION
 	-- DECODE STAGE
 	-- Source 1 is fps in case of floating-point branch instruction.
-	RF_RD1_ADDR		<= FP_SPECIAL_ADDR when (opcode_s = BFPT or opcode_s = BFPF) else 
-					   R0_ADDR         when (opcode_s = LHI)                     else
+	RF_RD1_ADDR		<= rf_rd1_addr_s;
+	rf_rd1_addr_s	<= JUMP_AND_LINK_ADDR	when (opcode_s = RET)					  else
+					   FP_SPECIAL_ADDR		when (opcode_s = BFPT or opcode_s = BFPF) else 
+					   R0_ADDR				when (opcode_s = LHI)                     else
 					   source1_addr_s;
 	-- Source 2 is R0 in case of mov instruction.
-	RF_RD2_ADDR		<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_s = MOV) else source2_addr_s;			   
+	RF_RD2_ADDR		<= rf_rd2_addr_s;
+	rf_rd2_addr_s	<= R0_ADDR when (opcode_s = ALU_I and alu_opcode_r_s = MOV) else source2_addr_s;			   
 	-- Operation has operand 1 in case of R-type, F-TYPE or I-TYPE instructions.
 	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) else '0';			   
 	-- Operation has operand 2 in case of R-type, F-TYPE instructions (but not I-TYPE).
@@ -138,7 +146,7 @@ begin
 	-- Enable immediate only for I-TYPE instructions.
 	IMM_SEL			<= '1' when (op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) else '0';
 	-- Extract PC offset
-	PC_OFFSET		<= pc_offset_s;
+	PC_OFFSET		<= (others => '0') when (opcode_s = RET) else pc_offset_s;
 	-- Enable PC offset as operand 2 in case of jump instruction
 	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE or
 					             opcode_s = BEQZ  or
@@ -191,7 +199,8 @@ begin
 	-- Enable write back to RF for operations with a destination or for return address linking
 	RF_WR			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or opcode_s = JAL) else '0';
 	-- Destination is link register (R31) in case of jump-and-link or fps in case of FP comparison.
-	RF_WR_ADDR		<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
+	RF_WR_ADDR		<= rf_wr_addr_s;
+	rf_wr_addr_s	<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
 					   FP_SPECIAL_ADDR    when (opcode_s = FPU_I and (
 												fpu_func_s = EQF or
 												fpu_func_s = NEF or
@@ -210,51 +219,84 @@ begin
 									 opcode_s = SLTUI or
 									 opcode_s = SGTUI or
 									 opcode_s = SLEUI or
-									 opcode_s = SGEUI) else '1';
+									 opcode_s = SGEUI or
+									 opcode_s = ANDI  or
+									 opcode_s = ORI   or
+									 opcode_s = XORI  or
+									 opcode_s = NANDI or
+									 opcode_s = NORI  or
+									 opcode_s = XNORI or
+									 opcode_s = ANDNI or
+									 opcode_s = ORNI) else '1';
 									 
-	signed_alu_op		<= '0' when (func_s = ADDU or
-						             func_s = SUBU or
-									 func_s = SLTU or
-									 func_s = SGTU or
-									 func_s = SLEU or
-									 func_s = SGEU) else '1';
+	signed_alu_op		<= '0' when (func_s = ADDU  or
+						             func_s = SUBU  or
+									 func_s = SLTU  or
+									 func_s = SGTU  or
+									 func_s = SLEU  or
+									 func_s = SGEU  or
+									 func_s = LAND  or
+									 func_s = LOR   or
+									 func_s = LXOR  or
+									 func_s = LNAND or
+									 func_s = LNOR  or
+									 func_s = LXNOR or
+									 func_s = ANDN  or
+									 func_s = ORN)  else '1';
 						 
 	signed_fpu_op		<= '0' when (fpu_func_s = MULU or fpu_func_s = DIVU) else '1';
 	
 	-- ALU OPCODE GENERATOR
-	alu_opcode_s	<= IADD			when (opcode_s = ADDI or opcode_s = ADDUI) else
-					   IADD			when (opcode_s = J    or opcode_s = JAL    or opcode_s = JR or opcode_s = JALR) else
-					   IADD			when (opcode_s = LHI) else
-					   IADD			when (op_type = L_TYPE or op_type = S_TYPE) else
-					   ISUB			when (opcode_s = SUBI or opcode_s = SUBUI) else
+	alu_opcode_i_s	<= SHIFT_LL		when (opcode_s = SLLI) else
+					   SHIFT_RL		when (opcode_s = SRLI) else
+					   SHIFT_RA		when (opcode_s = SRAI) else
+					   IADD			when (opcode_s = ADDI or opcode_s = ADDUI) 		else
+					   IADD			when (opcode_s = J 		or opcode_s = JAL or
+					                      opcode_s = JR		or opcode_s = JALR) 	else
+					   IADD			when (opcode_s = LHI)							else
+					   IADD			when (op_type = L_TYPE	or op_type = S_TYPE)	else
+					   IADD			when (opcode_s = BEQZ	or opcode_s = BNEZ)		else
+					   ISUB			when (opcode_s = SUBI	or opcode_s = SUBUI)	else
 					   LOGIC_AND	when (opcode_s = ANDI)  else
 					   LOGIC_OR		when (opcode_s = ORI)   else
 					   LOGIC_XOR	when (opcode_s = XORI)  else
+					   LOGIC_NAND	when (opcode_s = NANDI)	else
+					   LOGIC_NOR	when (opcode_s = NORI)	else
+					   LOGIC_XNOR	when (opcode_s = XNORI)	else
+					   LOGIC_NOT	when (opcode_s = NOTI)	else
+					   LOGIC_ANDN	when (opcode_s = ANDNI)	else
+					   LOGIC_ORN	when (opcode_s = ORNI)	else
 					   COMPARE_EQ	when (opcode_s = SEQI)  else
 					   COMPARE_NE	when (opcode_s = SNEI)  else
 					   COMPARE_LT	when (opcode_s = SLTI or opcode_s = SLTUI) else
 					   COMPARE_GT	when (opcode_s = SGTI or opcode_s = SGTUI) else
 					   COMPARE_LE	when (opcode_s = SLEI or opcode_s = SLEUI) else
 					   COMPARE_GE	when (opcode_s = SGEI or opcode_s = SGEUI) else
+					   MOV;
 	
-					   SHIFT_LL		when (func_s = SHLL) else
+	alu_opcode_r_s	<= SHIFT_LL		when (func_s = SHLL) else
 					   SHIFT_RL		when (func_s = SHRL) else
 					   SHIFT_RA		when (func_s = SHRA) else
 					   IADD			when (func_s = ADD  or func_s = ADDU) else
 					   ISUB			when (func_s = SUB0 or func_s = SUBU) else
-					   LOGIC_AND	when (func_s = LAND) else
-					   LOGIC_OR		when (func_s = LOR)  else
-					   LOGIC_XOR	when (func_s = LXOR) else
-					   COMPARE_EQ	when (func_s = SEQ)  else
-					   COMPARE_NE	when (func_s = SNE)  else
+					   LOGIC_AND	when (func_s = LAND)	else
+					   LOGIC_OR		when (func_s = LOR)		else
+					   LOGIC_XOR	when (func_s = LXOR)	else
+					   LOGIC_NAND	when (func_s = LNAND)	else
+					   LOGIC_NOR	when (func_s = LNOR)	else
+					   LOGIC_XNOR	when (func_s = LXNOR)	else
+					   LOGIC_NOT	when (func_s = LNOT)	else
+					   LOGIC_ANDN	when (func_s = ANDN)	else
+					   LOGIC_ORN	when (func_s = ORN)		else
+					   COMPARE_EQ	when (func_s = SEQ)		else
+					   COMPARE_NE	when (func_s = SNE)		else
 					   COMPARE_LT	when (func_s = SLT or func_s = SLTU) else
 					   COMPARE_GT	when (func_s = SGT or func_s = SGTU) else
 					   COMPARE_LE	when (func_s = SLE or func_s = SLEU) else
 					   COMPARE_GE	when (func_s = SGE or func_s = SGEU) else
-					   
 					   MOV;
 					   
-	ALU_OPCODE <= alu_opcode_s;
+	ALU_OPCODE <= alu_opcode_r_s when (opcode_s = ALU_I) else alu_opcode_i_s;
 	
 	-- FPU OPCODE GENERATOR
 	fpu_opcode_s	<= FP_ADD		 when (fpu_func_s = ADDF) else
@@ -274,15 +316,21 @@ begin
 	
 	-- INSTRUCTION TYPE DISCRIMINATOR
 	op_type	<= NO_TYPE	when (opcode_s = NOP) else
-			   J_TYPE	when (opcode_s = J     or opcode_s = JAL)   else
+			   -- Unconditional jumps
+			   J_TYPE	when (opcode_s = J     or opcode_s = JAL or
+							  opcode_s = RET)                    else
+			   -- Register-register operations			  
 			   R_TYPE	when (opcode_s = ALU_I or opcode_s = FPU_I) else
+			   -- Load from memory
 			   L_TYPE	when (opcode_s = LD    or opcode_s = LB  or
 			                  opcode_s = LH    or opcode_s = LW  or
 							  opcode_s = LBU   or opcode_s = LHU or
 							  opcode_s = LF0)                    else
+			   -- Store into memory  
 			   S_TYPE	when (opcode_s = SB    or opcode_s = SH  or
 			                  opcode_s = SW    or opcode_s = SF  or
 							  opcode_s = SD)                     else
+			   -- Register+immediate operations
 			   I_TYPE;
 	
 	-- HAZARD CHECK PIPELINE
@@ -298,9 +346,9 @@ begin
 				
 		else
 			hazard_pipe_t(DEC)	<= op_type;
-			hazard_pipe_s1(DEC)	<= source1_addr_s;
-			hazard_pipe_s2(DEC)	<= source2_addr_s;
-			hazard_pipe_d(DEC)	<= dest_addr_s;
+			hazard_pipe_s1(DEC)	<= rf_rd1_addr_s;
+			hazard_pipe_s2(DEC)	<= rf_rd2_addr_s;
+			hazard_pipe_d(DEC)	<= rf_wr_addr_s;
 			
 			if (rising_edge(CLK)) then
 				if (stall_s = '1') then

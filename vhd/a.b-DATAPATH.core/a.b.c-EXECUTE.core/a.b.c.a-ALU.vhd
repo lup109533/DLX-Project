@@ -132,9 +132,15 @@ begin
 	-- LOGIC UNIT
 	LU: LOGIC_UNIT generic map (OPERAND_SIZE) port map (logic_sel, R1, R2, lu_out);
 	---- Translate opcode into selection bits
-	logic_sel		<=	LU_AND		when (FUNC = LOGIC_AND)	else
-						LU_OR		when (FUNC = LOGIC_OR)	else
-						LU_XOR		when (FUNC = LOGIC_XOR)	else
+	logic_sel		<=	LU_AND		when (FUNC = LOGIC_AND)		else
+						LU_OR		when (FUNC = LOGIC_OR)		else
+						LU_XOR		when (FUNC = LOGIC_XOR)		else
+						LU_NAND		when (FUNC = LOGIC_NAND)	else
+						LU_NOR		when (FUNC = LOGIC_NOR)		else
+						LU_XNOR		when (FUNC = LOGIC_XNOR)	else
+						LU_AND_NOT	when (FUNC = LOGIC_ANDN)	else
+						LU_OR_NOT	when (FUNC = LOGIC_ORN)		else
+						LU_NOT_R1	when (FUNC = LOGIC_NOT)		else
 						LU_FALSE;
 	
 	
