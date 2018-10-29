@@ -64,6 +64,38 @@ end architecture;
 
 library ieee;
 use ieee.std_logic_1164.all;
+
+entity REG_N_INIT is
+	generic (N : natural);
+	port (
+		CLK		: in	std_logic;
+		RST		: in	std_logic;
+		ENB		: in	std_logic;
+		INIT	: in	std_logic_vector(N-1 downto 0);
+		DIN		: in	std_logic_vector(N-1 downto 0);
+		DOUT	: out	std_logic_vector(N-1 downto 0)
+	);
+end entity;
+
+architecture structural of REG_N_INIT is
+
+begin
+
+	reg_proc: process (CLK, RST) is
+	begin
+		if rising_edge(CLK) then
+			if (RST = '0') then
+				DOUT <= INIT;
+			elsif (ENB = '1') then
+				DOUT <= DIN;
+			end if;
+		end if;
+	end process;
+
+end architecture;
+
+library ieee;
+use ieee.std_logic_1164.all;
 use work.DLX_globals.all;
 
 entity ALU_OPCODE_REG is

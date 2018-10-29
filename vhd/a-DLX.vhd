@@ -9,6 +9,8 @@ entity DLX is
 		CLK					: in	std_logic;
 		RST					: in	std_logic;
 		ENB					: in	std_logic;
+		-- Branch delay slot toggle
+		BRANCH_DELAY_EN		: in	std_logic;
 		-- ICACHE interface
 		PC					: out	DLX_addr_t;
 		ICACHE_INSTR		: in	DLX_instr_t;
@@ -52,6 +54,7 @@ architecture structural of DLX is
 			OPCODE				: out	opcode_t;
 			SIGNED_EXT			: out	std_logic;
 			LHI_EXT				: out	std_logic;
+			STORE_R2_EN			: out	std_logic;
 			
 			-- EXECUTE
 			ALU_OPCODE			: out	ALU_opcode_t;
@@ -94,6 +97,7 @@ architecture structural of DLX is
 			MEMORY_ENB			: in	std_logic;
 			
 			-- FETCH
+			BRANCH_DELAY_EN		: in	std_logic;
 			PC					: out	DLX_addr_t;
 			ICACHE_INSTR		: in	DLX_instr_t;
 			FETCHED_INSTR		: out	DLX_instr_t;
@@ -116,6 +120,7 @@ architecture structural of DLX is
 			PC_OFFSET_SEL		: in	std_logic;
 			SIGNED_EXT			: in	std_logic;
 			LHI_EXT				: in	std_logic;
+			STORE_R2_EN			: in	std_logic;
 			OPCODE				: in	opcode_t;
 			X2D_FORWARD_S1_EN	: in	std_logic;
 			M2D_FORWARD_S1_EN	: in	std_logic;
@@ -198,7 +203,7 @@ architecture structural of DLX is
 	-- SIGNALS
 	-- FETCH
 	signal fetched_instr_s		: DLX_instr_t;
-	signal fetched_instr_s_pipe	: DLX_instr_t;
+	-- signal fetched_instr_s_pipe	: DLX_instr_t;
 	
 	-- DECODE
 	signal pc_out_en_s			: std_logic;
@@ -216,6 +221,7 @@ architecture structural of DLX is
 	signal opcode_s				: opcode_t;
 	signal signed_ext_s			: std_logic;
 	signal lhi_ext_s			: std_logic;
+	signal load_r2_en_s			: std_logic;
 	
 	-- EXECUTE
 	signal alu_opcode_s			: ALU_opcode_t;
@@ -297,7 +303,7 @@ begin
 				CLK					=> CLK,
 				RST					=> RST,
 				ENB					=> global_enable,
-				INSTR				=> fetched_instr_s_pipe,
+				INSTR				=> fetched_instr_s,
 				
 				-- DECODE
 				PC_OUT_EN			=> pc_out_en_s,
@@ -313,6 +319,7 @@ begin
 				OPCODE				=> opcode_s,
 				SIGNED_EXT			=> signed_ext_s,
 				LHI_EXT				=> lhi_ext_s,
+				STORE_R2_EN			=> load_r2_en_s,
 				
 				-- EXECUTE
 				ALU_OPCODE			=> alu_opcode_s,
@@ -346,7 +353,7 @@ begin
 	
 	-- Pipeline for CU signals
 	-- To CU/DECODE stage
-	INSTR_PIPE:	REG_N	generic map (DLX_INSTRUCTION_SIZE)	port map (CLK, RST, fetch_enable, fetched_instr_s, fetched_instr_s_pipe);
+	-- INSTR_PIPE:	REG_N	generic map (DLX_INSTRUCTION_SIZE)	port map (CLK, RST, fetch_enable, fetched_instr_s, fetched_instr_s_pipe);
 	
 	-- To EXECUTE stage
 	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	port map (CLK, RST, decode_enable, alu_opcode_s, alu_opcode_s_exe);
@@ -394,6 +401,7 @@ begin
 						MEMORY_ENB			=> global_enable,
 						
 						-- FETCH
+						BRANCH_DELAY_EN		=> BRANCH_DELAY_EN,
 						PC					=> PC,
 						ICACHE_INSTR		=> ICACHE_INSTR,
 						FETCHED_INSTR		=> fetched_instr_s,
@@ -413,6 +421,7 @@ begin
 						PC_OFFSET_SEL		=> pc_offset_sel_s,
 						SIGNED_EXT			=> signed_ext_s,
 						LHI_EXT				=> lhi_ext_s,
+						STORE_R2_EN			=> load_r2_en_s,
 						OPCODE				=> opcode_s,
 						X2D_FORWARD_S1_EN	=> x2d_forward_s1_en_s,
 						M2D_FORWARD_S1_EN	=> m2d_forward_s1_en_s,

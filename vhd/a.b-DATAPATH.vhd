@@ -13,12 +13,13 @@ entity DATAPATH is
 		MEMORY_ENB			: in	std_logic;
 		
 		-- FETCH
+		BRANCH_DELAY_EN		: in	std_logic;
 		PC					: out	DLX_addr_t;
 		ICACHE_INSTR		: in	DLX_instr_t;
 		FETCHED_INSTR		: out	DLX_instr_t;
 		
 		-- DECODE
-		PC_OUT_EN				: in	std_logic;
+		PC_OUT_EN			: in	std_logic;
 		HEAP_ADDR			: in	DLX_addr_t;
 		RF_SWP				: out	DLX_addr_t;
 		MBUS				: inout	DLX_addr_t;
@@ -35,6 +36,7 @@ entity DATAPATH is
 		PC_OFFSET_SEL		: in	std_logic;
 		SIGNED_EXT			: in	std_logic;
 		LHI_EXT				: in	std_logic;
+		STORE_R2_EN			: in	std_logic;
 		OPCODE				: in	opcode_t;
 		X2D_FORWARD_S1_EN	: in	std_logic;
 		M2D_FORWARD_S1_EN	: in	std_logic;
@@ -81,6 +83,7 @@ architecture structural of DATAPATH is
 			CLK				: in	std_logic;
 			RST				: in	std_logic;
 			ENB				: in	std_logic;
+			BRANCH_DELAY_EN	: in	std_logic;
 			INSTR			: in	DLX_instr_t;
 			FOUT			: out	DLX_instr_t;
 			PC				: out	DLX_addr_t;
@@ -119,6 +122,7 @@ architecture structural of DATAPATH is
 			PC_OFFSET_SEL	: in	std_logic;
 			SIGNED_EXT		: in	std_logic;
 			LHI_EXT			: in	std_logic;
+			STORE_R2_EN		: in	std_logic;
 			OPCODE			: in	opcode_t;
 			-- Datapath signals
 			FORWARD_R1_EN	: in	std_logic;
@@ -205,7 +209,21 @@ architecture structural of DATAPATH is
 		);
 	end component;
 	
+	component REG_N_INIT
+		generic (N : natural);
+		port (
+			CLK		: in	std_logic;
+			RST		: in	std_logic;
+			ENB		: in	std_logic;
+			INIT	: in	std_logic_vector(N-1 downto 0);
+			DIN		: in	std_logic_vector(N-1 downto 0);
+			DOUT	: out	std_logic_vector(N-1 downto 0)
+		);
+	end component;
+	
 	-- SIGNALS
+	constant NOP_INSTR				: DLX_instr_t := NOP & "00000000000000000000000000";
+	
 	signal fet_fout					: DLX_instr_t;
 	signal fet_pc					: DLX_addr_t;
 	signal fet_pc_inc				: DLX_addr_t;
@@ -257,12 +275,13 @@ begin
 	fet_branch_addr_sel	<= dec_branch_taken_pipe;
 	fet_branch_addr		<= exe_ex_out;
 	PC					<= fet_pc;
-	FETCHED_INSTR		<= fet_fout;
+	FETCHED_INSTR		<= fet_fout_pipe;
 	
 	FET_STAGE: FETCH		port map (
 								CLK				=> CLK,
 								RST				=> RST,
 								ENB				=> FETCH_ENB,
+								BRANCH_DELAY_EN	=> BRANCH_DELAY_EN,
 								INSTR			=> ICACHE_INSTR,
 								FOUT			=> fet_fout,
 								PC				=> fet_pc,
@@ -274,8 +293,8 @@ begin
 							);
 	
 	-- Pipeline stage
-	FET_FOUT_PIPELINE:	REG_N	generic map (DLX_INSTRUCTION_SIZE) port map (CLK, RST, FETCH_ENB, fet_fout, fet_fout_pipe);
-	FET_PC_PIPELINE:	REG_N	generic map (DLX_ADDR_SIZE)        port map (CLK, RST, FETCH_ENB, fet_pc_inc, fet_pc_pipe);
+	FET_FOUT_PIPELINE:	REG_N_INIT	generic map (DLX_INSTRUCTION_SIZE) port map (CLK, RST, FETCH_ENB, NOP_INSTR, fet_fout, fet_fout_pipe);
+	FET_PC_PIPELINE:	REG_N		generic map (DLX_ADDR_SIZE)        port map (CLK, RST, FETCH_ENB, fet_pc_inc, fet_pc_pipe);
 		
 		
 	-- DECODE
@@ -320,6 +339,7 @@ begin
 								PC_OFFSET_SEL	=> PC_OFFSET_SEL,
 								SIGNED_EXT		=> SIGNED_EXT,
 								LHI_EXT			=> LHI_EXT,
+								STORE_R2_EN		=> STORE_R2_EN,
 								OPCODE			=> OPCODE,
 								-- Datapath signals
 								FORWARD_R1_EN	=> dec_forward_r1_en,

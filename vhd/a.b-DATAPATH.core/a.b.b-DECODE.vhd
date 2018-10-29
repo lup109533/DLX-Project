@@ -32,6 +32,7 @@ entity DECODE is
 		PC_OFFSET_SEL	: in	std_logic;
 		SIGNED_EXT		: in	std_logic;
 		LHI_EXT			: in	std_logic;
+		STORE_R2_EN		: in	std_logic;
 		OPCODE			: in	opcode_t;
 		-- Datapath signals
 		FORWARD_R1_EN	: in	std_logic;
@@ -95,6 +96,7 @@ architecture behavioral of DECODE is
 
 	-- SIGNALS
 	signal reg_a_s			: DLX_oper_t;
+	signal reg_b_s			: DLX_oper_t;
 	signal RF_dout1_s		: DLX_oper_t;
 	signal RF_dout2_s		: DLX_oper_t;
 	signal is_zero_s		: std_logic;
@@ -143,6 +145,7 @@ begin
 	BRANCH_TAKEN	<= branch_taken_s;
 	branch_taken_s	<= '1' when (is_zero_s = '1' and (OPCODE = BEQZ or OPCODE = BFPF))       else -- when conditional branch matches
 					   '1' when (is_zero_s = '0' and (OPCODE = BNEZ or OPCODE = BFPT))       else -- **
+					   '1' when (OPCODE = CALL or OPCODE = RET or OPCODE = LINK)             else -- when context switch is performed
 					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) else -- when operation is unconditional branch
 					   '1' when (OPCODE = TRAP or OPCODE = RFE)                              else -- when exception call/return
 					   '0';
@@ -167,9 +170,13 @@ begin
 			   
 	REG_B	<= ext_imm_s      when (IMM_SEL = '1')        else -- Select immediate value if I-type
 			   pc_offset_s    when (PC_OFFSET_SEL = '1')  else -- Select PC offset if J-type
-			   FORWARD_VALUE2 when (FORWARD_R2_EN = '1')  else -- Receive value from further down the pipeline
+			   reg_b_s;	
+			   
+	reg_b_s	<= FORWARD_VALUE2 when (FORWARD_R2_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout2_s;
 			   
-	REG_C	<= RF_dout1_s when (PC_OUT_EN = '0') else PC;
+	REG_C	<= PC		when (PC_OUT_EN = '1')   else
+			   reg_b_s	when (STORE_R2_EN = '1') else
+			   reg_a_s;
 
 end architecture;

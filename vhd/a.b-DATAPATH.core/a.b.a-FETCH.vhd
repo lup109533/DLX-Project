@@ -8,6 +8,7 @@ entity FETCH is
 		CLK				: in	std_logic;
 		RST				: in	std_logic;
 		ENB				: in	std_logic;
+		BRANCH_DELAY_EN	: in	std_logic;
 		INSTR			: in	DLX_instr_t;
 		FOUT			: out	DLX_instr_t;
 		PC				: out	DLX_addr_t;
@@ -40,6 +41,7 @@ architecture behavioral of FETCH is
 	signal next_pc			: DLX_addr_t;
 	signal instr_offset		: DLX_addr_t;
 	signal pc_add_out		: DLX_addr_t;
+	signal push_nop_s		: DLX_instr_t;
 
 begin
 	
@@ -64,7 +66,8 @@ begin
 	PC		<= curr_pc;
 	PC_INC	<= pc_add_out;
 	
-	-- Forward instruction, or push bubble (NOP) if branch
-	FOUT <= INSTR when (BRANCH_TAKEN = '0') else NOP & INSTR((DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto 0);
+	-- Forward instruction, or push bubble (NOP) if branch, unless branch delay slot is enabled
+	FOUT		<= push_nop_s when (BRANCH_TAKEN = '1' and BRANCH_DELAY_EN = '0') else INSTR;
+	push_nop_s	<= NOP & INSTR((DLX_INSTRUCTION_SIZE - OPCODE_SIZE)-1 downto 0);
 
 end architecture;

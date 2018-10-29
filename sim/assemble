@@ -1,0 +1,6 @@
+ASSEMBLER=../asm_files/assembler.bin/dlxasm.pl
+ASM_SOURCE=../asm_files/asm_src
+
+perl $ASSEMBLER $ASM_SOURCE/$1.asm
+rm $ASM_SOURCE/$1.asm.exe.hdr
+mv $ASM_SOURCE/$1.asm.exe ./program.bin

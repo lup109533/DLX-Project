@@ -18,6 +18,8 @@ architecture test of TB_DLX is
 			CLK					: in	std_logic;
 			RST					: in	std_logic;
 			ENB					: in	std_logic;
+			-- Branch delay slot toggle
+			BRANCH_DELAY_EN		: in	std_logic;
 			-- ICACHE interface
 			PC					: out	DLX_addr_t;
 			ICACHE_INSTR		: in	DLX_instr_t;
@@ -40,6 +42,8 @@ architecture test of TB_DLX is
 	signal CLK_s				: std_logic;
 	signal RST_s				: std_logic;
 	signal ENB_s				: std_logic;
+	
+	signal BRANCH_DELAY_EN_s	: std_logic := '0';
 	
 	signal PC_s					: DLX_addr_t;
 	signal INSTR_s				: DLX_instr_t;
@@ -66,6 +70,7 @@ architecture test of TB_DLX is
 	subtype byte is std_logic_vector(7 downto 0);
 	type memory_t is array (0 to MEMORY_SIZE-1) of byte;
 	signal memory_s			: memory_t;
+	signal addr : integer range 0 to MEMORY_SIZE-1 := 0;
 	
 	type char_file_t is file of character;
 	file program_file	: char_file_t open read_mode is "program.bin";
@@ -77,6 +82,8 @@ begin
 					CLK_s,
 					RST_s,
 					ENB_s,
+					-- Branch delay slot toggle
+					BRANCH_DELAY_EN_s,
 					-- ICACHE interface
 					PC_s,
 					INSTR_s,
@@ -144,34 +151,31 @@ begin
 		end if;
 	end process;
 	cache_addr	<= to_integer(unsigned(PC_s))/4;
-	INSTR_s		<= icache_s(cache_addr);
+	INSTR_s		<= icache_s(cache_addr) when (RST_s = '1') else NOP & "00000000000000000000000000";
 	
 	memory_proc: process (CLK_s, RST_s) is
-		variable addr	: integer;
 	begin
 		if (RST_s = '0') then
 			for i in 0 to MEMORY_SIZE-1 loop
 				memory_s(i)	<= std_logic_vector(to_unsigned(i, 8));
 			end loop;
 		elsif (rising_edge(CLK_s) and EXT_MEM_ENABLE_s = '1') then
-			addr := to_integer(unsigned(EXT_MEM_ADDR_s));
-			if (addr > MEMORY_SIZE-1) then
-				addr := abs(addr mod MEMORY_SIZE-1);
-			end if;
-			if (EXT_MEM_RD_s = '1') then
-				EXT_MEM_DOUT_s(31 downto 24)	<= memory_s(addr);
-				EXT_MEM_DOUT_s(23 downto 16)	<= memory_s(addr+1);
-				EXT_MEM_DOUT_s(15 downto  8)	<= memory_s(addr+2);
-				EXT_MEM_DOUT_s( 7 downto  0)	<= memory_s(addr+3);
-			elsif (EXT_MEM_WR_s = '1') then
+			if (EXT_MEM_WR_s = '1') then
 				memory_s(addr)		<= EXT_MEM_DIN_s(31 downto 24);
 				memory_s(addr+1)	<= EXT_MEM_DIN_s(23 downto 16);
 				memory_s(addr+2)	<= EXT_MEM_DIN_s(15 downto  8);
 				memory_s(addr+3)	<= EXT_MEM_DIN_s( 7 downto  0);
 			end if;
-		else
-			EXT_MEM_DOUT_s		<= (others => 'Z');
 		end if;
+	end process;
+	
+	get_addr: process (EXT_MEM_ADDR_s) is
+	begin
+		addr <= abs(to_integer(unsigned(EXT_MEM_ADDR_s)) mod MEMORY_SIZE-1);
+		EXT_MEM_DOUT_s(31 downto 24)	<= memory_s(addr);
+		EXT_MEM_DOUT_s(23 downto 16)	<= memory_s(addr+1);
+		EXT_MEM_DOUT_s(15 downto  8)	<= memory_s(addr+2);
+		EXT_MEM_DOUT_s( 7 downto  0)	<= memory_s(addr+3);
 	end process;
 
 end architecture;

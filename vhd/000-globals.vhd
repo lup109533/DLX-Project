@@ -135,7 +135,7 @@ package DLX_globals is
 	constant SGTI		: opcode_t	:= std_logic_vector(to_unsigned(16#1B#, OPCODE_SIZE));
 	constant SLEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1C#, OPCODE_SIZE));
 	constant SGEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1D#, OPCODE_SIZE));
-	constant RET		: opcode_t	:= std_logic_vector(to_unsigned(16#1E#, OPCODE_SIZE));
+	constant LINK		: opcode_t	:= std_logic_vector(to_unsigned(16#1E#, OPCODE_SIZE));
 	constant LB			: opcode_t	:= std_logic_vector(to_unsigned(16#20#, OPCODE_SIZE));
 	constant LH			: opcode_t	:= std_logic_vector(to_unsigned(16#21#, OPCODE_SIZE));
 	constant LW			: opcode_t	:= std_logic_vector(to_unsigned(16#23#, OPCODE_SIZE));
@@ -153,12 +153,14 @@ package DLX_globals is
 	constant SGTUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3B#, OPCODE_SIZE));
 	constant SLEUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3C#, OPCODE_SIZE));
 	constant SGEUI		: opcode_t	:= std_logic_vector(to_unsigned(16#3D#, OPCODE_SIZE));
-	constant NANDI		: opcode_t	:= std_logic_vector(to_unsigned(16#40#, OPCODE_SIZE));
-	constant NORI		: opcode_t	:= std_logic_vector(to_unsigned(16#41#, OPCODE_SIZE));
-	constant XNORI		: opcode_t	:= std_logic_vector(to_unsigned(16#42#, OPCODE_SIZE));
-	constant NOTI		: opcode_t	:= std_logic_vector(to_unsigned(16#43#, OPCODE_SIZE));
-	constant ANDNI		: opcode_t	:= std_logic_vector(to_unsigned(16#44#, OPCODE_SIZE));
-	constant ORNI		: opcode_t	:= std_logic_vector(to_unsigned(16#45#, OPCODE_SIZE));
+	constant NANDI		: opcode_t	:= std_logic_vector(to_unsigned(16#30#, OPCODE_SIZE));
+	constant NORI		: opcode_t	:= std_logic_vector(to_unsigned(16#31#, OPCODE_SIZE));
+	constant XNORI		: opcode_t	:= std_logic_vector(to_unsigned(16#32#, OPCODE_SIZE));
+	constant NOTI		: opcode_t	:= std_logic_vector(to_unsigned(16#33#, OPCODE_SIZE));
+	constant ANDNI		: opcode_t	:= std_logic_vector(to_unsigned(16#34#, OPCODE_SIZE));
+	constant ORNI		: opcode_t	:= std_logic_vector(to_unsigned(16#35#, OPCODE_SIZE));
+	constant CALL		: opcode_t	:= std_logic_vector(to_unsigned(16#36#, OPCODE_SIZE));
+	constant RET		: opcode_t	:= std_logic_vector(to_unsigned(16#37#, OPCODE_SIZE));
 
 	-- DLX ALU FUNCTIONS
 	constant SHLL		: func_t	:= std_logic_vector(to_unsigned(16#04#, ALU_FUNCTION_SIZE));	-- Disambiguation from VHDL keyword SLL
