@@ -149,7 +149,7 @@ begin
 	res_out		<= sign_out & exp_out & mant_out;
 	
 	-- Check exceptions
-	out_is_zero	<= not(or_reduce(mant_out));
+	out_is_zero	<= not(or_reduce(mant_out)) and not(or_reduce(exp_out));
 	out_is_inf	<= and_reduce(exp_out) or (is_inf1 xor is_inf2) or (is_inf1 and is_inf2 and (sign1_s xnor sign2_s));
 	out_is_nan	<= (is_inf1 and is_inf2 and (sign1_s xor sign2_s)) or (is_nan1 or is_nan2);
 	

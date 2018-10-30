@@ -161,7 +161,7 @@ begin
 	
 	-- Pass immediate argument from instruction.
 	IMM_ARG			<= (others => '0')                                         when (opcode_s = RET)  else
-					   std_logic_vector(shift_left(unsigned(immediate_s),2)+4) when (opcode_s = TRAP) else
+					   std_logic_vector(shift_left(unsigned(immediate_s),2)) when (opcode_s = TRAP) else
 					   immediate_s;
 	
 	-- Enable immediate only for I-TYPE instructions.
