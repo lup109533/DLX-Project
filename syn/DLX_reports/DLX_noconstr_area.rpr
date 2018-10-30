@@ -1,0 +1,26 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'DLX' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : area
+Design : DLX
+Version: Z-2007.03-SP1
+Date   : Tue Oct 30 11:25:09 2018
+****************************************
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/mariagrazia.graziano/do/libnangate/NangateOpenCellLibrary_typical_ecsm.db)
+
+Number of ports:              266
+Number of nets:               455
+Number of cells:               38
+Number of references:          37
+
+Combinational area:       33756.729986
+Noncombinational area:    23810.990641
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:          57567.718750
+Total area:                 undefined
+1

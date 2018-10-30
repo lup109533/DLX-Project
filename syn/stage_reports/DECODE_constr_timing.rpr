@@ -1,0 +1,450 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'DECODE' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : DECODE
+Version: Z-2007.03-SP1
+Date   : Tue Oct 30 12:04:25 2018
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[22] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U674/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[22] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[23] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U672/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[23] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[24] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U670/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[24] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[25] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U668/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[25] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[26] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U666/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[26] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[27] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U664/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[27] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[28] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U662/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[28] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[29] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U660/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[29] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[30] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U656/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[30] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: RF/state_reg[1]
+              (rising edge-triggered flip-flop)
+  Endpoint: REG_A[31] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
+  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
+  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
+  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
+  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
+  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
+  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
+  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
+  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
+  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
+  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
+  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
+  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
+  U695/Z (MUX2_X1)                                        0.08       1.30 f
+  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
+  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
+  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
+  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
+  U714/Z (XOR2_X1)                                        0.07       1.56 r
+  U713/Z (MUX2_X1)                                        0.05       1.61 r
+  U709/ZN (AOI21_X1)                                      0.03       1.64 f
+  U705/ZN (OAI33_X1)                                      0.06       1.70 r
+  U389/ZN (AND2_X2)                                       0.16       1.85 r
+  U654/Z (MUX2_X1)                                        0.10       1.95 f
+  REG_A[31] (out)                                         0.00       1.96 f
+  data arrival time                                                  1.96
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+1

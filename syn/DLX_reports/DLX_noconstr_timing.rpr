@@ -1,0 +1,358 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : DLX
+Version: Z-2007.03-SP1
+Date   : Tue Oct 30 11:25:09 2018
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[22] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U6912/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U6911/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U6906/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U6887/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U6850/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[22]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[22] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[22] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[22] (DATAPATH)                                 0.00       0.84 f
+  MBUS[22] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[23] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U6986/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U6985/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U6980/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U6961/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U6924/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[23]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[23] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[23] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[23] (DATAPATH)                                 0.00       0.84 f
+  MBUS[23] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[24] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7060/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7059/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7054/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7035/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U6998/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[24]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[24] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[24] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[24] (DATAPATH)                                 0.00       0.84 f
+  MBUS[24] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[25] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7134/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7133/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7128/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7109/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7072/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[25]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[25] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[25] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[25] (DATAPATH)                                 0.00       0.84 f
+  MBUS[25] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[26] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7208/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7207/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7202/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7183/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7146/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[26]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[26] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[26] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[26] (DATAPATH)                                 0.00       0.84 f
+  MBUS[26] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[27] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7282/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7281/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7276/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7257/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7220/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[27]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[27] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[27] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[27] (DATAPATH)                                 0.00       0.84 f
+  MBUS[27] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[28] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7356/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7355/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7350/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7331/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7294/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[28]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[28] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[28] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[28] (DATAPATH)                                 0.00       0.84 f
+  MBUS[28] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[29] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7430/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7429/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7424/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7405/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7368/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[29]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[29] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[29] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[29] (DATAPATH)                                 0.00       0.84 f
+  MBUS[29] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[30] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7504/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7503/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7498/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7479/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7442/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[30]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[30] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[30] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[30] (DATAPATH)                                 0.00       0.84 f
+  MBUS[30] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]
+              (rising edge-triggered flip-flop)
+  Endpoint: MBUS[31] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/CK (DFFR_X1)
+                                                          0.00 #     0.00 r
+  DP0/DEC_STAGE/RF/spill_fill_counter_reg[6]/Q (DFFR_X1)
+                                                          0.18       0.18 r
+  DP0/DEC_STAGE/RF/U250/ZN (NOR3_X4)                      0.11       0.29 f
+  DP0/DEC_STAGE/RF/U248/ZN (NAND2_X2)                     0.16       0.45 r
+  DP0/DEC_STAGE/RF/U7592/ZN (OAI22_X1)                    0.07       0.52 f
+  DP0/DEC_STAGE/RF/U7591/ZN (AOI221_X1)                   0.09       0.61 r
+  DP0/DEC_STAGE/RF/U7586/ZN (NAND4_X1)                    0.05       0.66 f
+  DP0/DEC_STAGE/RF/U7563/ZN (NOR4_X1)                     0.08       0.75 r
+  DP0/DEC_STAGE/RF/U7516/ZN (NAND2_X1)                    0.03       0.78 f
+  DP0/DEC_STAGE/RF/MBUS_tri[31]/Z (TBUF_X1)               0.06       0.84 f
+  DP0/DEC_STAGE/RF/MBUS[31] (REGISTER_FILE_1_32_32_4_32)
+                                                          0.00       0.84 f
+  DP0/DEC_STAGE/MBUS[31] (DECODE)                         0.00       0.84 f
+  DP0/MBUS[31] (DATAPATH)                                 0.00       0.84 f
+  MBUS[31] (inout)                                        0.00       0.84 f
+  data arrival time                                                  0.84
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+1

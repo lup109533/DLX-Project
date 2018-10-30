@@ -1,0 +1,366 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : CU
+Version: Z-2007.03-SP1
+Date   : Tue Oct 30 12:02:09 2018
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: INSTR[9] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[9] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.47 f
+  U607/ZN (NAND4_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.56 r
+  U528/ZN (AND2_X1)                        0.07       0.62 r
+  U422/ZN (XNOR2_X1)                       0.05       0.67 f
+  U421/ZN (NOR2_X1)                        0.04       0.71 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.85 f
+  U417/ZN (NOR4_X1)                        0.09       0.94 r
+  STALL (out)                              0.00       0.94 r
+  data arrival time                                   0.94
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[6] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 r
+  INSTR[6] (in)                            0.00       0.00 r
+  U665/ZN (INV_X1)                         0.03       0.03 f
+  U663/ZN (NAND2_X1)                       0.04       0.07 r
+  U662/ZN (INV_X1)                         0.03       0.10 f
+  U661/ZN (NAND3_X1)                       0.04       0.14 r
+  U660/ZN (INV_X1)                         0.03       0.17 f
+  U659/ZN (NAND2_X1)                       0.04       0.22 r
+  U603/ZN (INV_X1)                         0.03       0.24 f
+  U602/ZN (NOR3_X1)                        0.06       0.30 r
+  U601/ZN (AND3_X1)                        0.06       0.36 r
+  U595/ZN (NAND3_X1)                       0.04       0.40 f
+  U531/ZN (OR4_X1)                         0.14       0.54 f
+  U528/ZN (AND2_X1)                        0.06       0.60 f
+  U422/ZN (XNOR2_X1)                       0.07       0.67 f
+  U421/ZN (NOR2_X1)                        0.04       0.71 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.85 f
+  U417/ZN (NOR4_X1)                        0.09       0.94 r
+  STALL (out)                              0.00       0.94 r
+  data arrival time                                   0.94
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[8] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[8] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.46 f
+  U607/ZN (NAND4_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.55 r
+  U528/ZN (AND2_X1)                        0.07       0.62 r
+  U422/ZN (XNOR2_X1)                       0.05       0.66 f
+  U421/ZN (NOR2_X1)                        0.04       0.71 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.94 r
+  STALL (out)                              0.00       0.94 r
+  data arrival time                                   0.94
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[9] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[9] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.47 f
+  U607/ZN (NAND4_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.56 r
+  U520/ZN (AND2_X1)                        0.07       0.62 r
+  U423/ZN (XNOR2_X1)                       0.05       0.67 f
+  U421/ZN (NOR2_X1)                        0.04       0.71 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.94 r
+  data arrival time                                   0.94
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[9] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[9] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.47 f
+  U635/ZN (NAND3_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.55 r
+  U528/ZN (AND2_X1)                        0.07       0.62 r
+  U422/ZN (XNOR2_X1)                       0.05       0.66 f
+  U421/ZN (NOR2_X1)                        0.04       0.71 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.94 r
+  data arrival time                                   0.94
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[6] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 r
+  INSTR[6] (in)                            0.00       0.00 r
+  U665/ZN (INV_X1)                         0.03       0.03 f
+  U663/ZN (NAND2_X1)                       0.04       0.07 r
+  U662/ZN (INV_X1)                         0.03       0.10 f
+  U661/ZN (NAND3_X1)                       0.04       0.14 r
+  U660/ZN (INV_X1)                         0.03       0.17 f
+  U659/ZN (NAND2_X1)                       0.04       0.22 r
+  U603/ZN (INV_X1)                         0.03       0.24 f
+  U602/ZN (NOR3_X1)                        0.06       0.30 r
+  U601/ZN (AND3_X1)                        0.06       0.36 r
+  U595/ZN (NAND3_X1)                       0.04       0.40 f
+  U531/ZN (OR4_X1)                         0.14       0.54 f
+  U520/ZN (AND2_X1)                        0.06       0.60 f
+  U423/ZN (XNOR2_X1)                       0.07       0.67 f
+  U421/ZN (NOR2_X1)                        0.04       0.71 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.94 r
+  data arrival time                                   0.94
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[8] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[8] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.46 f
+  U607/ZN (NAND4_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.55 r
+  U520/ZN (AND2_X1)                        0.07       0.62 r
+  U423/ZN (XNOR2_X1)                       0.05       0.67 f
+  U421/ZN (NOR2_X1)                        0.04       0.70 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.93 r
+  data arrival time                                   0.93
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[8] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[8] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.46 f
+  U635/ZN (NAND3_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.55 r
+  U528/ZN (AND2_X1)                        0.07       0.62 r
+  U422/ZN (XNOR2_X1)                       0.05       0.66 f
+  U421/ZN (NOR2_X1)                        0.04       0.70 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.93 r
+  data arrival time                                   0.93
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[9] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  INSTR[9] (in)                            0.00       0.00 f
+  U671/ZN (NOR4_X1)                        0.13       0.13 r
+  U670/ZN (INV_X1)                         0.05       0.18 f
+  U650/ZN (NOR4_X1)                        0.14       0.32 r
+  U649/ZN (NAND2_X1)                       0.03       0.35 f
+  U648/Z (MUX2_X1)                         0.07       0.42 f
+  U647/ZN (AND3_X1)                        0.05       0.47 f
+  U635/ZN (NAND3_X1)                       0.03       0.50 r
+  U531/ZN (OR4_X1)                         0.05       0.55 r
+  U520/ZN (AND2_X1)                        0.07       0.62 r
+  U423/ZN (XNOR2_X1)                       0.05       0.67 f
+  U421/ZN (NOR2_X1)                        0.04       0.70 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.93 r
+  data arrival time                                   0.93
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: INSTR[4] (input port)
+  Endpoint: STALL (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CU                 5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 r
+  INSTR[4] (in)                            0.00       0.00 r
+  U664/ZN (INV_X1)                         0.03       0.03 f
+  U663/ZN (NAND2_X1)                       0.04       0.07 r
+  U662/ZN (INV_X1)                         0.03       0.10 f
+  U661/ZN (NAND3_X1)                       0.04       0.14 r
+  U660/ZN (INV_X1)                         0.03       0.17 f
+  U659/ZN (NAND2_X1)                       0.04       0.21 r
+  U603/ZN (INV_X1)                         0.03       0.23 f
+  U602/ZN (NOR3_X1)                        0.06       0.29 r
+  U601/ZN (AND3_X1)                        0.06       0.35 r
+  U595/ZN (NAND3_X1)                       0.04       0.39 f
+  U531/ZN (OR4_X1)                         0.14       0.53 f
+  U528/ZN (AND2_X1)                        0.06       0.60 f
+  U422/ZN (XNOR2_X1)                       0.07       0.66 f
+  U421/ZN (NOR2_X1)                        0.04       0.70 r
+  U420/ZN (NAND4_X1)                       0.05       0.76 f
+  U419/ZN (OAI22_X1)                       0.06       0.82 r
+  U418/ZN (INV_X1)                         0.02       0.84 f
+  U417/ZN (NOR4_X1)                        0.09       0.93 r
+  STALL (out)                              0.00       0.93 r
+  data arrival time                                   0.93
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+1

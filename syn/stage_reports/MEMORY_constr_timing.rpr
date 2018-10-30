@@ -1,0 +1,277 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : MEMORY
+Version: Z-2007.03-SP1
+Date   : Tue Oct 30 12:06:03 2018
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[22]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U191/ZN (AOI22_X1)                       0.05       0.44 f
+  U190/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[22] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[23]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U189/ZN (AOI22_X1)                       0.05       0.44 f
+  U188/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[23] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[24]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U187/ZN (AOI22_X1)                       0.05       0.44 f
+  U186/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[24] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[25]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U185/ZN (AOI22_X1)                       0.05       0.44 f
+  U184/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[25] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[26]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U183/ZN (AOI22_X1)                       0.05       0.44 f
+  U182/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[26] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[27]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U181/ZN (AOI22_X1)                       0.05       0.44 f
+  U180/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[27] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[28]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U179/ZN (AOI22_X1)                       0.05       0.44 f
+  U178/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[28] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[29]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U177/ZN (AOI22_X1)                       0.05       0.44 f
+  U176/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[29] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[30]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U174/ZN (AOI22_X1)                       0.05       0.44 f
+  U173/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[30] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: MEM_HALFWORD
+              (input port)
+  Endpoint: MEM_OUT[31]
+            (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  MEMORY             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  MEM_HALFWORD (in)                        0.00       0.00 f
+  U291/ZN (INV_X1)                         0.07       0.07 r
+  U290/ZN (NAND2_X1)                       0.14       0.20 f
+  U161/ZN (NOR2_X2)                        0.19       0.39 r
+  U172/ZN (AOI22_X1)                       0.05       0.44 f
+  U171/ZN (NAND2_X1)                       0.03       0.47 r
+  MEM_OUT[31] (out)                        0.00       0.47 r
+  data arrival time                                   0.47
+  -----------------------------------------------------------
+  (Path is unconstrained)
+
+
+1

@@ -1,0 +1,8 @@
+add wave sim:/tb_dlx/*
+add wave sim:/tb_dlx/UUT/CU0/*
+add wave sim:/tb_dlx/UUT/DP0/FET_STAGE/*
+add wave sim:/tb_dlx/UUT/DP0/DEC_STAGE/*
+add wave sim:/tb_dlx/UUT/DP0/DEC_STAGE/RF/memory
+add wave sim:/tb_dlx/UUT/DP0/EXE_STAGE/*
+add wave sim:/tb_dlx/UUT/DP0/MEM_STAGE/*
+add wave sim:/tb_dlx/UUT/DP0/WRB_STAGE/*

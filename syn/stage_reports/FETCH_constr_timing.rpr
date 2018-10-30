@@ -1,0 +1,947 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : FETCH
+Version: Z-2007.03-SP1
+Date   : Tue Oct 30 12:02:20 2018
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: curr_pc_reg[0]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[23] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[0]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[0]/Q (DFFR_X1)                              0.10       0.10 f
+  PC_ADD/A[0] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.10 f
+  PC_ADD/sparse_tree/A[0] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.10 f
+  PC_ADD/sparse_tree/U126/ZN (OAI21_X1)                   0.05       0.14 r
+  PC_ADD/sparse_tree/U125/ZN (OAI21_X1)                   0.03       0.18 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/G_km1j (G_BLOCK_32)
+                                                          0.00       0.18 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.22 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/U1/ZN (INV_X1)
+                                                          0.02       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/G_ij (G_BLOCK_32)
+                                                          0.00       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_km1j (G_BLOCK_40)
+                                                          0.00       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.04       0.29 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.32 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.32 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.32 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.37 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.45 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/G_km1j (G_BLOCK_36)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/U2/ZN (AOI21_X1)
+                                                          0.05       0.55 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/U1/ZN (INV_X1)
+                                                          0.03       0.57 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/G_ij (G_BLOCK_36)
+                                                          0.00       0.57 f
+  PC_ADD/sparse_tree/CARRY[4] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.57 f
+  PC_ADD/rca_i_5/CIN (RCA_OPERAND_SIZE4_31)               0.00       0.57 f
+  PC_ADD/rca_i_5/fa_i_0/CIN (FA_796)                      0.00       0.57 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/B (HA_1591)                   0.00       0.57 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.61 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/C (HA_1591)                   0.00       0.61 f
+  PC_ADD/rca_i_5/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.67 f
+  PC_ADD/rca_i_5/fa_i_0/C (FA_796)                        0.00       0.67 f
+  PC_ADD/rca_i_5/fa_i_1/CIN (FA_795)                      0.00       0.67 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/B (HA_1589)                   0.00       0.67 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.71 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/C (HA_1589)                   0.00       0.71 f
+  PC_ADD/rca_i_5/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.77 f
+  PC_ADD/rca_i_5/fa_i_1/C (FA_795)                        0.00       0.77 f
+  PC_ADD/rca_i_5/fa_i_2/CIN (FA_794)                      0.00       0.77 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/B (HA_1587)                   0.00       0.77 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.81 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/C (HA_1587)                   0.00       0.81 f
+  PC_ADD/rca_i_5/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.87 f
+  PC_ADD/rca_i_5/fa_i_2/C (FA_794)                        0.00       0.87 f
+  PC_ADD/rca_i_5/fa_i_3/CIN (FA_793)                      0.00       0.87 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/B (HA_1585)                   0.00       0.87 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.94 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/S (HA_1585)                   0.00       0.94 f
+  PC_ADD/rca_i_5/fa_i_3/S (FA_793)                        0.00       0.94 f
+  PC_ADD/rca_i_5/S[3] (RCA_OPERAND_SIZE4_31)              0.00       0.94 f
+  PC_ADD/O[23] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.94 f
+  PC_INC[23] (out)                                        0.00       0.94 f
+  data arrival time                                                  0.94
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[0]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[27] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[0]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[0]/Q (DFFR_X1)                              0.10       0.10 f
+  PC_ADD/A[0] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.10 f
+  PC_ADD/sparse_tree/A[0] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.10 f
+  PC_ADD/sparse_tree/U126/ZN (OAI21_X1)                   0.05       0.14 r
+  PC_ADD/sparse_tree/U125/ZN (OAI21_X1)                   0.03       0.18 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/G_km1j (G_BLOCK_32)
+                                                          0.00       0.18 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.22 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/U1/ZN (INV_X1)
+                                                          0.02       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/G_ij (G_BLOCK_32)
+                                                          0.00       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_km1j (G_BLOCK_40)
+                                                          0.00       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.04       0.29 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.32 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.32 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.32 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.37 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.45 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_km1j (G_BLOCK_35)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U2/ZN (AOI21_X1)
+                                                          0.05       0.55 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U1/ZN (INV_X1)
+                                                          0.03       0.57 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_ij (G_BLOCK_35)
+                                                          0.00       0.57 f
+  PC_ADD/sparse_tree/CARRY[5] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.57 f
+  PC_ADD/rca_i_6/CIN (RCA_OPERAND_SIZE4_30)               0.00       0.57 f
+  PC_ADD/rca_i_6/fa_i_0/CIN (FA_792)                      0.00       0.57 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/B (HA_1583)                   0.00       0.57 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.61 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/C (HA_1583)                   0.00       0.61 f
+  PC_ADD/rca_i_6/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.67 f
+  PC_ADD/rca_i_6/fa_i_0/C (FA_792)                        0.00       0.67 f
+  PC_ADD/rca_i_6/fa_i_1/CIN (FA_791)                      0.00       0.67 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/B (HA_1581)                   0.00       0.67 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.71 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/C (HA_1581)                   0.00       0.71 f
+  PC_ADD/rca_i_6/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.77 f
+  PC_ADD/rca_i_6/fa_i_1/C (FA_791)                        0.00       0.77 f
+  PC_ADD/rca_i_6/fa_i_2/CIN (FA_790)                      0.00       0.77 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/B (HA_1579)                   0.00       0.77 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.81 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/C (HA_1579)                   0.00       0.81 f
+  PC_ADD/rca_i_6/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.87 f
+  PC_ADD/rca_i_6/fa_i_2/C (FA_790)                        0.00       0.87 f
+  PC_ADD/rca_i_6/fa_i_3/CIN (FA_789)                      0.00       0.87 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/B (HA_1577)                   0.00       0.87 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.94 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/S (HA_1577)                   0.00       0.94 f
+  PC_ADD/rca_i_6/fa_i_3/S (FA_789)                        0.00       0.94 f
+  PC_ADD/rca_i_6/S[3] (RCA_OPERAND_SIZE4_30)              0.00       0.94 f
+  PC_ADD/O[27] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.94 f
+  PC_INC[27] (out)                                        0.00       0.94 f
+  data arrival time                                                  0.94
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[0]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[31] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[0]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[0]/Q (DFFR_X1)                              0.10       0.10 f
+  PC_ADD/A[0] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.10 f
+  PC_ADD/sparse_tree/A[0] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.10 f
+  PC_ADD/sparse_tree/U126/ZN (OAI21_X1)                   0.05       0.14 r
+  PC_ADD/sparse_tree/U125/ZN (OAI21_X1)                   0.03       0.18 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/G_km1j (G_BLOCK_32)
+                                                          0.00       0.18 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.22 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/U1/ZN (INV_X1)
+                                                          0.02       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_1_0/G_ij (G_BLOCK_32)
+                                                          0.00       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_km1j (G_BLOCK_40)
+                                                          0.00       0.25 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.04       0.29 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.32 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.32 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.32 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.37 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.45 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/G_km1j (G_BLOCK_34)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/U2/ZN (AOI21_X1)
+                                                          0.05       0.55 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/U1/ZN (INV_X1)
+                                                          0.03       0.57 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/G_ij (G_BLOCK_34)
+                                                          0.00       0.57 f
+  PC_ADD/sparse_tree/CARRY[6] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.57 f
+  PC_ADD/rca_i_7/CIN (RCA_OPERAND_SIZE4_29)               0.00       0.57 f
+  PC_ADD/rca_i_7/fa_i_0/CIN (FA_788)                      0.00       0.57 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/B (HA_1575)                   0.00       0.57 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.61 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/C (HA_1575)                   0.00       0.61 f
+  PC_ADD/rca_i_7/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.67 f
+  PC_ADD/rca_i_7/fa_i_0/C (FA_788)                        0.00       0.67 f
+  PC_ADD/rca_i_7/fa_i_1/CIN (FA_787)                      0.00       0.67 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/B (HA_1573)                   0.00       0.67 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.71 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/C (HA_1573)                   0.00       0.71 f
+  PC_ADD/rca_i_7/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.77 f
+  PC_ADD/rca_i_7/fa_i_1/C (FA_787)                        0.00       0.77 f
+  PC_ADD/rca_i_7/fa_i_2/CIN (FA_786)                      0.00       0.77 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/B (HA_1571)                   0.00       0.77 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.81 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/C (HA_1571)                   0.00       0.81 f
+  PC_ADD/rca_i_7/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.87 f
+  PC_ADD/rca_i_7/fa_i_2/C (FA_786)                        0.00       0.87 f
+  PC_ADD/rca_i_7/fa_i_3/CIN (FA_785)                      0.00       0.87 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/B (HA_1569)                   0.00       0.87 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.94 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/S (HA_1569)                   0.00       0.94 f
+  PC_ADD/rca_i_7/fa_i_3/S (FA_785)                        0.00       0.94 f
+  PC_ADD/rca_i_7/S[3] (RCA_OPERAND_SIZE4_29)              0.00       0.94 f
+  PC_ADD/O[31] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.94 f
+  PC_INC[31] (out)                                        0.00       0.94 f
+  data arrival time                                                  0.94
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[3]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[23] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[3]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[3]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[3] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[3] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U52/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U7/ZN (NAND2_X1)                     0.03       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/P_ik (PG_BLOCK_84)
+                                                          0.00       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ij (PG_BLOCK_84)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ik (G_BLOCK_40)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.31 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.45 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/G_km1j (G_BLOCK_36)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/U1/ZN (INV_X1)
+                                                          0.03       0.57 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/G_ij (G_BLOCK_36)
+                                                          0.00       0.57 f
+  PC_ADD/sparse_tree/CARRY[4] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.57 f
+  PC_ADD/rca_i_5/CIN (RCA_OPERAND_SIZE4_31)               0.00       0.57 f
+  PC_ADD/rca_i_5/fa_i_0/CIN (FA_796)                      0.00       0.57 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/B (HA_1591)                   0.00       0.57 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/C (HA_1591)                   0.00       0.60 f
+  PC_ADD/rca_i_5/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.67 f
+  PC_ADD/rca_i_5/fa_i_0/C (FA_796)                        0.00       0.67 f
+  PC_ADD/rca_i_5/fa_i_1/CIN (FA_795)                      0.00       0.67 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/B (HA_1589)                   0.00       0.67 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/C (HA_1589)                   0.00       0.70 f
+  PC_ADD/rca_i_5/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_5/fa_i_1/C (FA_795)                        0.00       0.76 f
+  PC_ADD/rca_i_5/fa_i_2/CIN (FA_794)                      0.00       0.76 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/B (HA_1587)                   0.00       0.76 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/C (HA_1587)                   0.00       0.80 f
+  PC_ADD/rca_i_5/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_5/fa_i_2/C (FA_794)                        0.00       0.86 f
+  PC_ADD/rca_i_5/fa_i_3/CIN (FA_793)                      0.00       0.86 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/B (HA_1585)                   0.00       0.86 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/S (HA_1585)                   0.00       0.93 f
+  PC_ADD/rca_i_5/fa_i_3/S (FA_793)                        0.00       0.93 f
+  PC_ADD/rca_i_5/S[3] (RCA_OPERAND_SIZE4_31)              0.00       0.93 f
+  PC_ADD/O[23] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[23] (out)                                        0.00       0.94 f
+  data arrival time                                                  0.94
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[3]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[27] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[3]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[3]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[3] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[3] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U52/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U7/ZN (NAND2_X1)                     0.03       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/P_ik (PG_BLOCK_84)
+                                                          0.00       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ij (PG_BLOCK_84)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ik (G_BLOCK_40)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.31 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.45 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_km1j (G_BLOCK_35)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U1/ZN (INV_X1)
+                                                          0.03       0.57 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_ij (G_BLOCK_35)
+                                                          0.00       0.57 f
+  PC_ADD/sparse_tree/CARRY[5] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.57 f
+  PC_ADD/rca_i_6/CIN (RCA_OPERAND_SIZE4_30)               0.00       0.57 f
+  PC_ADD/rca_i_6/fa_i_0/CIN (FA_792)                      0.00       0.57 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/B (HA_1583)                   0.00       0.57 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/C (HA_1583)                   0.00       0.60 f
+  PC_ADD/rca_i_6/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.67 f
+  PC_ADD/rca_i_6/fa_i_0/C (FA_792)                        0.00       0.67 f
+  PC_ADD/rca_i_6/fa_i_1/CIN (FA_791)                      0.00       0.67 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/B (HA_1581)                   0.00       0.67 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/C (HA_1581)                   0.00       0.70 f
+  PC_ADD/rca_i_6/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_6/fa_i_1/C (FA_791)                        0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/CIN (FA_790)                      0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/B (HA_1579)                   0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/C (HA_1579)                   0.00       0.80 f
+  PC_ADD/rca_i_6/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_6/fa_i_2/C (FA_790)                        0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/CIN (FA_789)                      0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/B (HA_1577)                   0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/S (HA_1577)                   0.00       0.93 f
+  PC_ADD/rca_i_6/fa_i_3/S (FA_789)                        0.00       0.93 f
+  PC_ADD/rca_i_6/S[3] (RCA_OPERAND_SIZE4_30)              0.00       0.93 f
+  PC_ADD/O[27] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[27] (out)                                        0.00       0.94 f
+  data arrival time                                                  0.94
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[3]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[31] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[3]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[3]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[3] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[3] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U52/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U7/ZN (NAND2_X1)                     0.03       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/P_ik (PG_BLOCK_84)
+                                                          0.00       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ij (PG_BLOCK_84)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ik (G_BLOCK_40)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.31 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.40 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.45 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/G_km1j (G_BLOCK_34)
+                                                          0.00       0.49 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/U1/ZN (INV_X1)
+                                                          0.03       0.57 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/G_ij (G_BLOCK_34)
+                                                          0.00       0.57 f
+  PC_ADD/sparse_tree/CARRY[6] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.57 f
+  PC_ADD/rca_i_7/CIN (RCA_OPERAND_SIZE4_29)               0.00       0.57 f
+  PC_ADD/rca_i_7/fa_i_0/CIN (FA_788)                      0.00       0.57 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/B (HA_1575)                   0.00       0.57 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/C (HA_1575)                   0.00       0.60 f
+  PC_ADD/rca_i_7/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.67 f
+  PC_ADD/rca_i_7/fa_i_0/C (FA_788)                        0.00       0.67 f
+  PC_ADD/rca_i_7/fa_i_1/CIN (FA_787)                      0.00       0.67 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/B (HA_1573)                   0.00       0.67 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/C (HA_1573)                   0.00       0.70 f
+  PC_ADD/rca_i_7/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_7/fa_i_1/C (FA_787)                        0.00       0.76 f
+  PC_ADD/rca_i_7/fa_i_2/CIN (FA_786)                      0.00       0.76 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/B (HA_1571)                   0.00       0.76 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/C (HA_1571)                   0.00       0.80 f
+  PC_ADD/rca_i_7/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_7/fa_i_2/C (FA_786)                        0.00       0.86 f
+  PC_ADD/rca_i_7/fa_i_3/CIN (FA_785)                      0.00       0.86 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/B (HA_1569)                   0.00       0.86 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/S (HA_1569)                   0.00       0.93 f
+  PC_ADD/rca_i_7/fa_i_3/S (FA_785)                        0.00       0.93 f
+  PC_ADD/rca_i_7/S[3] (RCA_OPERAND_SIZE4_29)              0.00       0.93 f
+  PC_ADD/O[31] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[31] (out)                                        0.00       0.94 f
+  data arrival time                                                  0.94
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[3]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[23] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[3]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[3]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[3] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[3] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U52/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U50/ZN (NOR2_X1)                     0.02       0.15 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ik (PG_BLOCK_84)
+                                                          0.00       0.15 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ij (PG_BLOCK_84)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ik (G_BLOCK_40)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.31 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.44 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/G_km1j (G_BLOCK_36)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/U1/ZN (INV_X1)
+                                                          0.03       0.56 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_4/G_ij (G_BLOCK_36)
+                                                          0.00       0.56 f
+  PC_ADD/sparse_tree/CARRY[4] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.56 f
+  PC_ADD/rca_i_5/CIN (RCA_OPERAND_SIZE4_31)               0.00       0.56 f
+  PC_ADD/rca_i_5/fa_i_0/CIN (FA_796)                      0.00       0.56 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/B (HA_1591)                   0.00       0.56 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_5/fa_i_0/ha1/C (HA_1591)                   0.00       0.60 f
+  PC_ADD/rca_i_5/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.66 f
+  PC_ADD/rca_i_5/fa_i_0/C (FA_796)                        0.00       0.66 f
+  PC_ADD/rca_i_5/fa_i_1/CIN (FA_795)                      0.00       0.66 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/B (HA_1589)                   0.00       0.66 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_5/fa_i_1/ha1/C (HA_1589)                   0.00       0.70 f
+  PC_ADD/rca_i_5/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_5/fa_i_1/C (FA_795)                        0.00       0.76 f
+  PC_ADD/rca_i_5/fa_i_2/CIN (FA_794)                      0.00       0.76 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/B (HA_1587)                   0.00       0.76 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_5/fa_i_2/ha1/C (HA_1587)                   0.00       0.80 f
+  PC_ADD/rca_i_5/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_5/fa_i_2/C (FA_794)                        0.00       0.86 f
+  PC_ADD/rca_i_5/fa_i_3/CIN (FA_793)                      0.00       0.86 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/B (HA_1585)                   0.00       0.86 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_5/fa_i_3/ha1/S (HA_1585)                   0.00       0.93 f
+  PC_ADD/rca_i_5/fa_i_3/S (FA_793)                        0.00       0.93 f
+  PC_ADD/rca_i_5/S[3] (RCA_OPERAND_SIZE4_31)              0.00       0.93 f
+  PC_ADD/O[23] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[23] (out)                                        0.00       0.93 f
+  data arrival time                                                  0.93
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[3]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[27] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[3]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[3]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[3] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[3] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U52/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U50/ZN (NOR2_X1)                     0.02       0.15 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ik (PG_BLOCK_84)
+                                                          0.00       0.15 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ij (PG_BLOCK_84)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ik (G_BLOCK_40)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.31 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.44 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_km1j (G_BLOCK_35)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U1/ZN (INV_X1)
+                                                          0.03       0.56 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_ij (G_BLOCK_35)
+                                                          0.00       0.56 f
+  PC_ADD/sparse_tree/CARRY[5] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.56 f
+  PC_ADD/rca_i_6/CIN (RCA_OPERAND_SIZE4_30)               0.00       0.56 f
+  PC_ADD/rca_i_6/fa_i_0/CIN (FA_792)                      0.00       0.56 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/B (HA_1583)                   0.00       0.56 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/C (HA_1583)                   0.00       0.60 f
+  PC_ADD/rca_i_6/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.66 f
+  PC_ADD/rca_i_6/fa_i_0/C (FA_792)                        0.00       0.66 f
+  PC_ADD/rca_i_6/fa_i_1/CIN (FA_791)                      0.00       0.66 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/B (HA_1581)                   0.00       0.66 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/C (HA_1581)                   0.00       0.70 f
+  PC_ADD/rca_i_6/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_6/fa_i_1/C (FA_791)                        0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/CIN (FA_790)                      0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/B (HA_1579)                   0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/C (HA_1579)                   0.00       0.80 f
+  PC_ADD/rca_i_6/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_6/fa_i_2/C (FA_790)                        0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/CIN (FA_789)                      0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/B (HA_1577)                   0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/S (HA_1577)                   0.00       0.93 f
+  PC_ADD/rca_i_6/fa_i_3/S (FA_789)                        0.00       0.93 f
+  PC_ADD/rca_i_6/S[3] (RCA_OPERAND_SIZE4_30)              0.00       0.93 f
+  PC_ADD/O[27] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[27] (out)                                        0.00       0.93 f
+  data arrival time                                                  0.93
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[3]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[31] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[3]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[3]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[3] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[3] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U52/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U50/ZN (NOR2_X1)                     0.02       0.15 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ik (PG_BLOCK_84)
+                                                          0.00       0.15 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_1/G_ij (PG_BLOCK_84)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ik (G_BLOCK_40)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U2/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/U1/ZN (INV_X1)
+                                                          0.03       0.31 f
+  PC_ADD/sparse_tree/first_rows_g_block_ij_2_0/G_ij (G_BLOCK_40)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_km1j (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.44 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/G_km1j (G_BLOCK_34)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/U1/ZN (INV_X1)
+                                                          0.03       0.56 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_6/G_ij (G_BLOCK_34)
+                                                          0.00       0.56 f
+  PC_ADD/sparse_tree/CARRY[6] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.56 f
+  PC_ADD/rca_i_7/CIN (RCA_OPERAND_SIZE4_29)               0.00       0.56 f
+  PC_ADD/rca_i_7/fa_i_0/CIN (FA_788)                      0.00       0.56 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/B (HA_1575)                   0.00       0.56 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_7/fa_i_0/ha1/C (HA_1575)                   0.00       0.60 f
+  PC_ADD/rca_i_7/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.66 f
+  PC_ADD/rca_i_7/fa_i_0/C (FA_788)                        0.00       0.66 f
+  PC_ADD/rca_i_7/fa_i_1/CIN (FA_787)                      0.00       0.66 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/B (HA_1573)                   0.00       0.66 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_7/fa_i_1/ha1/C (HA_1573)                   0.00       0.70 f
+  PC_ADD/rca_i_7/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_7/fa_i_1/C (FA_787)                        0.00       0.76 f
+  PC_ADD/rca_i_7/fa_i_2/CIN (FA_786)                      0.00       0.76 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/B (HA_1571)                   0.00       0.76 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_7/fa_i_2/ha1/C (HA_1571)                   0.00       0.80 f
+  PC_ADD/rca_i_7/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_7/fa_i_2/C (FA_786)                        0.00       0.86 f
+  PC_ADD/rca_i_7/fa_i_3/CIN (FA_785)                      0.00       0.86 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/B (HA_1569)                   0.00       0.86 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_7/fa_i_3/ha1/S (HA_1569)                   0.00       0.93 f
+  PC_ADD/rca_i_7/fa_i_3/S (FA_785)                        0.00       0.93 f
+  PC_ADD/rca_i_7/S[3] (RCA_OPERAND_SIZE4_29)              0.00       0.93 f
+  PC_ADD/O[31] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[31] (out)                                        0.00       0.93 f
+  data arrival time                                                  0.93
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+  Startpoint: curr_pc_reg[7]
+              (rising edge-triggered flip-flop)
+  Endpoint: PC_INC[27] (output port)
+  Path Group: (none)
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FETCH              5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  curr_pc_reg[7]/CK (DFFR_X1)                             0.00       0.00 r
+  curr_pc_reg[7]/Q (DFFR_X1)                              0.09       0.09 f
+  PC_ADD/A[7] (CLA_OPERAND_SIZE32_RADIX2)                 0.00       0.09 f
+  PC_ADD/sparse_tree/A[7] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.09 f
+  PC_ADD/sparse_tree/U40/ZN (INV_X1)                      0.04       0.13 r
+  PC_ADD/sparse_tree/U3/ZN (NAND2_X1)                     0.03       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_3/P_ik (PG_BLOCK_109)
+                                                          0.00       0.16 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_3/U3/ZN (AOI21_X1)
+                                                          0.05       0.21 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_3/U2/ZN (INV_X1)
+                                                          0.02       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_1_3/G_ij (PG_BLOCK_109)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_2_1/G_ik (PG_BLOCK_96)
+                                                          0.00       0.23 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_2_1/U3/ZN (AOI21_X1)
+                                                          0.05       0.28 r
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_2_1/U2/ZN (INV_X1)
+                                                          0.02       0.31 f
+  PC_ADD/sparse_tree/first_rows_pg_block_ij_2_1/G_ij (PG_BLOCK_96)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ik (G_BLOCK_39)
+                                                          0.00       0.31 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U2/ZN (AOI21_X1)
+                                                          0.05       0.36 r
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/U1/ZN (INV_X1)
+                                                          0.03       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_1_1/G_ij (G_BLOCK_39)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_km1j (G_BLOCK_37)
+                                                          0.00       0.39 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U2/ZN (AOI21_X1)
+                                                          0.05       0.44 r
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/U1/ZN (INV_X1)
+                                                          0.04       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_2_3/G_ij (G_BLOCK_37)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_km1j (G_BLOCK_35)
+                                                          0.00       0.48 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U2/ZN (AOI21_X1)
+                                                          0.05       0.54 r
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/U1/ZN (INV_X1)
+                                                          0.03       0.56 f
+  PC_ADD/sparse_tree/tree_g_block_ij_3_5/G_ij (G_BLOCK_35)
+                                                          0.00       0.56 f
+  PC_ADD/sparse_tree/CARRY[5] (SPARSE_TREE_CARRY_GENERATOR_OPERAND_SIZE32_RADIX2)
+                                                          0.00       0.56 f
+  PC_ADD/rca_i_6/CIN (RCA_OPERAND_SIZE4_30)               0.00       0.56 f
+  PC_ADD/rca_i_6/fa_i_0/CIN (FA_792)                      0.00       0.56 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/B (HA_1583)                   0.00       0.56 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/U2/ZN (AND2_X1)               0.04       0.60 f
+  PC_ADD/rca_i_6/fa_i_0/ha1/C (HA_1583)                   0.00       0.60 f
+  PC_ADD/rca_i_6/fa_i_0/U1/ZN (OR2_X1)                    0.06       0.66 f
+  PC_ADD/rca_i_6/fa_i_0/C (FA_792)                        0.00       0.66 f
+  PC_ADD/rca_i_6/fa_i_1/CIN (FA_791)                      0.00       0.66 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/B (HA_1581)                   0.00       0.66 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/U2/ZN (AND2_X1)               0.04       0.70 f
+  PC_ADD/rca_i_6/fa_i_1/ha1/C (HA_1581)                   0.00       0.70 f
+  PC_ADD/rca_i_6/fa_i_1/U1/ZN (OR2_X1)                    0.06       0.76 f
+  PC_ADD/rca_i_6/fa_i_1/C (FA_791)                        0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/CIN (FA_790)                      0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/B (HA_1579)                   0.00       0.76 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/U2/ZN (AND2_X1)               0.04       0.80 f
+  PC_ADD/rca_i_6/fa_i_2/ha1/C (HA_1579)                   0.00       0.80 f
+  PC_ADD/rca_i_6/fa_i_2/U1/ZN (OR2_X1)                    0.06       0.86 f
+  PC_ADD/rca_i_6/fa_i_2/C (FA_790)                        0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/CIN (FA_789)                      0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/B (HA_1577)                   0.00       0.86 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/U1/Z (XOR2_X1)                0.07       0.93 f
+  PC_ADD/rca_i_6/fa_i_3/ha1/S (HA_1577)                   0.00       0.93 f
+  PC_ADD/rca_i_6/fa_i_3/S (FA_789)                        0.00       0.93 f
+  PC_ADD/rca_i_6/S[3] (RCA_OPERAND_SIZE4_30)              0.00       0.93 f
+  PC_ADD/O[27] (CLA_OPERAND_SIZE32_RADIX2)                0.00       0.93 f
+  PC_INC[27] (out)                                        0.00       0.93 f
+  data arrival time                                                  0.93
+  --------------------------------------------------------------------------
+  (Path is unconstrained)
+
+
+1
