@@ -32,6 +32,7 @@ entity CU is
 		ALU_OPCODE			: out	ALU_opcode_t;
 		FPU_OPCODE			: out	FPU_opcode_t;
 		FPU_FUNC_SEL		: out	std_logic;
+		SIGNED_COMP			: out	std_logic;
 		
 		-- MEMORY
 		MEM_RD_SEL			: out	std_logic;
@@ -64,6 +65,8 @@ architecture behavioural of CU is
 	constant WRB 				: integer := 2;	-- WRITE BACK
 	
 	constant JUMP_AND_LINK_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(31, REGISTER_ADDR_SIZE));
+	constant ISR_TABLE_ADDR		: reg_addr_t := std_logic_vector(to_unsigned(3, REGISTER_ADDR_SIZE));
+	constant ISR_RETURN_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(4, REGISTER_ADDR_SIZE));
 	constant R0_ADDR			: reg_addr_t := (others => '0');
 	constant FP_SPECIAL_ADDR	: reg_addr_t := std_logic_vector(to_unsigned(30, REGISTER_ADDR_SIZE));
 				
@@ -92,10 +95,12 @@ architecture behavioural of CU is
 	signal hazard_pipe_s1		: hazard_pipe_reg_addr_t;
 	signal hazard_pipe_s2		: hazard_pipe_reg_addr_t;
 	signal hazard_pipe_d		: hazard_pipe_reg_addr_t;
+	signal has_link_pipe		: std_logic_vector(EXE to WRB);
 	signal hazard_pipe_t_dec	: DLX_instr_type_t;
 	signal hazard_pipe_s1_dec	: reg_addr_t;
 	signal hazard_pipe_s2_dec	: reg_addr_t;
 	signal hazard_pipe_d_dec	: reg_addr_t;
+	signal has_link_pipe_dec	: std_logic;
 	
 	signal rf_rd1_addr_s		: reg_addr_t;
 	signal rf_rd2_addr_s		: reg_addr_t;
@@ -132,39 +137,49 @@ begin
 	-- DECODE STAGE
 	-- Source 1 is fps in case of floating-point branch instruction.
 	RF_RD1_ADDR		<= rf_rd1_addr_s;
-	rf_rd1_addr_s	<= JUMP_AND_LINK_ADDR	when (opcode_s = LINK or opcode_s = RET)  else
+	rf_rd1_addr_s	<= JUMP_AND_LINK_ADDR	when (opcode_s = RET)                     else
+					   ISR_TABLE_ADDR		when (opcode_s = TRAP)                    else 
+					   ISR_RETURN_ADDR		when (opcode_s = RFE)                     else
 					   FP_SPECIAL_ADDR		when (opcode_s = BFPT or opcode_s = BFPF) else 
 					   R0_ADDR				when (opcode_s = LHI)                     else
 					   source1_addr_s;
+					   
 	-- Source 2 is R0 in case of mov instruction, or equal to destination in case of load.
 	RF_RD2_ADDR		<= rf_rd2_addr_s;
-	rf_rd2_addr_s	<= R0_ADDR     when (opcode_s = ALU_I and alu_opcode_r_s = MOV) else
-					   dest_addr_s when (op_type = L_TYPE)                          else
-					   source2_addr_s;			   
+	rf_rd2_addr_s	<= R0_ADDR         when (opcode_s = ALU_I and alu_opcode_r_s = MOV) else
+					   dest_addr_s     when (op_type = L_TYPE)                          else
+					   source2_addr_s;
+					   
 	-- Operation has operand 1 in case of R-type, F-TYPE or I-TYPE instructions.
-	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) else '0';			   
+	RF_RD1			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE or op_type = B_TYPE) else '0';			   
+	
 	-- Operation has operand 2 in case of R-type, F-TYPE instructions (but not I-TYPE).
 	RF_RD2			<= '1' when (op_type = R_TYPE or op_type = S_TYPE) else '0';
+	
 	-- Enable PC as third output for TRAP and jump-and-link instructions.
-	PC_OUT_EN		<= '1' when (opcode_s = TRAP or opcode_s = CALL or opcode_s = JAL or opcode_s = JALR) else '0';
+	PC_OUT_EN		<= '1' when (opcode_s = TRAP or opcode_s = JAL or opcode_s = JALR) else '0';
+	
 	-- Pass immediate argument from instruction.
-	IMM_ARG			<= immediate_s;
+	IMM_ARG			<= (others => '0')                                         when (opcode_s = RET)  else
+					   std_logic_vector(shift_left(unsigned(immediate_s),2)+4) when (opcode_s = TRAP) else
+					   immediate_s;
+	
 	-- Enable immediate only for I-TYPE instructions.
-	IMM_SEL			<= '1' when (op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) else '0';
+	IMM_SEL			<= '1' when (op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE or op_type = B_TYPE) else '0';
+	
 	-- Extract PC offset
-	PC_OFFSET		<= (others => '0') when (opcode_s = LINK) else pc_offset_s;
+	PC_OFFSET		<= pc_offset_s;
+	
 	-- Enable PC offset as operand 2 in case of jump instruction
-	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE or
-					             opcode_s = BEQZ  or
-								 opcode_s = BNEZ  or
-								 opcode_s = BFPF  or
-								 opcode_s = BFPT) else '0';
+	PC_OFFSET_SEL	<= '1' when (op_type = J_TYPE) else '0';
+	
 	-- Extract opcode
 	OPCODE			<= opcode_s;
+	
 	-- Signed extension in all cases except explicitly unsigned instructions
-	SIGNED_EXT		<= '1' when	(((op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE) and signed_immediate = '1') or
-							      (opcode_s = ALU_I   and signed_alu_op = '1')                                           or
-							      (opcode_s = FPU_I   and signed_fpu_op = '1'))                                          else '0';
+	SIGNED_EXT		<= '1' when	(((op_type = I_TYPE or op_type = L_TYPE or op_type = S_TYPE or op_type = B_TYPE) and signed_immediate = '1') or
+							      (opcode_s = ALU_I   and signed_alu_op = '1')                                                               or
+							      (opcode_s = FPU_I   and signed_fpu_op = '1'))                                                              else '0';
 	
 	-- Set immediate as most significand halfword if operation is LHI
 	LHI_EXT			<= '1' when (opcode_s = LHI) else '0';
@@ -176,40 +191,65 @@ begin
 	-- Select FPU output if FP operation
 	FPU_FUNC_SEL	<= '1' when (opcode_s = FPU_I) else '0';
 	
+	-- Enable signed comparison
+	SIGNED_COMP		<= '1' when (opcode_s = SEQI    or
+					             opcode_s = SNEI    or
+								 opcode_s = SLEI    or
+								 opcode_s = SGEI    or
+								 opcode_s = SLTI    or
+								 opcode_s = SGTI    or
+								 (opcode_s = ALU_I  and
+								   (func_s = SEQ    or
+									func_s = SNE    or
+									func_s = SLT    or
+									func_s = SGT    or
+									func_s = SLE    or
+									func_s = SGE))) else '0';
+	
 	
 	-- MEMORY STAGE
 	-- Enable memory read if load instruction
 	MEM_RD_SEL		<= '1' when (op_type = L_TYPE) else '0';
+	
 	-- Enable memory write if store instruction
 	MEM_WR_SEL		<= '1' when (op_type = S_TYPE) else '0';
+	
 	-- Enable memory if memory operation
 	MEM_EN			<= '1' when (op_type = L_TYPE  or
 					             op_type = S_TYPE) else '0';						 
+	
 	-- Output from memory if memory operation
 	MEMORY_OP_SEL	<= '1' when (op_type = L_TYPE  or
 					             op_type = S_TYPE) else '0';						 
+	
 	-- Extend as signed in all cases except for explicitly unsigned loads
 	MEM_SIGNED_EXT	<= '0' when (opcode_s = LBU  or
 					             opcode_s = LHU) else '1';						 
+	
 	-- Enable halfword load/store
 	MEM_HALFWORD	<= '1' when (opcode_s = LH  or
 					             opcode_s = LHU or
 								 opcode_s = SH) else '0';						 
+	
 	-- Enable byte load/store
 	MEM_BYTE		<= '1' when (opcode_s = LB  or
 					             opcode_s = LBU or
 								 opcode_s = SB) else '0';
+	
 	-- Only call operation is TRAP.
-	RF_CALL			<= '1' when (opcode_s = TRAP or opcode_s = CALL)  else '0';
+	RF_CALL			<= '1' when (opcode_s = TRAP) else '0';
+	
 	-- Only return operation is RFE.
-	RF_RETN			<= '1' when (opcode_s = RFE  or opcode_s = RET)   else '0';
+	RF_RETN			<= '1' when (opcode_s = RFE)  else '0';
 								 
 	-- WRITE BACK STAGE
 	-- Enable write back to RF for operations with a destination or for return address linking
 	RF_WR			<= '1' when (op_type = R_TYPE or op_type = I_TYPE or op_type = L_TYPE or opcode_s = JAL) else '0';
-	-- Destination is link register (R31) in case of jump-and-link or fps in case of FP comparison.
+	
+	-- Destination is link register (R31) in case of jump-and-link, fps in case of FP comparison or iar in case of TRAP.
 	RF_WR_ADDR		<= rf_wr_addr_s;
-	rf_wr_addr_s	<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR or opcode_s = CALL) else
+	rf_wr_addr_s	<= JUMP_AND_LINK_ADDR when (opcode_s = JAL or opcode_s = JALR) else
+					   ISR_RETURN_ADDR    when (opcode_s = TRAP)                   else
 					   FP_SPECIAL_ADDR    when (opcode_s = FPU_I and (
 												fpu_func_s = EQF or
 												fpu_func_s = NEF or
@@ -218,8 +258,9 @@ begin
 												fpu_func_s = GTF or
 												fpu_func_s = LTF)) else												
 					   dest_addr_s;	
+	
 	-- Select saved PC instead of memory/execute output
-	LINK_PC			<= '1' when (opcode_s = JAL or opcode_s = JALR or opcode_s = CALL) else '0';
+	LINK_PC			<= '1' when (opcode_s = JAL or opcode_s = JALR or opcode_s = TRAP) else '0';
 								
 	
 	-- Check if instruction requires signed operands (when not explicitly unsigned)
@@ -261,11 +302,10 @@ begin
 					   SHIFT_RA		when (opcode_s = SRAI) else
 					   IADD			when (opcode_s = ADDI or opcode_s = ADDUI) 		else
 					   IADD			when (opcode_s = J 		or opcode_s = JAL  or
-					                      opcode_s = JR		or opcode_s = JALR or
-										  opcode_s = CALL) 							else
+					                      opcode_s = JR		or opcode_s = JALR) 	else
 					   IADD			when (opcode_s = LHI)							else
 					   IADD			when (op_type = L_TYPE	or op_type = S_TYPE)	else
-					   IADD			when (opcode_s = BEQZ	or opcode_s = BNEZ)		else
+					   IADD			when (opcode_s = TRAP	or op_type = B_TYPE)	else
 					   ISUB			when (opcode_s = SUBI	or opcode_s = SUBUI)	else
 					   LOGIC_AND	when (opcode_s = ANDI)  else
 					   LOGIC_OR		when (opcode_s = ORI)   else
@@ -273,7 +313,6 @@ begin
 					   LOGIC_NAND	when (opcode_s = NANDI)	else
 					   LOGIC_NOR	when (opcode_s = NORI)	else
 					   LOGIC_XNOR	when (opcode_s = XNORI)	else
-					   LOGIC_NOT	when (opcode_s = NOTI)	else
 					   LOGIC_ANDN	when (opcode_s = ANDNI)	else
 					   LOGIC_ORN	when (opcode_s = ORNI)	else
 					   COMPARE_EQ	when (opcode_s = SEQI)  else
@@ -312,7 +351,6 @@ begin
 	fpu_opcode_s	<= FP_ADD		 when (fpu_func_s = ADDF) else
 					   FP_SUB		 when (fpu_func_s = SUBF) else
 					   INT_MULTIPLY	 when (fpu_func_s = MUL or fpu_func_s = MULU) else
-					   FP_MULTIPLY	 when (fpu_func_s = MULF) else
 					   FP_COMPARE_EQ when (fpu_func_s = EQF) else 
 					   FP_COMPARE_NE when (fpu_func_s = NEF) else  
 					   FP_COMPARE_LT when (fpu_func_s = LTF) else  
@@ -328,6 +366,10 @@ begin
 	op_type	<= NO_TYPE	when (opcode_s = NOP) else
 			   -- Unconditional jumps
 			   J_TYPE	when (opcode_s = J     or opcode_s = JAL)   else
+			   -- Conditional branches and jumps requiring a register as argument
+			   B_TYPE	when (opcode_s = BEQZ  or opcode_s = BNEZ  or
+						      opcode_s = RFE   or opcode_s = RET   or
+							  opcode_s = BFPF  or opcode_s = BFPT) else
 			   -- Register-register operations			  
 			   R_TYPE	when (opcode_s = ALU_I or opcode_s = FPU_I) else
 			   -- Load from memory
@@ -343,7 +385,7 @@ begin
 			   I_TYPE;
 	
 	-- HAZARD CHECK PIPELINE
-	
+	-- Input separate due to ModelSim bug.
 	hazard_pipeline_input: process (RST, op_type, rf_rd1_addr_s, rf_rd2_addr_s, rf_wr_addr_s) is
 	begin
 		if (RST = '0') then
@@ -351,11 +393,17 @@ begin
 			hazard_pipe_s1_dec	<= (others => '0');
 			hazard_pipe_s2_dec	<= (others => '0');
 			hazard_pipe_d_dec	<= (others => '0');
+			has_link_pipe_dec	<= '0';
 		else
 			hazard_pipe_t_dec	<= op_type;
 			hazard_pipe_s1_dec	<= rf_rd1_addr_s;
 			hazard_pipe_s2_dec	<= rf_rd2_addr_s;
 			hazard_pipe_d_dec	<= rf_wr_addr_s;
+			if (opcode_s = JAL or opcode_s = JALR or opcode_s = TRAP) then
+				has_link_pipe_dec	<= '1';
+			else
+				has_link_pipe_dec	<= '0';
+			end if;
 		end if;
 	end process;
 			
@@ -368,6 +416,7 @@ begin
 					hazard_pipe_s1(i)	<= (others => '0');
 					hazard_pipe_s2(i)	<= (others => '0');
 					hazard_pipe_d(i)	<= (others => '0');
+					has_link_pipe(i)	<= '0';
 				end loop;
 				
 			else
@@ -376,24 +425,28 @@ begin
 					hazard_pipe_s1(EXE)	<= (others => '0');
 					hazard_pipe_s2(EXE)	<= (others => '0');
 					hazard_pipe_d(EXE)	<= (others => '0');
+					has_link_pipe(EXE)	<= '0';
 					
 					for i in MEM to WRB loop
 						hazard_pipe_t(i)	<= hazard_pipe_t(i-1);
 						hazard_pipe_s1(i)	<= hazard_pipe_s1(i-1);
 						hazard_pipe_s2(i)	<= hazard_pipe_s2(i-1);
 						hazard_pipe_d(i)	<= hazard_pipe_d(i-1);
+						has_link_pipe(i)	<= has_link_pipe(i-1);
 					end loop;
 				elsif (ENB = '1') then
 					hazard_pipe_t(EXE)	<= hazard_pipe_t_dec;
 					hazard_pipe_s1(EXE)	<= hazard_pipe_s1_dec;
 					hazard_pipe_s2(EXE)	<= hazard_pipe_s2_dec;
 					hazard_pipe_d(EXE)	<= hazard_pipe_d_dec;
+					has_link_pipe(EXE)	<= has_link_pipe_dec;
 					
 					for i in MEM to WRB loop
 						hazard_pipe_t(i)	<= hazard_pipe_t(i-1);
 						hazard_pipe_s1(i)	<= hazard_pipe_s1(i-1);
 						hazard_pipe_s2(i)	<= hazard_pipe_s2(i-1);
 						hazard_pipe_d(i)	<= hazard_pipe_d(i-1);
+						has_link_pipe(i)	<= has_link_pipe(i-1);
 					end loop;
 				end if;
 			end if;
@@ -405,20 +458,18 @@ begin
 	-- The forwarding target instruction type is checked to see whether one or more source registers are employed, then the source register(s)
 	-- is/are checked against the destination register(s) of the following instructions, but only if the following instruction types
 	-- require a destination register (in most cases).
-	target_has_s1		<= '1' when (hazard_pipe_t_dec = R_TYPE  or
-						             hazard_pipe_t_dec = I_TYPE  or
-									 hazard_pipe_t_dec = L_TYPE  or
-									 hazard_pipe_t_dec = S_TYPE)																	else '0';
-	target_has_s2		<= '1' when (hazard_pipe_t_dec = R_TYPE or hazard_pipe_t_dec = S_TYPE)										else '0';
-	exe_source_has_d	<= '1' when not(hazard_pipe_t(EXE) = J_TYPE	or hazard_pipe_t(EXE) = S_TYPE or hazard_pipe_t(EXE) = NO_TYPE)	else '0';
-	mem_source_has_d	<= '1' when not(hazard_pipe_t(MEM) = J_TYPE	or hazard_pipe_t(MEM) = S_TYPE or hazard_pipe_t(MEM) = NO_TYPE)	else '0';
-	wrb_source_has_d	<= '1' when not(hazard_pipe_t(WRB) = J_TYPE	or hazard_pipe_t(WRB) = S_TYPE or hazard_pipe_t(WRB) = NO_TYPE)	else '0';
-	exe_can_forward_s1	<= '1' when (hazard_pipe_s1_dec = hazard_pipe_d(EXE))														else '0';
-	mem_can_forward_s1	<= '1' when (hazard_pipe_s1_dec = hazard_pipe_d(MEM))														else '0';
-	wrb_can_forward_s1	<= '1' when (hazard_pipe_s1_dec = hazard_pipe_d(WRB))														else '0';
-	exe_can_forward_s2	<= '1' when (hazard_pipe_s2_dec = hazard_pipe_d(EXE))														else '0';
-	mem_can_forward_s2	<= '1' when (hazard_pipe_s2_dec = hazard_pipe_d(MEM))														else '0';
-	wrb_can_forward_s2	<= '1' when (hazard_pipe_s2_dec = hazard_pipe_d(WRB))														else '0';
+	target_has_s1		<= '1' when (hazard_pipe_t_dec = R_TYPE or hazard_pipe_t_dec = I_TYPE or hazard_pipe_t_dec = L_TYPE or hazard_pipe_t_dec = S_TYPE or hazard_pipe_t_dec = B_TYPE) else '0';
+	target_has_s2		<= '1' when (hazard_pipe_t_dec = R_TYPE or hazard_pipe_t_dec = S_TYPE)										                                                     else '0';
+	exe_source_has_d	<= '1' when not(hazard_pipe_t(EXE) = J_TYPE	or hazard_pipe_t(EXE) = S_TYPE or hazard_pipe_t(EXE) = NO_TYPE or hazard_pipe_t(EXE) = B_TYPE)	                     else '0';
+	mem_source_has_d	<= '1' when not(hazard_pipe_t(MEM) = J_TYPE	or hazard_pipe_t(MEM) = S_TYPE or hazard_pipe_t(MEM) = NO_TYPE or hazard_pipe_t(MEM) = B_TYPE)	                     else '0';
+	wrb_source_has_d	<= '1' when not(hazard_pipe_t(WRB) = J_TYPE	or hazard_pipe_t(WRB) = S_TYPE or hazard_pipe_t(WRB) = NO_TYPE or hazard_pipe_t(WRB) = B_TYPE)	                     else
+						   '1' when    (has_link_pipe(WRB) = '1')                                                                                                                        else '0';
+	exe_can_forward_s1	<= '1' when (hazard_pipe_s1_dec = hazard_pipe_d(EXE))														                                                     else '0';
+	mem_can_forward_s1	<= '1' when (hazard_pipe_s1_dec = hazard_pipe_d(MEM))														                                                     else '0';
+	wrb_can_forward_s1	<= '1' when (hazard_pipe_s1_dec = hazard_pipe_d(WRB))														                                                     else '0';
+	exe_can_forward_s2	<= '1' when (hazard_pipe_s2_dec = hazard_pipe_d(EXE))														                                                     else '0';
+	mem_can_forward_s2	<= '1' when (hazard_pipe_s2_dec = hazard_pipe_d(MEM))														                                                     else '0';
+	wrb_can_forward_s2	<= '1' when (hazard_pipe_s2_dec = hazard_pipe_d(WRB))														                                                     else '0';
 	
 	---- S1
 	X2D_FORWARD_S1_EN	<= target_has_s1 and exe_source_has_d and exe_can_forward_s1;

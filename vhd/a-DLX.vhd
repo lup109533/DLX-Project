@@ -60,7 +60,8 @@ architecture structural of DLX is
 			ALU_OPCODE			: out	ALU_opcode_t;
 			FPU_OPCODE			: out	FPU_opcode_t;
 			FPU_FUNC_SEL		: out	std_logic;
-			
+			SIGNED_COMP			: out	std_logic;
+		
 			-- MEMORY
 			MEM_RD_SEL			: out	std_logic;
 			MEM_WR_SEL			: out	std_logic;
@@ -137,6 +138,7 @@ architecture structural of DLX is
 			ALU_OPCODE			: in	alu_opcode_t;
 			FPU_OPCODE			: in	fpu_opcode_t;
 			FPU_FUNC_SEL		: in	std_logic;
+			SIGNED_COMP			: in	std_logic;
 			
 			-- MEMORY
 			MEM_RD_SEL			: in	std_logic;
@@ -227,10 +229,12 @@ architecture structural of DLX is
 	signal alu_opcode_s			: ALU_opcode_t;
 	signal fpu_opcode_s			: FPU_opcode_t;
 	signal fpu_func_sel_s		: std_logic;
+	signal signed_comp_s		: std_logic;
 	-- Pipeline 1
 	signal alu_opcode_s_exe		: ALU_opcode_t;
 	signal fpu_opcode_s_exe		: FPU_opcode_t;
 	signal fpu_func_sel_s_exe	: std_logic;
+	signal signed_comp_s_exe	: std_logic;
 	
 	-- MEMORY
 	signal mem_rd_sel_s			: std_logic;
@@ -325,6 +329,7 @@ begin
 				ALU_OPCODE			=> alu_opcode_s,
 				FPU_OPCODE			=> fpu_opcode_s,
 				FPU_FUNC_SEL		=> fpu_func_sel_s,
+				SIGNED_COMP			=> signed_comp_s,
 				
 				-- MEMORY
 				MEM_RD_SEL			=> mem_rd_sel_s,
@@ -359,6 +364,7 @@ begin
 	ALU_OPCODE_PIPE1: 	ALU_OPCODE_REG	port map (CLK, RST, decode_enable, alu_opcode_s, alu_opcode_s_exe);
 	FPU_OPCODE_PIPE1: 	FPU_OPCODE_REG	port map (CLK, RST, decode_enable, fpu_opcode_s, fpu_opcode_s_exe);
 	FPU_FUNC_SEL_PIPE1:	FF				port map (CLK, RST, decode_enable, fpu_func_sel_s, fpu_func_sel_s_exe);
+	SIGNED_COMP_PIPE1:	FF				port map (CLK, RST, decode_enable, signed_comp_s, signed_comp_s_exe);
 	
 	-- To MEMORY stage
 	RD_SEL_PIPE1:			FF	port map (CLK, RST, decode_enable, mem_rd_sel_s, mem_rd_sel_s_exe);
@@ -438,6 +444,7 @@ begin
 						ALU_OPCODE			=> alu_opcode_s_exe,
 						FPU_OPCODE			=> fpu_opcode_s_exe,
 						FPU_FUNC_SEL		=> fpu_func_sel_s_exe,
+						SIGNED_COMP			=> signed_comp_s_exe,
 						
 						-- MEMORY
 						MEM_RD_SEL			=> mem_rd_sel_s_mem,

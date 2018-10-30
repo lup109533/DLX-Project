@@ -19,7 +19,7 @@ architecture structural of WRITE_BACK is
 
 begin
 
-	DOUT <= DIN when (LINK_PC = '0') else std_logic_vector(unsigned(PC) + 4);
+	DOUT <= DIN when (LINK_PC = '0') else PC;
 	
 	RF_WR_OUT <= RF_WR;
 

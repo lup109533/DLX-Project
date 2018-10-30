@@ -145,9 +145,8 @@ begin
 	BRANCH_TAKEN	<= branch_taken_s;
 	branch_taken_s	<= '1' when (is_zero_s = '1' and (OPCODE = BEQZ or OPCODE = BFPF))       else -- when conditional branch matches
 					   '1' when (is_zero_s = '0' and (OPCODE = BNEZ or OPCODE = BFPT))       else -- **
-					   '1' when (OPCODE = CALL or OPCODE = RET or OPCODE = LINK)             else -- when context switch is performed
 					   '1' when (OPCODE = J or OPCODE = JAL or OPCODE = JR or OPCODE = JALR) else -- when operation is unconditional branch
-					   '1' when (OPCODE = TRAP or OPCODE = RFE)                              else -- when exception call/return
+					   '1' when (OPCODE = TRAP or OPCODE = RFE or OPCODE = RET)              else -- when exception call/return
 					   '0';
 						
 	-- Extend immediate arg
@@ -162,6 +161,8 @@ begin
 	
 	-- Assign outputs
 	REG_A	<= reg_a_s	when (OPCODE = RET)			else -- Use r31 if RET
+			   reg_a_s	when (OPCODE = TRAP)		else -- Use isr if TRAP
+			   reg_a_s	when (OPCODE = RFE)			else -- Use iar if RFE
 			   PC		when (branch_taken_s = '1')	else -- Propagate pc in case of branch address calculation
 			   reg_a_s;
 			   

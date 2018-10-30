@@ -4,6 +4,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.DLX_globals.all;
 use work.instr_gen.all;
+use work.utils.min;
 
 library std;
 use std.textio.all;
@@ -173,9 +174,9 @@ begin
 	begin
 		addr <= abs(to_integer(unsigned(EXT_MEM_ADDR_s)) mod MEMORY_SIZE-1);
 		EXT_MEM_DOUT_s(31 downto 24)	<= memory_s(addr);
-		EXT_MEM_DOUT_s(23 downto 16)	<= memory_s(addr+1);
-		EXT_MEM_DOUT_s(15 downto  8)	<= memory_s(addr+2);
-		EXT_MEM_DOUT_s( 7 downto  0)	<= memory_s(addr+3);
+		EXT_MEM_DOUT_s(23 downto 16)	<= memory_s(work.utils.min(MEMORY_SIZE-1, addr+1));
+		EXT_MEM_DOUT_s(15 downto  8)	<= memory_s(work.utils.min(MEMORY_SIZE-1, addr+2));
+		EXT_MEM_DOUT_s( 7 downto  0)	<= memory_s(work.utils.min(MEMORY_SIZE-1, addr+3));
 	end process;
 
 end architecture;

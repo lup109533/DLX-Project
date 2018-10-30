@@ -8,9 +8,10 @@ use work.cmp_ctrl.all;
 entity ALU is
 	generic (OPERAND_SIZE : natural);
 	port (
-		FUNC	: in	ALU_opcode_t;
-		R1, R2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-		O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
+		SIGNED_COMP		: in	std_logic;
+		FUNC			: in	ALU_opcode_t;
+		R1, R2			: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
+		O				: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
 	);
 end entity;
 
@@ -59,23 +60,26 @@ architecture structural of ALU is
 	end component;
 
 	-- SIGNALS
-	signal shifter_out	: std_logic_vector(OPERAND_SIZE-1 downto 0);
-	signal addsub_out	: std_logic_vector(OPERAND_SIZE-1 downto 0);
-	signal set_out		: std_logic_vector(OPERAND_SIZE-1 downto 0);
-	signal lu_out		: std_logic_vector(OPERAND_SIZE-1 downto 0);
-	signal compare_out	: std_logic;
+	signal shifter_out		: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal addsub_out		: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal set_out			: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal lu_out			: std_logic_vector(OPERAND_SIZE-1 downto 0);
+	signal compare_out		: std_logic;
 	
-	signal sub_sel		: std_logic;
-	signal zero_flag	: std_logic;
-	signal carry_flag	: std_logic;
+	signal sub_sel			: std_logic;
+	signal zero_flag		: std_logic;
+	signal carry_flag		: std_logic;
+	signal greater_flag		: std_logic;
+	signal zero_operand2	: std_logic;
+	signal sign_mismatch	: std_logic;
 	
 	type operation_type is (SHIFT, SUM_OR_SUB, LOGIC, COMPARE);
 	
-	signal alu_function	: operation_type;
-	signal compare_sel	: compare_type;
-	signal logic_sel	: lu_ctrl_t;
-	signal shift_dir	: std_logic;
-	signal shift_mode	: std_logic;
+	signal alu_function		: operation_type;
+	signal compare_sel		: compare_type;
+	signal logic_sel		: lu_ctrl_t;
+	signal shift_dir		: std_logic;
+	signal shift_mode		: std_logic;
 
 begin
 	-- CHECK OPERATION TYPE
@@ -88,9 +92,15 @@ begin
 									  FUNC = BRANCH_IF_EQ or
 									  FUNC = BRANCH_IF_NE or
 									  FUNC = MOV) else
-					LOGIC		when (FUNC = LOGIC_AND or
-								      FUNC = LOGIC_OR or
-									  FUNC = LOGIC_XOR) else
+					LOGIC		when (FUNC = LOGIC_AND  or
+								      FUNC = LOGIC_OR   or
+									  FUNC = LOGIC_XOR  or
+									  FUNC = LOGIC_NAND or
+									  FUNC = LOGIC_NOR  or
+									  FUNC = LOGIC_XNOR or
+									  FUNC = LOGIC_ANDN or
+									  FUNC = LOGIC_ORN  or
+									  FUNC = LOGIC_NOT) else
 					COMPARE;
 
 					
@@ -103,7 +113,7 @@ begin
 	-- ADDER/SUBTRACTOR
 	ADDSUB: ADD_SUB generic map (OPERAND_SIZE) port map (R1, R2, sub_sel, addsub_out, carry_flag);
 	---- Check if subtraction
-	sub_sel	<= '1' when (FUNC = ISUB			or
+	sub_sel	<= '1' when (FUNC = ISUB		or
 						 FUNC = COMPARE_EQ	or
 						 FUNC = COMPARE_NE	or
 						 FUNC = COMPARE_GT	or
@@ -113,9 +123,17 @@ begin
 	
 	
 	-- COMPARATOR
-	COMPARE0: COMPARATOR port map (zero_flag, carry_flag, compare_sel, compare_out);
-	---- Zero flag generation
+	COMPARE0: COMPARATOR port map (zero_flag, greater_flag, compare_sel, compare_out);
+	greater_flag <= carry_flag		when (SIGNED_COMP = '0' and zero_operand2 = '0') else
+				    '1'				when (SIGNED_COMP = '0' and zero_operand2 = '1') else
+					not carry_flag	when (SIGNED_COMP = '1' and sign_mismatch = '1' and zero_operand2 = '0') else
+					carry_flag		when (SIGNED_COMP = '1' and sign_mismatch = '0' and zero_operand2 = '0') else
+					'0'				when (SIGNED_COMP = '1' and sign_mismatch = '1' and zero_operand2 = '1') else
+					'1';
+	---- Flag generation
 	zero_flag		<= not(or_reduce(addsub_out));
+	zero_operand2	<= not(or_reduce(R2));
+	sign_mismatch	<= R1(OPERAND_SIZE-1) xor R2(OPERAND_SIZE-1);
 	---- For set-type operations
 	set_out(OPERAND_SIZE-1 downto 1)	<= (others => '0');
 	set_out(0) 							<= compare_out;

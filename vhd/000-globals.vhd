@@ -62,7 +62,7 @@ package DLX_globals is
 	constant JUMP_PC_OFFSET_SIZE	: natural := 26;
 	constant FP_MANTISSA_SIZE		: natural := 23;
 	constant FP_EXPONENT_SIZE		: natural := 8;
-	constant DLX_RF_WINDOWS_NUM		: natural := 4;
+	constant DLX_RF_WINDOWS_NUM		: natural := 2;
 
 	-- RANGES
 	subtype OPCODE_RANGE		is natural range (DLX_INSTRUCTION_SIZE)-1 downto (DLX_INSTRUCTION_SIZE - OPCODE_SIZE);
@@ -88,7 +88,7 @@ package DLX_globals is
 	subtype fp_func_t	is std_logic_vector(FPU_FUNCTION_SIZE-1 downto 0);
 	subtype pc_offset_t	is std_logic_vector(JUMP_PC_OFFSET_SIZE-1 downto 0);
 	
-	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, S_TYPE, L_TYPE);
+	type DLX_instr_type_t	is (NO_TYPE, R_TYPE, I_TYPE, J_TYPE, B_TYPE, S_TYPE, L_TYPE);
 	type ALU_opcode_t		is (SHIFT_RL, SHIFT_LL, SHIFT_RA, SHIFT_LA,
 								IADD, ISUB,
 								LOGIC_AND, LOGIC_OR, LOGIC_XOR,
@@ -135,7 +135,7 @@ package DLX_globals is
 	constant SGTI		: opcode_t	:= std_logic_vector(to_unsigned(16#1B#, OPCODE_SIZE));
 	constant SLEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1C#, OPCODE_SIZE));
 	constant SGEI		: opcode_t	:= std_logic_vector(to_unsigned(16#1D#, OPCODE_SIZE));
-	constant LINK		: opcode_t	:= std_logic_vector(to_unsigned(16#1E#, OPCODE_SIZE));
+	constant RET		: opcode_t	:= std_logic_vector(to_unsigned(16#1E#, OPCODE_SIZE));
 	constant LB			: opcode_t	:= std_logic_vector(to_unsigned(16#20#, OPCODE_SIZE));
 	constant LH			: opcode_t	:= std_logic_vector(to_unsigned(16#21#, OPCODE_SIZE));
 	constant LW			: opcode_t	:= std_logic_vector(to_unsigned(16#23#, OPCODE_SIZE));
@@ -156,11 +156,8 @@ package DLX_globals is
 	constant NANDI		: opcode_t	:= std_logic_vector(to_unsigned(16#30#, OPCODE_SIZE));
 	constant NORI		: opcode_t	:= std_logic_vector(to_unsigned(16#31#, OPCODE_SIZE));
 	constant XNORI		: opcode_t	:= std_logic_vector(to_unsigned(16#32#, OPCODE_SIZE));
-	constant NOTI		: opcode_t	:= std_logic_vector(to_unsigned(16#33#, OPCODE_SIZE));
-	constant ANDNI		: opcode_t	:= std_logic_vector(to_unsigned(16#34#, OPCODE_SIZE));
-	constant ORNI		: opcode_t	:= std_logic_vector(to_unsigned(16#35#, OPCODE_SIZE));
-	constant CALL		: opcode_t	:= std_logic_vector(to_unsigned(16#36#, OPCODE_SIZE));
-	constant RET		: opcode_t	:= std_logic_vector(to_unsigned(16#37#, OPCODE_SIZE));
+	constant ANDNI		: opcode_t	:= std_logic_vector(to_unsigned(16#33#, OPCODE_SIZE));
+	constant ORNI		: opcode_t	:= std_logic_vector(to_unsigned(16#34#, OPCODE_SIZE));
 
 	-- DLX ALU FUNCTIONS
 	constant SHLL		: func_t	:= std_logic_vector(to_unsigned(16#04#, ALU_FUNCTION_SIZE));	-- Disambiguation from VHDL keyword SLL

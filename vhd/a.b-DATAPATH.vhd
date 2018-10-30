@@ -53,6 +53,7 @@ entity DATAPATH is
 		ALU_OPCODE			: in	alu_opcode_t;
 		FPU_OPCODE			: in	fpu_opcode_t;
 		FPU_FUNC_SEL		: in	std_logic;
+		SIGNED_COMP			: in	std_logic;
 		
 		-- MEMORY
 		MEM_RD_SEL			: in	std_logic;
@@ -146,6 +147,7 @@ architecture structural of DATAPATH is
 			ALU_OPCODE		: in	alu_opcode_t;
 			FPU_OPCODE		: in	fpu_opcode_t;
 			FPU_FUNC_SEL	: in	std_logic;
+			SIGNED_COMP		: in	std_logic;
 			-- Signals from/to previous/successive stages.
 			R1, R2			: in	DLX_oper_t;	-- Register inputs.
 			EX_OUT			: out	DLX_oper_t	-- EXECUTE stage output.
@@ -375,6 +377,7 @@ begin
 								ALU_OPCODE		=> ALU_OPCODE,
 								FPU_OPCODE		=> FPU_OPCODE,
 								FPU_FUNC_SEL	=> FPU_FUNC_SEL,
+								SIGNED_COMP		=> SIGNED_COMP,
 								-- Signals from/to previous/successive stages.
 								R1				=> exe_r1,
 								R2				=> exe_r2,

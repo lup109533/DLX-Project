@@ -73,9 +73,9 @@ begin
 	-- Generate control signals from comparison
 	sign_is_greater		<= not(SIGN1) and SIGN2;
 	sign_is_equal		<= SIGN1 xnor SIGN2;
-	exponent_is_greater	<= exp_carry;
+	exponent_is_greater	<= exp_carry and not equal;
 	exponent_is_equal	<= not(or_reduce(exp_diff));
-	mantissa_is_greater	<= mant_carry;
+	mantissa_is_greater	<= mant_carry and not equal;
 
 	equal	<= and_reduce((SIGN1 xnor SIGN2) & (EXPONENT1 xnor EXPONENT2) & (MANTISSA1 xnor MANTISSA2));
 	

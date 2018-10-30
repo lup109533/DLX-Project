@@ -9,6 +9,7 @@ sll r7,r6,r1
 srl r8,r5,r2
 sra r9,r4,r2
 sub r10,r9,r8
+not r11,r0,r0
 
 addi r1,r2,1
 subi r2,r4,2

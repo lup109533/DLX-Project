@@ -35,7 +35,7 @@ architecture structural of FP_ADD_SUB is
 	end component;
 
 	-- SIGNALS
-	constant FP_SIZE				: natural := 1 + EXPONENT_SIZE + MANTISSA_SIZE;
+	constant FP_SIZE				: natural := EXPONENT_SIZE + MANTISSA_SIZE + 1;
 	constant INF_EXP				: std_logic_vector(EXPONENT_SIZE-1 downto 0) := (others => '1');
 	constant ZERO_EXP				: std_logic_vector(EXPONENT_SIZE-1 downto 0) := (others => '0');
 	constant ZERO_MANT				: std_logic_vector(MANTISSA_SIZE-1 downto 0) := (others => '0');
@@ -56,10 +56,10 @@ architecture structural of FP_ADD_SUB is
 	signal diff_sel					: std_logic;
 	signal correct_exp				: std_logic;
 	
-	signal smallest_mant			: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	signal mant1_s					: std_logic_vector(MANTISSA_SIZE-1 downto 0);
-	signal mant2_s					: std_logic_vector(MANTISSA_SIZE-1 downto 0);
 	signal mant_out					: std_logic_vector(MANTISSA_SIZE-1 downto 0);
+	signal smallest_mant			: std_logic_vector(MANTISSA_SIZE   downto 0);
+	signal mant1_s					: std_logic_vector(MANTISSA_SIZE   downto 0);
+	signal mant2_s					: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal not_mant1_s				: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal not_mant2_s				: std_logic_vector(MANTISSA_SIZE   downto 0);
 	signal mant1_compl_s			: std_logic_vector(MANTISSA_SIZE   downto 0);
@@ -78,6 +78,9 @@ architecture structural of FP_ADD_SUB is
 	signal out_is_inf				: std_logic;
 	signal out_is_nan				: std_logic;
 	
+	signal implicit_digit1			: std_logic;
+	signal implicit_digit2			: std_logic;
+	
 begin
 
 	-- Get correct signs
@@ -90,6 +93,10 @@ begin
 	
 	is_nan1		<= and_reduce(EXPONENT1) and or_reduce(MANTISSA1);
 	is_nan2		<= and_reduce(EXPONENT2) and or_reduce(MANTISSA2);
+	
+	-- Calculate implicit digits
+	implicit_digit1	<= or_reduce(EXPONENT1);
+	implicit_digit2	<= or_reduce(EXPONENT2);
 	
 	-- EXPONENT
 	-- Compute exponent difference
@@ -104,19 +111,19 @@ begin
 	
 	-- MANTISSA
 	-- Select smallest mantissa
-	smallest_mant	<= MANTISSA1 when (diff_sel = '0') else MANTISSA2;
-	mant2_s			<= MANTISSA2 when (diff_sel = '0') else MANTISSA1;
+	smallest_mant	<= implicit_digit1 & MANTISSA1 when (diff_sel = '0') else implicit_digit2 & MANTISSA2;
+	mant2_s			<= implicit_digit2 & MANTISSA2 when (diff_sel = '0') else implicit_digit1 & MANTISSA1;
 	
 	-- Shift smallest mantissa to the right according to exp_diff
 	shift_amount	<= to_integer(unsigned(exp_diff)) when (diff_sel = '1') else to_integer(unsigned(not exp_diff) + 1);
 	mant1_s			<= std_logic_vector(shift_right(unsigned(smallest_mant), shift_amount));
 	
 	-- Complement according to signal
-	mant1_signed_s	<= '0' & mant1_s when (sign1_s = '0') else mant1_compl_s;
-	mant2_signed_s	<= '0' & mant2_s when (sign2_s = '0') else mant2_compl_s;
+	mant1_signed_s	<= mant1_s when (sign1_s = '0') else mant1_compl_s;
+	mant2_signed_s	<= mant2_s when (sign2_s = '0') else mant2_compl_s;
 	
-	not_mant1_s	<= '1' & not mant1_s;
-	not_mant2_s	<= '1' & not mant2_s;
+	not_mant1_s	<= not mant1_s;
+	not_mant2_s	<= not mant2_s;
 	
 	MANT_COMPL_ADD1: RCA generic map (MANTISSA_SIZE+1) port map (not_mant1_s, (others => '0'), '1', mant1_compl_s, open);
 	MANT_COMPL_ADD2: RCA generic map (MANTISSA_SIZE+1) port map (not_mant2_s, (others => '0'), '1', mant2_compl_s, open);
@@ -126,7 +133,7 @@ begin
 	
 	-- Calculate sign of output and complement/shift if necessary
 	mant_addsub_out_sign	<= sign2_s; -- Sign of biggest operand
-	correct_exp				<= mant_addsub_out_sign xor mant_addsub_out(MANTISSA_SIZE);
+	correct_exp				<= mant_addsub_out_sign xor mant_addsub_carry;
 	
 	not_mant_addsub_out	<= not mant_addsub_out;
 	MANT_ADDSUB_COMPL_ADD: RCA generic map (MANTISSA_SIZE+1) port map (not_mant_addsub_out, (others => '0'), '1', mant_addsub_compl, open);

@@ -1,3 +1,9 @@
+-----------------------------------
+----- !!!!!! IMPORTANT !!!!!! -----
+----- COMPONENT UNUSED, KEPT  -----
+----- TO MAINTAIN PROJECT     -----
+----- STRUCTURE               -----
+-----------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.or_reduce;

@@ -9,6 +9,7 @@ entity EXECUTE is
 		ALU_OPCODE		: in	alu_opcode_t;
 		FPU_OPCODE		: in	fpu_opcode_t;
 		FPU_FUNC_SEL	: in	std_logic;
+		SIGNED_COMP		: in	std_logic;
 		-- Signals from/to previous/successive stages.
 		R1, R2			: in	DLX_oper_t;	-- Register inputs.
 		EX_OUT			: out	DLX_oper_t	-- EXECUTE stage output.
@@ -20,9 +21,10 @@ architecture structural of EXECUTE is
 	component ALU
 		generic (OPERAND_SIZE : natural);
 		port (
-			FUNC	: in	alu_opcode_t;
-			R1, R2	: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
-			O		: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
+			SIGNED_COMP	: in	std_logic;
+			FUNC		: in	alu_opcode_t;
+			R1, R2		: in	std_logic_vector(OPERAND_SIZE-1 downto 0);
+			O			: out	std_logic_vector(OPERAND_SIZE-1 downto 0)
 		);
 	end component;
 	
@@ -42,7 +44,7 @@ architecture structural of EXECUTE is
 	
 begin
 
-	EX_ALU: ALU generic map(DLX_OPERAND_SIZE) port map(alu_opcode_s, r1_s, r2_s, alu_out_s);
+	EX_ALU: ALU generic map(DLX_OPERAND_SIZE) port map(SIGNED_COMP, alu_opcode_s, r1_s, r2_s, alu_out_s);
 	EX_FPU: FPU generic map(DLX_OPERAND_SIZE) port map(fpu_opcode_s, f1_s, f2_s, fpu_out_s);
 	
 	-- INPUTS
