@@ -150,9 +150,9 @@ begin
 					   '0';
 						
 	-- Extend immediate arg
-	ext_imm_s(DLX_OPERAND_SIZE-1   downto IMMEDIATE_ARG_SIZE)	<= IMM_ARG                                   when (LHI_EXT = '1')    else
-																   (others => IMM_ARG(IMMEDIATE_ARG_SIZE-1)) when (SIGNED_EXT = '1') else
-																   (others => '0');
+	ext_imm_s(DLX_OPERAND_SIZE-1   downto IMMEDIATE_ARG_SIZE)	<= IMM_ARG                                   when (LHI_EXT = '1')    else -- Special case for LHI
+																   (others => IMM_ARG(IMMEDIATE_ARG_SIZE-1)) when (SIGNED_EXT = '1') else -- Signed extension
+																   (others => '0');                                                       -- Unsigned extension
 	ext_imm_s(IMMEDIATE_ARG_SIZE-1 downto                  0)	<= (others => '0') when (LHI_EXT = '1') else IMM_ARG;
 	
 	-- Extend pc offset
@@ -176,8 +176,8 @@ begin
 	reg_b_s	<= FORWARD_VALUE2 when (FORWARD_R2_EN = '1')  else -- Receive value from further down the pipeline
 			   RF_dout2_s;
 			   
-	REG_C	<= PC		when (PC_OUT_EN = '1')   else
-			   reg_b_s	when (STORE_R2_EN = '1') else
+	REG_C	<= PC		when (PC_OUT_EN = '1')   else -- Propagate PC when necessary (e.g. JAL)
+			   reg_b_s	when (STORE_R2_EN = '1') else -- Propagate r2 when store instruction
 			   reg_a_s;
 
 end architecture;

@@ -304,6 +304,7 @@ begin
 	dec_forward_r1_en	<= X2D_FORWARD_S1_EN or M2D_FORWARD_S1_EN or W2D_FORWARD_S1_EN;
 	dec_forward_r2_en	<= X2D_FORWARD_S2_EN or M2D_FORWARD_S2_EN or W2D_FORWARD_S2_EN;
 	
+	-- Check forwarding
 	dec_forward_value1	<= exe_ex_out  when (X2D_FORWARD_S1_EN = '1') else
 						   mem_mem_out when (M2D_FORWARD_S1_EN = '1') else
 						   wrb_dout;

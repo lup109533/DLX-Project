@@ -118,7 +118,7 @@ begin
 	shift_amount	<= to_integer(unsigned(exp_diff)) when (diff_sel = '1') else to_integer(unsigned(not exp_diff) + 1);
 	mant1_s			<= std_logic_vector(shift_right(unsigned(smallest_mant), shift_amount));
 	
-	-- Complement according to signal
+	-- Complement (or not) according to signal
 	mant1_signed_s	<= mant1_s when (sign1_s = '0') else mant1_compl_s;
 	mant2_signed_s	<= mant2_s when (sign2_s = '0') else mant2_compl_s;
 	

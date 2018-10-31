@@ -19,6 +19,8 @@ entity DLX is
 		HEAP_ADDR			: in	DLX_addr_t;
 		RF_SWP				: out	DLX_addr_t;
 		MBUS				: inout	DLX_oper_t;
+		RF_SPILL			: out	std_logic;
+		RF_FILL				: out	std_logic;
 		RF_ACK				: in	std_logic;
 		EXT_MEM_ADDR		: out	DLX_addr_t;
 		EXT_MEM_DIN			: out	DLX_oper_t;
@@ -213,8 +215,6 @@ architecture structural of DLX is
 	signal rf_rd2_addr_s		: reg_addr_t;
 	signal rf_rd1_s				: std_logic;
 	signal rf_rd2_s				: std_logic;
-	signal rf_spill_s			: std_logic;
-	signal rf_fill_s			: std_logic;
 	signal rf_ok_s				: std_logic;
 	signal imm_arg_s			: immediate_t;
 	signal imm_sel_s			: std_logic;
@@ -435,8 +435,8 @@ begin
 						X2D_FORWARD_S2_EN	=> x2d_forward_s2_en_s,
 						M2D_FORWARD_S2_EN	=> m2d_forward_s2_en_s,
 						W2D_FORWARD_S2_EN	=> w2d_forward_s2_en_s,
-						RF_SPILL			=> rf_spill_s,
-						RF_FILL				=> rf_fill_s,
+						RF_SPILL			=> RF_SPILL,
+						RF_FILL				=> RF_FILL,
 						RF_ACK				=> RF_ACK,
 						RF_OK				=> rf_ok_s,
 						

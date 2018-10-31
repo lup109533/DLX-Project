@@ -45,7 +45,7 @@ architecture structural of EXECUTE is
 begin
 
 	EX_ALU: ALU generic map(DLX_OPERAND_SIZE) port map(SIGNED_COMP, alu_opcode_s, r1_s, r2_s, alu_out_s);
-	EX_FPU: FPU generic map(DLX_OPERAND_SIZE) port map(fpu_opcode_s, f1_s, f2_s, fpu_out_s);
+	EX_FPU: FPU generic map(DLX_OPERAND_SIZE) port map(             fpu_opcode_s, f1_s, f2_s, fpu_out_s);
 	
 	-- INPUTS
 	r1_s <= R1;

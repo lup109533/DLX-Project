@@ -29,6 +29,8 @@ architecture test of TB_DLX is
 			HEAP_ADDR			: in	DLX_addr_t;
 			RF_SWP				: out	DLX_addr_t;
 			MBUS				: inout	DLX_oper_t;
+			RF_SPILL			: out	std_logic;
+			RF_FILL				: out	std_logic;
 			RF_ACK				: in	std_logic;
 			EXT_MEM_ADDR		: out	DLX_addr_t;
 			EXT_MEM_DIN			: out	DLX_oper_t;
@@ -53,6 +55,8 @@ architecture test of TB_DLX is
 	signal HEAP_ADDR_s			: DLX_addr_t;
 	signal RF_SWP_s				: DLX_addr_t;
 	signal MBUS_s				: DLX_oper_t;
+	signal RF_SPILL_s			: std_logic;
+	signal RF_FILL_s			: std_logic;
 	signal RF_ACK_s				: std_logic;
 	signal EXT_MEM_ADDR_s		: DLX_addr_t;
 	signal EXT_MEM_DIN_s		: DLX_oper_t;
@@ -74,8 +78,12 @@ architecture test of TB_DLX is
 	signal addr : integer range 0 to MEMORY_SIZE-1 := 0;
 	
 	type char_file_t is file of character;
-	file program_file	: char_file_t open read_mode is "program.bin";
-	signal loaded		: boolean := false;
+	
+	file program_file		: char_file_t open read_mode is "program.bin";
+	signal program_loaded	: boolean := false;
+	
+	file memory_file		: char_file_t open read_mode is "memory.bin";
+	signal memory_loaded	: boolean := false;
 	
 begin
 
@@ -93,6 +101,8 @@ begin
 					HEAP_ADDR_s,
 					RF_SWP_s,
 					MBUS_s,
+					RF_SPILL_s,
+					RF_FILL_s,
 					RF_ACK_s,
 					EXT_MEM_ADDR_s,
 					EXT_MEM_DIN_s,
@@ -113,13 +123,13 @@ begin
 		wait for 1 ns;
 	end process;
 	
+	-- Set unused signals to default values, then release RST
 	stimulus: process is
 	begin
 		RST_s				<= '0';
 		ENB_s				<= '1';
 		ICACHE_HIT_s		<= '1';
 		HEAP_ADDR_s			<= (others => '0');
-		RF_ACK_s			<= '0';
 		EXT_MEM_BUSY_s		<= '0';
 		wait for 2 ns;
 	
@@ -127,6 +137,7 @@ begin
 		wait;
 	end process;
 	
+	-- Fill ICACHE from program upon release of RST
 	read_program: process (CLK_s, RST_s) is
 		variable curr_char		: character;
 		variable i				: natural := 0;
@@ -136,8 +147,8 @@ begin
 				icache_s(i)					<= (others => '0');
 				icache_s(i)(OPCODE_RANGE)	<= NOP;
 			end loop;
-		elsif (rising_edge(RST_s) and not loaded) then
-			while not ENDFILE(program_file) loop
+		elsif (rising_edge(RST_s) and not program_loaded) then
+			while not ENDFILE(program_file) and i < ICACHE_SIZE loop
 				read(program_file, curr_char);
 				icache_s(i)(31 downto 24) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
 				read(program_file, curr_char);
@@ -148,18 +159,31 @@ begin
 				icache_s(i)( 7 downto  0) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
 				i := i + 1;
 			end loop;
-			loaded <= true;
+			program_loaded <= true;
 		end if;
 	end process;
 	cache_addr	<= to_integer(unsigned(PC_s))/4;
 	INSTR_s		<= icache_s(cache_addr) when (RST_s = '1') else NOP & "00000000000000000000000000";
 	
-	memory_proc: process (CLK_s, RST_s) is
+	
+	-- Memory manager, also fills memory with bytes from memory.bin at startup
+	memory_proc: process (CLK_s, RST_s, RF_SPILL_s, RF_FILL_s, RF_SWP_s) is
+		variable curr_char		: character;
+		variable i				: natural := 0;
 	begin
 		if (RST_s = '0') then
-			for i in 0 to MEMORY_SIZE-1 loop
-				memory_s(i)	<= std_logic_vector(to_unsigned(i, 8));
-			end loop;
+			if not memory_loaded then
+				while not ENDFILE(memory_file) and i < MEMORY_SIZE loop
+					read(memory_file, curr_char);
+					memory_s(i) <= std_logic_vector(to_unsigned(character'pos(curr_char), 8));
+					i := i + 1;
+				end loop;
+				for j in i to MEMORY_SIZE-1 loop
+					memory_s(j) <= "00000000";
+				end loop;
+				memory_loaded <= true;
+			end if;
+			RF_ACK_s <= '0';
 		elsif (rising_edge(CLK_s) and EXT_MEM_ENABLE_s = '1') then
 			if (EXT_MEM_WR_s = '1') then
 				memory_s(addr)		<= EXT_MEM_DIN_s(31 downto 24);
@@ -167,6 +191,7 @@ begin
 				memory_s(addr+2)	<= EXT_MEM_DIN_s(15 downto  8);
 				memory_s(addr+3)	<= EXT_MEM_DIN_s( 7 downto  0);
 			end if;
+			RF_ACK_s <= '0';
 		end if;
 	end process;
 	

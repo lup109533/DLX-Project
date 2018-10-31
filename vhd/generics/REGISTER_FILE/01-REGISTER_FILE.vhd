@@ -1,3 +1,4 @@
+-- Register file with windowing and optional fixed r0
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -95,10 +96,12 @@ architecture behavioral of REGISTER_FILE is
 	
 begin
 
+	-- Translate addresses
 	addr_in_s	<= to_integer(unsigned(ADDR_IN));
 	addr_out1_s	<= to_integer(unsigned(ADDR_OUT1));
 	addr_out2_s	<= to_integer(unsigned(ADDR_OUT2));
 
+	-- Reset and write-to-memory process
 	rf_manager: process (CLK, RST) is
 	begin
 		if (RST = '0') then
@@ -139,6 +142,7 @@ begin
 	end generate;
 	
 	
+	-- Implement windowing with a variable offset (0 by default, increases/decreases by REGISTER_NUM every CALL/RETN)
 	addr_in_index	<= spill_fill_counter when (state = RF_FILL)  else translated_addr_in_s;
 	addr_out1_index <= spill_fill_counter when (state = RF_SPILL) else translated_addr_out1_s;
 	addr_out2_index <= translated_addr_out2_s;
@@ -180,6 +184,7 @@ begin
 		end loop;
 	end process;
 	
+	-- Spill/fill FSM
 	fsm_proc: process (CLK, RST) is
 	begin
 		if (RST = '0') then
@@ -253,6 +258,7 @@ begin
 	swp_s <= MBUS(SYSTEM_ADDR_SIZE-1 downto 0) when (state = UPDATE_SWP) else swp_reg;
 	SWP   <= swp_s;
 	
+	-- Spill/fill counter to count correct number of registers to spill or fill
 	spill_fill_counter_manager: process (CLK, RST) is
 	begin
 		if (RST = '0') then

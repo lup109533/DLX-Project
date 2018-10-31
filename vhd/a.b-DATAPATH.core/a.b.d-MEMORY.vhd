@@ -56,11 +56,13 @@ begin
 	in_halfword_extension	<= (others => ADDR_IN(DLX_OPERAND_SIZE/2-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	in_byte_extension		<= (others => ADDR_IN(DLX_OPERAND_SIZE/4-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	
+	-- Extend output to memory
 	out_halfword			<= EXT_MEM_DOUT(DLX_OPERAND_SIZE/2-1 downto 0);
 	out_byte				<= EXT_MEM_DOUT(DLX_OPERAND_SIZE/4-1 downto 0);
 	out_halfword_extension	<= (others => EXT_MEM_DOUT(DLX_OPERAND_SIZE/2-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	out_byte_extension		<= (others => EXT_MEM_DOUT(DLX_OPERAND_SIZE/4-1)) when (MEM_SIGNED_EXT = '1') else (others => '0');
 	
+	-- Select inputs and outputs
 	ext_mem_din_s			<= in_halfword_extension & in_halfword when (MEM_HALFWORD = '1') else
 							   in_byte_extension     & in_byte     when (MEM_BYTE = '1')     else
 							   DATA_IN;
@@ -69,7 +71,7 @@ begin
 							   out_byte_extension     & out_byte              when (MEM_BYTE = '1')     else
 							   EXT_MEM_DOUT;
 	
-	-- External memory outputs.
+	-- Output of the MEMORY stage, from memory when memory operation selected.
 	MEM_OUT <= ADDR_IN when (MEMORY_OP_SEL = '0') else ext_mem_dout_s;
 
 end architecture;

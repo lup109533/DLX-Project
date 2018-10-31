@@ -19,7 +19,7 @@ architecture structural of WRITE_BACK is
 
 begin
 
-	DOUT <= DIN when (LINK_PC = '0') else PC;
+	DOUT <= DIN when (LINK_PC = '0') else PC; -- Write back PC if JAL or similar.
 	
 	RF_WR_OUT <= RF_WR;
 

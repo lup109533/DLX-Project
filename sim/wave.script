@@ -1,4 +1,5 @@
 add wave sim:/tb_dlx/*
+add wave sim:/tb_dlx/memory_s
 add wave sim:/tb_dlx/UUT/CU0/*
 add wave sim:/tb_dlx/UUT/DP0/FET_STAGE/*
 add wave sim:/tb_dlx/UUT/DP0/DEC_STAGE/*

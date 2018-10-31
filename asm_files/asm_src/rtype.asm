@@ -1,3 +1,4 @@
+# Test comparison, shif and arithmetic instructions
 begin:
 seq r1,r3,r4
 sge r2,r5,r6
@@ -11,6 +12,7 @@ sra r9,r4,r2
 sub r10,r9,r8
 not r11,r0,r0
 
+# Test a simple loop
 addi r1,r2,1
 subi r2,r4,2
 slti r1,r2,0
