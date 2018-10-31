@@ -9,7 +9,7 @@ Report : power
         -analysis_effort low
 Design : DLX
 Version: Z-2007.03-SP1
-Date   : Tue Oct 30 11:25:15 2018
+Date   : Wed Oct 31 02:51:35 2018
 ****************************************
 
 
@@ -35,11 +35,11 @@ Power-specific unit information :
     Leakage Power Units = 1nW
 
 
-  Cell Internal Power  =   8.4716 mW   (95%)
-  Net Switching Power  = 444.5123 uW    (5%)
+  Cell Internal Power  =   4.7427 mW   (92%)
+  Net Switching Power  = 434.1997 uW    (8%)
                          ---------
-Total Dynamic Power    =   8.9162 mW  (100%)
+Total Dynamic Power    =   5.1769 mW  (100%)
 
-Cell Leakage Power     =   1.1041 mW
+Cell Leakage Power     = 639.9085 uW
 
 1

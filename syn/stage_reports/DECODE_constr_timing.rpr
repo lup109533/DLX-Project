@@ -1,5 +1,5 @@
 Information: Updating design information... (UID-85)
-Warning: Design 'DECODE' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Warning: Design 'DECODE' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
  
 ****************************************
 Report : timing
@@ -9,7 +9,7 @@ Report : timing
         -max_paths 10
 Design : DECODE
 Version: Z-2007.03-SP1
-Date   : Tue Oct 30 12:04:25 2018
+Date   : Wed Oct 31 03:22:46 2018
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.
@@ -17,10 +17,440 @@ Date   : Tue Oct 30 12:04:25 2018
 Operating Conditions: typical   Library: NangateOpenCellLibrary
 Wire Load Model Mode: top
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[22] (output port)
-  Path Group: (none)
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][11]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3527/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3526/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][11]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][11]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][13]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3505/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3504/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][13]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][13]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][14]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3523/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3522/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][14]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][14]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][15]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3521/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3520/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][15]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][15]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][16]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3503/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3502/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][16]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][16]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][17]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3519/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3518/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][17]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][17]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][18]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3517/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3516/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][18]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][18]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][19]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3501/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3500/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][19]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][19]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/unfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][21]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/unfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/unfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/UNFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.15 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.22 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.35 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.57 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3513/ZN (AOI22_X1)                   0.05       0.72 f
+  RF/U3512/ZN (INV_X1)                     0.03       0.75 r
+  RF/memory_reg[12][21]/D (DFFR_X1)        0.01       0.76 r
+  data arrival time                                   0.76
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][21]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.76
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF/CWP/ovfl_s_reg
+              (rising edge-triggered flip-flop clocked by CLK)
+  Endpoint: RF/memory_reg[12][11]
+            (rising edge-triggered flip-flop clocked by CLK)
+  Path Group: CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock CLK (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  RF/CWP/ovfl_s_reg/CK (DFFR_X1)           0.00 #     0.00 r
+  RF/CWP/ovfl_s_reg/Q (DFFR_X1)            0.09       0.09 f
+  RF/CWP/OVFL (CIRCULAR_BUFFER_N2)         0.00       0.09 f
+  RF/U3305/ZN (NOR2_X1)                    0.05       0.14 r
+  RF/U1725/ZN (AND4_X1)                    0.07       0.21 r
+  RF/U3344/ZN (AND3_X1)                    0.06       0.28 r
+  RF/U1716/ZN (AND3_X1)                    0.07       0.34 r
+  RF/U55/ZN (AND2_X1)                      0.08       0.42 r
+  RF/U1252/ZN (NAND2_X1)                   0.09       0.51 f
+  RF/U1152/ZN (INV_X1)                     0.05       0.56 r
+  RF/U790/Z (BUF_X1)                       0.10       0.66 r
+  RF/U3527/ZN (AOI22_X1)                   0.05       0.71 f
+  RF/U3526/ZN (INV_X1)                     0.03       0.74 r
+  RF/memory_reg[12][11]/D (DFFR_X1)        0.01       0.75 r
+  data arrival time                                   0.75
+
+  clock CLK (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  RF/memory_reg[12][11]/CK (DFFR_X1)       0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.75
+  -----------------------------------------------------------
+  slack (MET)                                         0.21
+
+
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[2] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -29,41 +459,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U674/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[22] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U424/ZN (AND2_X1)                                       0.05       0.85 f
+  U887/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[2] (out)                                          0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[23] (output port)
-  Path Group: (none)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[11] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -72,41 +508,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U672/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[23] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U424/ZN (AND2_X1)                                       0.05       0.85 f
+  U894/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[11] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[24] (output port)
-  Path Group: (none)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[13] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -115,41 +557,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U670/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[24] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U425/ZN (AND2_X1)                                       0.05       0.85 f
+  syn309/Z (MUX2_X1)                                      0.07       0.92 r
+  REG_A[13] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[25] (output port)
-  Path Group: (none)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[17] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -158,41 +606,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U668/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[25] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U424/ZN (AND2_X1)                                       0.05       0.85 f
+  U898/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[17] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[26] (output port)
-  Path Group: (none)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[18] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -201,41 +655,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U666/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[26] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U424/ZN (AND2_X1)                                       0.05       0.85 f
+  U899/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[18] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[27] (output port)
-  Path Group: (none)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[19] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -244,41 +704,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U664/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[27] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U425/ZN (AND2_X1)                                       0.05       0.85 f
+  U900/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[19] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
   Endpoint: REG_A[28] (output port)
-  Path Group: (none)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -287,127 +753,47 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U662/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[28] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U425/ZN (AND2_X1)                                       0.05       0.85 f
+  U905/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[28] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
-
-
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[29] (output port)
-  Path Group: (none)
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
-
-  Point                                                   Incr       Path
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U660/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[29] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  slack (VIOLATED)                                                  -0.92
 
 
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
-  Endpoint: REG_A[30] (output port)
-  Path Group: (none)
-  Path Type: max
-
-  Des/Clust/Port     Wire Load Model       Library
-  ------------------------------------------------
-  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
-
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U656/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[30] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
-
-
-  Startpoint: RF/state_reg[1]
-              (rising edge-triggered flip-flop)
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
   Endpoint: REG_A[31] (output port)
-  Path Group: (none)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
@@ -416,35 +802,139 @@ Wire Load Model Mode: top
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
-  RF/state_reg[1]/CK (DFFR_X1)                            0.00 #     0.00 r
-  RF/state_reg[1]/Q (DFFR_X1)                             0.12       0.12 r
-  RF/U478/ZN (NAND3_X2)                                   0.21       0.33 f
-  RF/U12004/Z (MUX2_X1)                                   0.19       0.52 f
-  RF/U11991/ZN (INV_X1)                                   0.11       0.63 r
-  RF/U421/ZN (NOR3_X4)                                    0.09       0.72 f
-  RF/U497/ZN (NAND2_X2)                                   0.15       0.88 r
-  RF/U11606/ZN (OAI22_X1)                                 0.07       0.95 f
-  RF/U11605/ZN (AOI221_X1)                                0.09       1.04 r
-  RF/U11602/ZN (NAND4_X1)                                 0.05       1.09 f
-  RF/U11601/ZN (NOR4_X1)                                  0.10       1.18 r
-  RF/U11600/ZN (AOI21_X1)                                 0.03       1.22 f
-  RF/DOUT1[13] (REGISTER_FILE_1_32_32_4_32)               0.00       1.22 f
-  U695/Z (MUX2_X1)                                        0.08       1.30 f
-  ZD/A[13] (ZERO_DETECTOR_NBIT32)                         0.00       1.30 f
-  ZD/U5/ZN (NOR4_X1)                                      0.10       1.39 r
-  ZD/U2/ZN (NAND4_X1)                                     0.05       1.44 f
-  ZD/U1/ZN (NOR2_X1)                                      0.05       1.49 r
-  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       1.49 r
-  U714/Z (XOR2_X1)                                        0.07       1.56 r
-  U713/Z (MUX2_X1)                                        0.05       1.61 r
-  U709/ZN (AOI21_X1)                                      0.03       1.64 f
-  U705/ZN (OAI33_X1)                                      0.06       1.70 r
-  U389/ZN (AND2_X2)                                       0.16       1.85 r
-  U654/Z (MUX2_X1)                                        0.10       1.95 f
-  REG_A[31] (out)                                         0.00       1.96 f
-  data arrival time                                                  1.96
+  input external delay                                    0.00       0.00 r
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 r
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 r
+  RF/U319/ZN (INV_X1)                                     0.02       0.02 f
+  RF/U346/Z (MUX2_X1)                                     0.07       0.09 f
+  RF/U122/ZN (AND2_X2)                                    0.06       0.15 f
+  RF/U220/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U5131/ZN (INV_X1)                                    0.04       0.23 f
+  RF/U5324/ZN (INV_X1)                                    0.04       0.28 r
+  RF/U9397/ZN (OAI22_X1)                                  0.04       0.31 f
+  RF/U9399/ZN (NOR2_X1)                                   0.04       0.35 r
+  RF/U9405/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U544/ZN (NOR2_X1)                                    0.04       0.43 r
+  RF/U543/ZN (AOI21_X1)                                   0.03       0.47 f
+  RF/DOUT1[18] (REGISTER_FILE_1_32_32_2_32)               0.00       0.47 f
+  U479/Z (MUX2_X1)                                        0.07       0.54 f
+  ZD/A[18] (ZERO_DETECTOR_NBIT32)                         0.00       0.54 f
+  ZD/U19/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U4/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U425/ZN (AND2_X1)                                       0.05       0.85 f
+  U907/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[31] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
   --------------------------------------------------------------------------
-  (Path is unconstrained)
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
+
+
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[2] (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                    0.00       0.00 f
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 f
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 f
+  RF/U318/ZN (INV_X1)                                     0.03       0.03 r
+  RF/U317/Z (MUX2_X2)                                     0.05       0.07 r
+  RF/U209/ZN (INV_X1)                                     0.02       0.10 f
+  RF/U120/ZN (AND2_X1)                                    0.05       0.15 f
+  RF/U786/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U400/Z (CLKBUF_X3)                                   0.06       0.26 r
+  RF/U9779/ZN (OAI22_X1)                                  0.04       0.30 f
+  RF/U9780/ZN (NOR2_X1)                                   0.04       0.34 r
+  RF/U9790/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U9791/ZN (NOR2_X1)                                   0.05       0.43 r
+  RF/U9818/ZN (AOI21_X1)                                  0.03       0.46 f
+  RF/DOUT1[26] (REGISTER_FILE_1_32_32_2_32)               0.00       0.46 f
+  U517/Z (MUX2_X2)                                        0.07       0.53 f
+  ZD/A[26] (ZERO_DETECTOR_NBIT32)                         0.00       0.53 f
+  ZD/U15/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U3/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U424/ZN (AND2_X1)                                       0.05       0.85 f
+  U887/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[2] (out)                                          0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
+  --------------------------------------------------------------------------
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
+
+
+  Startpoint: RF_RD1_ADDR[0]
+              (input port)
+  Endpoint: REG_A[11] (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DECODE             5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                    0.00       0.00 f
+  RF_RD1_ADDR[0] (in)                                     0.00       0.00 f
+  RF/ADDR_OUT1[0] (REGISTER_FILE_1_32_32_2_32)            0.00       0.00 f
+  RF/U318/ZN (INV_X1)                                     0.03       0.03 r
+  RF/U317/Z (MUX2_X2)                                     0.05       0.07 r
+  RF/U209/ZN (INV_X1)                                     0.02       0.10 f
+  RF/U120/ZN (AND2_X1)                                    0.05       0.15 f
+  RF/U786/ZN (NAND2_X1)                                   0.05       0.20 r
+  RF/U400/Z (CLKBUF_X3)                                   0.06       0.26 r
+  RF/U9779/ZN (OAI22_X1)                                  0.04       0.30 f
+  RF/U9780/ZN (NOR2_X1)                                   0.04       0.34 r
+  RF/U9790/ZN (NAND4_X1)                                  0.04       0.39 f
+  RF/U9791/ZN (NOR2_X1)                                   0.05       0.43 r
+  RF/U9818/ZN (AOI21_X1)                                  0.03       0.46 f
+  RF/DOUT1[26] (REGISTER_FILE_1_32_32_2_32)               0.00       0.46 f
+  U517/Z (MUX2_X2)                                        0.07       0.53 f
+  ZD/A[26] (ZERO_DETECTOR_NBIT32)                         0.00       0.53 f
+  ZD/U15/ZN (NOR2_X1)                                     0.04       0.57 r
+  ZD/U3/ZN (AND4_X1)                                      0.07       0.64 r
+  ZD/U5/ZN (AND4_X2)                                      0.07       0.71 r
+  ZD/Z (ZERO_DETECTOR_NBIT32)                             0.00       0.71 r
+  U439/Z (MUX2_X1)                                        0.08       0.80 f
+  U424/ZN (AND2_X1)                                       0.05       0.85 f
+  U894/Z (MUX2_X1)                                        0.07       0.92 r
+  REG_A[11] (out)                                         0.00       0.92 r
+  data arrival time                                                  0.92
+
+  max_delay                                               0.00       0.00
+  output external delay                                   0.00       0.00
+  data required time                                                 0.00
+  --------------------------------------------------------------------------
+  data required time                                                 0.00
+  data arrival time                                                 -0.92
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.92
 
 
 1

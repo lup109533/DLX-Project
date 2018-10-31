@@ -8,514 +8,290 @@ Report : timing
         -max_paths 10
 Design : WRITE_BACK
 Version: Z-2007.03-SP1
-Date   : Tue Oct 30 12:06:10 2018
+Date   : Wed Oct 31 03:35:13 2018
 ****************************************
 
 Operating Conditions: typical   Library: NangateOpenCellLibrary
 Wire Load Model Mode: top
 
-  Startpoint: PC[3] (input port)
-  Endpoint: DOUT[31] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[1] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[3] (in)                                              0.00       0.00 r
-  add_22/A[3] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.57 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U2/ZN (AND2_X1)                                  0.04       1.32 r
-  add_22/U1/Z (XOR2_X1)                                   0.06       1.38 r
-  add_22/SUM[31] (WRITE_BACK_DW01_add_0)                  0.00       1.38 r
-  U79/Z (MUX2_X1)                                         0.04       1.42 r
-  DOUT[31] (out)                                          0.00       1.42 r
-  data arrival time                                                  1.42
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U82/ZN (NAND2_X1)                        0.05       0.05 r
+  U83/ZN (OAI21_X1)                        0.03       0.08 f
+  DOUT[1] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[2] (input port)
-  Endpoint: DOUT[31] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[2] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[2] (in)                                              0.00       0.00 r
-  add_22/A[2] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.56 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U2/ZN (AND2_X1)                                  0.04       1.32 r
-  add_22/U1/Z (XOR2_X1)                                   0.06       1.38 r
-  add_22/SUM[31] (WRITE_BACK_DW01_add_0)                  0.00       1.38 r
-  U79/Z (MUX2_X1)                                         0.04       1.42 r
-  DOUT[31] (out)                                          0.00       1.42 r
-  data arrival time                                                  1.42
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U85/ZN (NAND2_X1)                        0.05       0.05 r
+  U86/ZN (OAI21_X1)                        0.03       0.08 f
+  DOUT[2] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[3] (input port)
-  Endpoint: DOUT[31] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[3] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[3] (in)                                              0.00       0.00 r
-  add_22/A[3] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.57 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U2/ZN (AND2_X1)                                  0.04       1.32 r
-  add_22/U1/Z (XOR2_X1)                                   0.03       1.35 f
-  add_22/SUM[31] (WRITE_BACK_DW01_add_0)                  0.00       1.35 f
-  U79/Z (MUX2_X1)                                         0.06       1.41 f
-  DOUT[31] (out)                                          0.00       1.42 f
-  data arrival time                                                  1.42
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U88/ZN (NAND2_X1)                        0.05       0.05 r
+  U89/ZN (OAI21_X1)                        0.03       0.08 f
+  DOUT[3] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[2] (input port)
-  Endpoint: DOUT[31] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[4] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[2] (in)                                              0.00       0.00 r
-  add_22/A[2] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.56 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U2/ZN (AND2_X1)                                  0.04       1.32 r
-  add_22/U1/Z (XOR2_X1)                                   0.03       1.35 f
-  add_22/SUM[31] (WRITE_BACK_DW01_add_0)                  0.00       1.35 f
-  U79/Z (MUX2_X1)                                         0.06       1.41 f
-  DOUT[31] (out)                                          0.00       1.41 f
-  data arrival time                                                  1.41
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U91/ZN (NAND2_X1)                        0.05       0.05 r
+  U92/ZN (OAI21_X1)                        0.03       0.08 f
+  DOUT[4] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[3] (input port)
-  Endpoint: DOUT[30] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[5] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[3] (in)                                              0.00       0.00 r
-  add_22/A[3] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.57 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U3/Z (XOR2_X1)                                   0.06       1.34 r
-  add_22/SUM[30] (WRITE_BACK_DW01_add_0)                  0.00       1.34 r
-  U80/Z (MUX2_X1)                                         0.04       1.38 r
-  DOUT[30] (out)                                          0.00       1.38 r
-  data arrival time                                                  1.38
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U94/ZN (NAND2_X1)                        0.05       0.05 r
+  U95/ZN (OAI21_X1)                        0.03       0.08 f
+  DOUT[5] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[2] (input port)
-  Endpoint: DOUT[30] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[6] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[2] (in)                                              0.00       0.00 r
-  add_22/A[2] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.56 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U3/Z (XOR2_X1)                                   0.06       1.34 r
-  add_22/SUM[30] (WRITE_BACK_DW01_add_0)                  0.00       1.34 r
-  U80/Z (MUX2_X1)                                         0.04       1.38 r
-  DOUT[30] (out)                                          0.00       1.38 r
-  data arrival time                                                  1.38
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U97/ZN (NAND2_X1)                        0.05       0.05 r
+  U98/ZN (OAI21_X1)                        0.03       0.08 f
+  DOUT[6] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[4] (input port)
-  Endpoint: DOUT[31] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[7] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[4] (in)                                              0.00       0.00 r
-  add_22/A[4] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U54/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.57 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.13 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U2/ZN (AND2_X1)                                  0.04       1.27 r
-  add_22/U1/Z (XOR2_X1)                                   0.06       1.33 r
-  add_22/SUM[31] (WRITE_BACK_DW01_add_0)                  0.00       1.33 r
-  U79/Z (MUX2_X1)                                         0.04       1.37 r
-  DOUT[31] (out)                                          0.00       1.38 r
-  data arrival time                                                  1.38
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U100/ZN (NAND2_X1)                       0.05       0.05 r
+  U101/ZN (OAI21_X1)                       0.03       0.08 f
+  DOUT[7] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[3] (input port)
-  Endpoint: DOUT[30] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[8] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[3] (in)                                              0.00       0.00 r
-  add_22/A[3] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.57 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U3/Z (XOR2_X1)                                   0.03       1.31 f
-  add_22/SUM[30] (WRITE_BACK_DW01_add_0)                  0.00       1.31 f
-  U80/Z (MUX2_X1)                                         0.06       1.37 f
-  DOUT[30] (out)                                          0.00       1.37 f
-  data arrival time                                                  1.37
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U103/ZN (NAND2_X1)                       0.05       0.05 r
+  U104/ZN (OAI21_X1)                       0.03       0.08 f
+  DOUT[8] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[2] (input port)
-  Endpoint: DOUT[30] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[9] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[2] (in)                                              0.00       0.00 r
-  add_22/A[2] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U56/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U54/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.56 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.13 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.28 r
-  add_22/U3/Z (XOR2_X1)                                   0.03       1.31 f
-  add_22/SUM[30] (WRITE_BACK_DW01_add_0)                  0.00       1.31 f
-  U80/Z (MUX2_X1)                                         0.06       1.37 f
-  DOUT[30] (out)                                          0.00       1.37 f
-  data arrival time                                                  1.37
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U106/ZN (NAND2_X1)                       0.05       0.05 r
+  U107/ZN (OAI21_X1)                       0.03       0.08 f
+  DOUT[9] (out)                            0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
-  Startpoint: PC[4] (input port)
-  Endpoint: DOUT[31] (output port)
-  Path Group: (none)
+  Startpoint: LINK_PC (input port)
+  Endpoint: DOUT[10] (output port)
+  Path Group: default
   Path Type: max
 
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   WRITE_BACK         5K_hvratio_1_1        NangateOpenCellLibrary
 
-  Point                                                   Incr       Path
-  --------------------------------------------------------------------------
-  input external delay                                    0.00       0.00 r
-  PC[4] (in)                                              0.00       0.00 r
-  add_22/A[4] (WRITE_BACK_DW01_add_0)                     0.00       0.00 r
-  add_22/U54/ZN (AND2_X1)                                 0.04       0.04 r
-  add_22/U52/ZN (AND2_X1)                                 0.05       0.09 r
-  add_22/U50/ZN (AND2_X1)                                 0.05       0.14 r
-  add_22/U48/ZN (AND2_X1)                                 0.05       0.19 r
-  add_22/U46/ZN (AND2_X1)                                 0.05       0.23 r
-  add_22/U44/ZN (AND2_X1)                                 0.05       0.28 r
-  add_22/U42/ZN (AND2_X1)                                 0.05       0.33 r
-  add_22/U40/ZN (AND2_X1)                                 0.05       0.38 r
-  add_22/U38/ZN (AND2_X1)                                 0.05       0.42 r
-  add_22/U36/ZN (AND2_X1)                                 0.05       0.47 r
-  add_22/U34/ZN (AND2_X1)                                 0.05       0.52 r
-  add_22/U32/ZN (AND2_X1)                                 0.05       0.57 r
-  add_22/U30/ZN (AND2_X1)                                 0.05       0.61 r
-  add_22/U28/ZN (AND2_X1)                                 0.05       0.66 r
-  add_22/U26/ZN (AND2_X1)                                 0.05       0.71 r
-  add_22/U24/ZN (AND2_X1)                                 0.05       0.75 r
-  add_22/U22/ZN (AND2_X1)                                 0.05       0.80 r
-  add_22/U20/ZN (AND2_X1)                                 0.05       0.85 r
-  add_22/U18/ZN (AND2_X1)                                 0.05       0.90 r
-  add_22/U16/ZN (AND2_X1)                                 0.05       0.94 r
-  add_22/U14/ZN (AND2_X1)                                 0.05       0.99 r
-  add_22/U12/ZN (AND2_X1)                                 0.05       1.04 r
-  add_22/U10/ZN (AND2_X1)                                 0.05       1.09 r
-  add_22/U8/ZN (AND2_X1)                                  0.05       1.13 r
-  add_22/U6/ZN (AND2_X1)                                  0.05       1.18 r
-  add_22/U4/ZN (AND2_X1)                                  0.05       1.23 r
-  add_22/U2/ZN (AND2_X1)                                  0.04       1.27 r
-  add_22/U1/Z (XOR2_X1)                                   0.03       1.30 f
-  add_22/SUM[31] (WRITE_BACK_DW01_add_0)                  0.00       1.30 f
-  U79/Z (MUX2_X1)                                         0.06       1.37 f
-  DOUT[31] (out)                                          0.00       1.37 f
-  data arrival time                                                  1.37
-  --------------------------------------------------------------------------
-  (Path is unconstrained)
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  LINK_PC (in)                             0.00       0.00 f
+  U109/ZN (NAND2_X1)                       0.05       0.05 r
+  U110/ZN (OAI21_X1)                       0.03       0.08 f
+  DOUT[10] (out)                           0.00       0.08 f
+  data arrival time                                   0.08
+
+  max_delay                                0.00       0.00
+  output external delay                    0.00       0.00
+  data required time                                  0.00
+  -----------------------------------------------------------
+  data required time                                  0.00
+  data arrival time                                  -0.08
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.08
 
 
 1
