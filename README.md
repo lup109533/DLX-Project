@@ -1,3 +1,3 @@
 # DLX-Project
 
-Docs URL: overleaf.com/read/rzhhdsgmgcvc
+Docs URL: https://www.overleaf.com/read/rzhhdsgmgcvc
